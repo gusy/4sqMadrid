@@ -14,7 +14,6 @@ function showTweet(jsonstatus){
 	$tweet.find('.twitterSearchTime').css(opts.css['time']);
 	$tweet.find('a').css(opts.css['a']);
     $('#timeline').append($tweet);
-	alert('hola');	
 }
 function getDefaults(){
 var optdefaults = {
