@@ -210,6 +210,7 @@ sketch.attachFunction = function (processing) {
                     informacion.z = processing.screenZ(0, 0, value.altura);
                 }       
                 //  processing.box(ladoCheckin,ladoCheckin,altura);
+                ladoCheckin = 7*Math.log(15/zoom)
                 processing.dibujaCheckin(ladoCheckin, value.altura, value);
                 value.active = true;
                 /*if (activeCheckins > 1) {
