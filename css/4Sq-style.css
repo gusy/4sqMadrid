@@ -1,0 +1,16 @@
+#canvas{
+	margin-left:50px;
+	border-color: #aaaaaa;
+  	border-width: 1px;
+    border-style: solid;
+    width:20%;
+}
+#wrapper{
+	
+}
+#timeline{
+	width:200px;
+	heigth:200px;
+	border-color:#FAAFFF;
+
+}
