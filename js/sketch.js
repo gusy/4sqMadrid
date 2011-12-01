@@ -2,15 +2,16 @@
 var sketch = new Processing.Sketch();
 sketch.use3DContext = true;
 //sketch.imageCache.add("Madrid.jpg");
-var zoom = -800;
+var zoom = 1;
 sketch.attachFunction = function (processing) {
-    var hola;
     var tiempoGui = 2;
     var tiempoDisolucionGui = 1;
     var contadorGui = 0;
     var tex;
     var satellite=true;
     var rotando=true;
+    var transX; //= processing.width/2;
+    var transY; //= processing.height/2;
     var rotX = Math.PI / 4;
     var rotY = 0;
     var rotZ = 0;
@@ -44,6 +45,8 @@ sketch.attachFunction = function (processing) {
     processing.setup = function () {
         processing.frameRate(fr);
         processing.size(1200, 720, processing.OPENGL);
+        transX = processing.width/2;
+        transY = processing.height/2;
         processing.smooth();
         tex = processing.requestImage("img/MadridSat.jpg");
         processing.textureMode(processing.NORMALIZED);
@@ -129,7 +132,8 @@ sketch.attachFunction = function (processing) {
         //processing.lightSpecular(204, 204, 204); 
         processing.directionalLight(202, 202, 202, 0, -1, -1);
         //if (processing.mousePressed&&(processing.mouseButton==processingLEFT)){
-        processing.translate(processing.width / 2, processing.height / 4, zoom); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+        processing.translate(transX, transY, -800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+        processing.scale(zoom);
         //processing.rotateY(roty);
         //processing.rotateX(rotx);
         //}else{
@@ -403,8 +407,8 @@ sketch.attachFunction = function (processing) {
 
 function handle(delta) {
     var s = delta + ": ";
-    if (delta < 0) zoom -= 10;
-    else zoom += 10;
+    if (delta < 0) zoom = Math.max(0.3, zoom / 1.01);
+    else zoom = Math.min(7.5, zoom*1.01);
 }
 
 function wheel(event) {
