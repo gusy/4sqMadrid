@@ -325,10 +325,10 @@ sketch.attachFunction = function (processing) {
       if (processing.keyCode == processing.LEFT) {
          transX = Math.max(-2000, transX - 20);
       }
-      if (processing.keyCode == processing.UP) {
+      if (processing.keyCode == processing.DOWN) {
          transY = Math.max(-2000, transY - 20);
       }
-      if (processing.keyCode == processing.DOWN) {
+      if (processing.keyCode == processing.UP) {
          transY = Math.min(2000, transY + 20);
       }
     };
