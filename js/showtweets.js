@@ -71,7 +71,7 @@ function formatTweet(json, opts) {
 		str += '<img class="twitterSearchProfileImg" src="' + json.author_image + '" />';
 	str += '<div><span class="twitterSearchUser"><a href="http://www.twitter.com/'+ json.author_name+'/status/'+ json.tweet_id +'">' 
 	  + json.author_name  + '</a></span>';
-	pretty = prettyDate((new Date(json.tweet_timestamp-3600)*1000));
+	pretty = prettyDate(new Date((json.tweet_timestamp-3600)*1000));
 	if (opts.time && pretty)
 		str += ' <span class="twitterSearchTime">('+ pretty +')</span>'
 	 str += '<div class="twitterSearchText">' + text + '</div></div></div>';
