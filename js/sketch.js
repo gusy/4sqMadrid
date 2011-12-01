@@ -1,9 +1,11 @@
 
 var sketch = new Processing.Sketch();
 sketch.use3DContext = true;
+sketch.globalKeyEvents = true;
 //sketch.imageCache.add("Madrid.jpg");
 var zoom = 1;
 sketch.attachFunction = function (processing) {
+    /* @pjs globalKeyEvents="true"; */
     var tiempoGui = 2;
     var tiempoDisolucionGui = 1;
     var contadorGui = 0;
@@ -43,8 +45,9 @@ sketch.attachFunction = function (processing) {
     var oldRotZ;
 
     processing.setup = function () {
+        processing.textMode(processing.SCREEN);
         processing.frameRate(fr);
-        processing.size(1200, 720, processing.OPENGL);
+        processing.size(1280, 720, processing.OPENGL);
         transX = 0;
         transY = 0;
         processing.smooth();
@@ -90,15 +93,12 @@ sketch.attachFunction = function (processing) {
 
 
     processing.draw = function () {
+
         processing.hint(processing.ENABLE_DEPTH_TEST);
         processing.pushMatrix();
         processing.fill(55);
         processing.background(0);
-        if (sobre) {
-            //alert('Hola');
-            processing.fill(200);
-            processing.rect(0, 0, 100, 100);
-        }
+        
         if (i % (fr * tRefresh) == 0) {
             $.ajax({
                 url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId=1&lastCheckin=' + lastCheckinReceived,
@@ -137,10 +137,10 @@ sketch.attachFunction = function (processing) {
         }
         processing.ambientLight(242, 242, 240);
         //processing.lightSpecular(204, 204, 204); 
-        processing.directionalLight(202, 202, 202, 0, -1, -1);
+        //processing.directionalLight(202, 202, 202, 0, -1, -1);
         //if (processing.mousePressed&&(processing.mouseButton==processingLEFT)){
 
-                processing.translate(transX+processing.width/2, (Math.sin(rotX)*transY)+processing.width/2,Math.cos(rotX)*transY-800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+        processing.translate(transX+processing.width/2, (Math.sin(rotX)*transY)+processing.width/2,Math.cos(rotX)*transY-800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
         processing.scale(zoom);
 
         //processing.rotateY(roty);
@@ -256,14 +256,16 @@ sketch.attachFunction = function (processing) {
             }
          }        
         if (informacion.display) {
-            processing.fill(240, 80);
             processing.translate(informacion.x, informacion.y, 0);
-            var fontA = processing.loadFont("verdana");
-            processing.textFont(fontA, 18);
 
-            processing.rect(30, 0, processing.textWidth(arrayVenues[informacion.venue].venue.name) + 10, 28);
+            processing.fill(240, 120);
+            processing.rect(30, 0, processing.textWidth(arrayVenues[informacion.venue].venue.name) + 10, 30);
+
+            var fontA = processing.createFont("arial");
+            processing.textFont(fontA, 22);
+
             processing.fill(0);
-            processing.text(unescape(arrayVenues[informacion.venue].venue.name), 40, 10  );
+            processing.text(unescape(arrayVenues[informacion.venue].venue.name), 40, 15 );
             //alert(arrayVenues[informacion.venue].venue.name);
         }
 
@@ -277,10 +279,10 @@ sketch.attachFunction = function (processing) {
         oldY = processing.mouseY;
         oldRotX = rotX;
         oldRotZ = rotZ;
-        if(processing.mouseX>processing.width-50&&processing.mouseY<50){
+        if(processing.resizedMouseX()>processing.width-50&&processing.resizedMouseY()<50){
            rotando= !rotando;
         }
-        if(processing.mouseX<100&&processing.mouseY<100){
+        if(processing.resizedMouseX()<50&&processing.resizedMouseY()<50){
          processing.cambiaMapa();
         }
         if(informacion.display)
@@ -290,12 +292,12 @@ sketch.attachFunction = function (processing) {
         pulsado = false;
     }
     processing.mouseDragged = function () {
-        if (processing.mouseX > oldX) {
+        if (processing.resizedMouseX() > oldX) {
             rotZ = processing.map(processing.mouseX, oldX, processing.width, oldRotZ, Math.PI *2);
         } else {
             rotZ = processing.map(processing.mouseX, 0, oldX, 0, oldRotZ);
         }
-        if (processing.mouseY > oldY) {
+        if (processing.resizedMouseY() > oldY) {
             rotX = processing.map(processing.mouseY, oldY, processing.height, oldRotX, 0);
         } else {
             rotX = processing.map(processing.mouseY, 0, oldY, Math.PI / 3, oldRotX);
@@ -305,8 +307,8 @@ sketch.attachFunction = function (processing) {
     processing.mouseMoved = function () {
         contadorGui = 0;
         var p = {
-            "x": processing.mouseX,
-            "y": processing.mouseY
+            "x": processing.resizedMouseX(),
+            "y": processing.resizedMouseY()
         };
         $.each(arrayVenues, function (key, value) {
             if (value.v1 != null && value.v2 != null && value.v3 != null) {
@@ -332,13 +334,25 @@ sketch.attachFunction = function (processing) {
       if (processing.keyCode == processing.LEFT) {
          transX = Math.max(-2000, transX - 20);
       }
-      if (processing.keyCode == processing.DOWN) {
+      if (processing.keyCode == processing.UP) {
          transY = Math.max(-2000, transY - 20);
       }
-      if (processing.keyCode == processing.UP) {
+      if (processing.keyCode == processing.DOWN) {
          transY = Math.min(2000, transY + 20);
       }
     };
+
+    processing.resizedMouseX = function() {
+        return Math.floor(processing.mouseX*1280/canvas.clientWidth);
+        
+
+    }
+
+    processing.resizedMouseY = function() {
+        return Math.floor(processing.mouseY*720/canvas.clientHeight);
+        
+    }
+
     processing.cambiaMapa = function() {
        if (satellite){
           tex = processing.requestImage("img/MadridMap.jpg");
