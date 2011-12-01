@@ -45,8 +45,8 @@ sketch.attachFunction = function (processing) {
     processing.setup = function () {
         processing.frameRate(fr);
         processing.size(1200, 720, processing.OPENGL);
-        transX = processing.width/2;
-        transY = processing.height/2;
+        transX = 0;
+        transY = 0;
         processing.smooth();
         tex = processing.requestImage("img/MadridSat.jpg");
         processing.textureMode(processing.NORMALIZED);
@@ -132,8 +132,10 @@ sketch.attachFunction = function (processing) {
         //processing.lightSpecular(204, 204, 204); 
         processing.directionalLight(202, 202, 202, 0, -1, -1);
         //if (processing.mousePressed&&(processing.mouseButton==processingLEFT)){
-        processing.translate(transX, transY, -800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+
+                processing.translate(transX+processing.width/2, (Math.sin(rotX)*transY)+processing.width/2,Math.cos(rotX)*transY-800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
         processing.scale(zoom);
+
         //processing.rotateY(roty);
         //processing.rotateX(rotx);
         //}else{
@@ -143,6 +145,7 @@ sketch.attachFunction = function (processing) {
         if(rotando){
             rotZ = (rotZ+2*Math.PI/segundosPorVuelta/fr)%(2*Math.PI);
         }
+
          //}
 
         //processing.rotateZ(processing.map(i, 0, fr * segundosPorVuelta, -Math.PI, Math.PI));
@@ -314,6 +317,21 @@ sketch.attachFunction = function (processing) {
         });
 
     };
+
+    processing.keyPressed = function() {
+      if (processing.keyCode == processing.RIGHT) {
+         transX = Math.min(2000, transX + 20);
+      }
+      if (processing.keyCode == processing.LEFT) {
+         transX = Math.max(-2000, transX - 20);
+      }
+      if (processing.keyCode == processing.UP) {
+         transY = Math.max(-2000, transY - 20);
+      }
+      if (processing.keyCode == processing.DOWN) {
+         transY = Math.min(2000, transY + 20);
+      }
+    };
     processing.cambiaMapa = function() {
        if (satellite){
           tex = processing.requestImage("img/MadridMap.jpg");
@@ -322,7 +340,7 @@ sketch.attachFunction = function (processing) {
           tex = processing.requestImage("img/MadridSat.jpg");
           satellite=true;
        }
-    }
+    };
 
     processing.dibujaCheckin = function (lado, altura, venue) {
         x1 = -lado / 2;
