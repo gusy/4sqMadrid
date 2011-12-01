@@ -57,8 +57,13 @@ sketch.attachFunction = function (processing) {
             dataType: 'json',
             success: function (data) {
                 checkinPhp = data;
+                var countTimeLine=0;
                $.each(checkinPhp, function (index, value) {
                     var ci = value;
+                    countTimeLine++;
+                    if(countTimeLine>280){
+                        showTweet(ci,false);
+                    }
                     if (ci.tweet != null) {
                         var dated = new Date();
                         var offset = (dated.getTime() / 1000) - parseInt(ci.tweet.tweet_timestamp) - 3600;
@@ -101,8 +106,9 @@ sketch.attachFunction = function (processing) {
                 success: function (data) {
                     checkinPhp = data;
                     $.each(checkinPhp, function (index, value) {
+
                         var ci = value;
-                        showTweet(ci);
+                        showTweet(ci,true);
                         if (ci.tweet != null) {
                             //var dated = new Date();
                             //var offset = (dated.getTime()/1000)-parseInt(ci.tweet.tweet_timestamp)-3600;

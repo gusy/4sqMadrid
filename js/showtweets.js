@@ -5,7 +5,7 @@ $(document).ready(function() {
 	
 });
 
-function showTweet(jsonstatus){
+function showTweet(jsonstatus,animation){
 	var status=jsonstatus.tweet;
 	var opts=getDefaults()
 	var $tweet=$(formatTweet(status,opts));
@@ -14,7 +14,11 @@ function showTweet(jsonstatus){
 	$tweet.find('.twitterSearchUser').css(opts.css['user']);
 	$tweet.find('.twitterSearchTime').css(opts.css['time']);
 	$tweet.find('a').css(opts.css['a']);
+	if(animation==true){
     $tweet.hide().prependTo('#twitter').slideDown("slow").animate({backgroundColor:'#fff'},8000);
+    }else{
+    	$tweet.hide().prependTo('#twitter').show().css({backgroundColor:'fff'});
+    }
 
 }
 function getDefaults(){
@@ -71,7 +75,7 @@ function formatTweet(json, opts) {
 		str += '<img class="twitterSearchProfileImg" src="' + json.author_image + '" />';
 	str += '<div><span class="twitterSearchUser"><a href="http://www.twitter.com/'+ json.author_name+'/status/'+ json.tweet_id +'">' 
 	  + json.author_name  + '</a></span>';
-	pretty = prettyDate(new Date((json.tweet_timestamp-3600)*1000));
+	pretty = prettyDate(new Date(json.tweet_timestamp*1000+3600*1000));
 	if (opts.time && pretty)
 		str += ' <span class="twitterSearchTime">('+ pretty +')</span>'
 	 str += '<div class="twitterSearchText">' + text + '</div></div></div>';
