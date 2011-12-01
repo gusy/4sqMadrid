@@ -102,6 +102,7 @@ sketch.attachFunction = function (processing) {
                     checkinPhp = data;
                     $.each(checkinPhp, function (index, value) {
                         var ci = value;
+                        showTweet(ci);
                         if (ci.tweet != null) {
                             //var dated = new Date();
                             //var offset = (dated.getTime()/1000)-parseInt(ci.tweet.tweet_timestamp)-3600;

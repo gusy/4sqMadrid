@@ -1,19 +1,21 @@
 $(document).ready(function() {
 	// Handler for .ready() called.
-	var test={"lat":40.494318383,"tweet":{"author_image":"https://twimg0-a.akamaihd.net/profile_images/1640114863/IMG235x_normal.jpg","tweet_id":"142220729797193728","tweet_via":"foursquare","tweet_timestamp":"1322739438","author_followers":"89","author_location":"Spain","author_id":"184090170","author_tweets":"3404","tweet_text":"En Emirates (@ Terminal 4 Satu00e9lite w\/ 2 others) http:\/\/t.co\/duqeJ7iN","author_name":"WhitepowerGTI","author_following":"245"},"venue":{"verified":false,"name":"Terminal 4 Sat\u00e9lite","url":"http:\/\/www.aena-aeropuertos.es\/csee\/Satellite\/Aeropuerto-Madrid-Barajas\/es","contact":{"phone":"902100007","twitter":"barajas_airport","formattedPhone":"902 10 00 07"},"location":{"city":"Madrid","postalCode":"28042","state":"Madrid","address":"Aeropuerto de Madrid-Barajas","lat":40.494318383,"lng":-3.56750965118},"stats":{"tipCount":50,"checkinsCount":4406,"usersCount":2839},"id":"4bf22859324cc9b65ddecc92","categories":[{"pluralName":"Airport Terminals","primary":true,"name":"Airport Terminal","shortName":"Terminal","id":"4bf58dd8d48988d1eb931735","icon":{"prefix":"https:\/\/foursquare.com\/img\/categories\/travel\/airport_terminal_","name":".png","sizes":[32,44,64,88,256]}}]},"lng":-3.56750965118,"checkid":"5519"};
-	showTweet(test);
-
+	
+	$('#twitter').height($('#canvas').height());
+	
 });
 
 function showTweet(jsonstatus){
 	var status=jsonstatus.tweet;
 	var opts=getDefaults()
 	var $tweet=$(formatTweet(status,opts));
+	$tweet.css(opts.css['tweet']);
 	$img = $tweet.find('.twitterSearchProfileImg').css(opts.css['img']);
 	$tweet.find('.twitterSearchUser').css(opts.css['user']);
 	$tweet.find('.twitterSearchTime').css(opts.css['time']);
 	$tweet.find('a').css(opts.css['a']);
-    $('#timeline').append($tweet);
+    $tweet.hide().prependTo('#twitter').slideDown("slow").animate({backgroundColor:'#fff'},8000);
+
 }
 function getDefaults(){
 var optdefaults = {
@@ -44,7 +46,7 @@ var optdefaults = {
 			container: { overflow: 'hidden', backgroundColor: '#eee', height: '100%' },
 			fail:  { background: '#6cc5c3 url(http://cloud.github.com/downloads/malsup/twitter/failwhale.png) no-repeat 50% 50%', height: '100%', padding: '10px' },
 			frame: { border: '10px solid #C2CFF1', borderRadius: '10px', '-moz-border-radius': '10px', '-webkit-border-radius': '10px' },
-			tweet: { padding: '5px 10px', clear: 'left' },
+			tweet: { padding: '10px 10px', clear: 'left' ,backgroundColor:'#0f0'},
 			img:   { 'float': 'left', margin: '5px', width: '48px', height: '48px' },
 			loading: { padding: '20px', textAlign: 'center', color: '#888' },
 			text:  {},
@@ -64,7 +66,7 @@ function formatTweet(json, opts) {
 		text = json.tweet_text.replace(/(http:\/\/\S+)/g, '<a href="$1">$1</a>');
 		text = text.replace(/\@(\w+)/g, '<a href="http://twitter.com/$1">@$1</a>');
 	}
-	str = '<div class="twitterSearchTweet">';
+	str = '<div class="twitterSearchTweet recent" id="tw">';
 	if (opts.avatar)
 		str += '<img class="twitterSearchProfileImg" src="' + json.author_image + '" />';
 	str += '<div><span class="twitterSearchUser"><a href="http://www.twitter.com/'+ json.author_name+'/status/'+ json.tweet_id +'">' 
