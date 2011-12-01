@@ -140,7 +140,7 @@ sketch.attachFunction = function (processing) {
         //processing.directionalLight(202, 202, 202, 0, -1, -1);
         //if (processing.mousePressed&&(processing.mouseButton==processingLEFT)){
 
-        processing.translate(transX+processing.width/2, (Math.sin(rotX)*transY)+processing.width/2,Math.cos(rotX)*transY-800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+        processing.translate(transX+processing.width/2, (Math.sin(rotX)*transY)+processing.width/4,Math.cos(rotX)*transY-800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
         processing.scale(zoom);
 
         //processing.rotateY(roty);
