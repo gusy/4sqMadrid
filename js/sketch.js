@@ -2,15 +2,16 @@
 var sketch = new Processing.Sketch();
 sketch.use3DContext = true;
 //sketch.imageCache.add("Madrid.jpg");
-var zoom = -800;
+var zoom = 1;
 sketch.attachFunction = function (processing) {
-    var hola;
     var tiempoGui = 2;
     var tiempoDisolucionGui = 1;
     var contadorGui = 0;
     var tex;
     var satellite=true;
     var rotando=true;
+    var transX; //= processing.width/2;
+    var transY; //= processing.height/2;
     var rotX = Math.PI / 4;
     var rotY = 0;
     var rotZ = 0;
@@ -44,6 +45,8 @@ sketch.attachFunction = function (processing) {
     processing.setup = function () {
         processing.frameRate(fr);
         processing.size(1200, 720, processing.OPENGL);
+        transX = 0;
+        transY = 0;
         processing.smooth();
         tex = processing.requestImage("img/MadridSat.jpg");
         processing.textureMode(processing.NORMALIZED);
@@ -129,7 +132,10 @@ sketch.attachFunction = function (processing) {
         //processing.lightSpecular(204, 204, 204); 
         processing.directionalLight(202, 202, 202, 0, -1, -1);
         //if (processing.mousePressed&&(processing.mouseButton==processingLEFT)){
-        processing.translate(processing.width / 2, processing.height / 4, zoom); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+
+                processing.translate(transX+processing.width/2, (Math.sin(rotX)*transY)+processing.width/2,Math.cos(rotX)*transY-800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+        processing.scale(zoom);
+
         //processing.rotateY(roty);
         //processing.rotateX(rotx);
         //}else{
@@ -139,6 +145,7 @@ sketch.attachFunction = function (processing) {
         if(rotando){
             rotZ = (rotZ+2*Math.PI/segundosPorVuelta/fr)%(2*Math.PI);
         }
+
          //}
 
         //processing.rotateZ(processing.map(i, 0, fr * segundosPorVuelta, -Math.PI, Math.PI));
@@ -206,6 +213,7 @@ sketch.attachFunction = function (processing) {
                     informacion.z = processing.screenZ(0, 0, value.altura);
                 }       
                 //  processing.box(ladoCheckin,ladoCheckin,altura);
+                ladoCheckin = 7*Math.log(15/zoom)
                 processing.dibujaCheckin(ladoCheckin, value.altura, value);
                 value.active = true;
                 /*if (activeCheckins > 1) {
@@ -309,6 +317,21 @@ sketch.attachFunction = function (processing) {
         });
 
     };
+
+    processing.keyPressed = function() {
+      if (processing.keyCode == processing.RIGHT) {
+         transX = Math.min(2000, transX + 20);
+      }
+      if (processing.keyCode == processing.LEFT) {
+         transX = Math.max(-2000, transX - 20);
+      }
+      if (processing.keyCode == processing.DOWN) {
+         transY = Math.max(-2000, transY - 20);
+      }
+      if (processing.keyCode == processing.UP) {
+         transY = Math.min(2000, transY + 20);
+      }
+    };
     processing.cambiaMapa = function() {
        if (satellite){
           tex = processing.requestImage("img/MadridMap.jpg");
@@ -317,7 +340,7 @@ sketch.attachFunction = function (processing) {
           tex = processing.requestImage("img/MadridSat.jpg");
           satellite=true;
        }
-    }
+    };
 
     processing.dibujaCheckin = function (lado, altura, venue) {
         x1 = -lado / 2;
@@ -403,8 +426,8 @@ sketch.attachFunction = function (processing) {
 
 function handle(delta) {
     var s = delta + ": ";
-    if (delta < 0) zoom -= 10;
-    else zoom += 10;
+    if (delta < 0) zoom = Math.max(0.3, zoom / 1.01);
+    else zoom = Math.min(7.5, zoom*1.01);
 }
 
 function wheel(event) {
