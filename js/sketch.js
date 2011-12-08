@@ -3,13 +3,19 @@ var sketch = new Processing.Sketch();
 sketch.use3DContext = true;
 sketch.globalKeyEvents = true;
 //sketch.imageCache.add("Madrid.jpg");
-var zoom = 1;
+var zoom = -500;
+var minZoom = -1300;
+    var maxZoom = 800;
 sketch.attachFunction = function (processing) {
     /* @pjs globalKeyEvents="true"; */
     var tiempoGui = 2;
+    
+    var listaTrending = new Array();
+    var umbralTrending = 1;
     var tiempoDisolucionGui = 1;
     var contadorGui = 0;
     var tex;
+    var playIcon;
     var satellite=true;
     var rotando=true;
     var transX; //= processing.width/2;
@@ -44,14 +50,20 @@ sketch.attachFunction = function (processing) {
     var oldRotY;
     var oldRotZ;
 
+
+
     processing.setup = function () {
         processing.textMode(processing.SCREEN);
         processing.frameRate(fr);
+        sketch.imageCache.add("img/play.png");
         processing.size(1280, 720, processing.OPENGL);
+        //processing.hint(processing.ENABLE_OPENGL_4X_SMOOTH);
+
         transX = 0;
         transY = 0;
         processing.smooth();
         tex = processing.requestImage("img/MadridSat.jpg");
+
         processing.textureMode(processing.NORMALIZED);
         processing.fill(55);
         processing.stroke(processing.color(44, 48, 32));
@@ -129,6 +141,25 @@ sketch.attachFunction = function (processing) {
 
                 }
             });
+            listaTrending = listaTrending.sort(ordenarPorNumeroCheckins)
+            var query ="";
+            var asd = 0;
+            for (asd = 0; asd<10;asd++){
+                query += listaTrending[asd].venue.id;
+                if (asd<9){
+                    query += "-";
+                }
+            }/*
+
+            $.ajax({
+                url: 'http://pregel.mat.upm.es/get-venue.php?locationIds=' + query,
+                dataType: 'json',
+                success: function (data) {
+                    alert(data);
+                
+
+                }
+            });*/
 
 /*
    arrayCheckins[arrayCheckins.length] = checkinTest[iArray];
@@ -140,15 +171,57 @@ sketch.attachFunction = function (processing) {
         //processing.directionalLight(202, 202, 202, 0, -1, -1);
         //if (processing.mousePressed&&(processing.mouseButton==processingLEFT)){
 
-        processing.translate(transX+processing.width/2, (Math.sin(rotX)*transY)+processing.width/4,Math.cos(rotX)*transY-800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
-        processing.scale(zoom);
+    //    processing.translate(transX+processing.width/2, (Math.cos(rotX)*zoom)+(Math.sin(rotX)*transY)+processing.width/4,Math.sin(rotX)*zoom+Math.cos(rotX)*transY-800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+/*
+        var alfa = Math.atan(transY/transX);
+        if(transY<0){
+            alfa=alfa+Math.PI;
+        }
+        $("#test").html(alfa);
+        var beta = rotZ;
+
+        var d = Math.sqrt(Math.pow(transX,2)+Math.pow(transY,2));
+
+
+        var offsetX;
+        var offsetY;
+        if (d>0){
+
+        var theta = Math.PI-(Math.PI-beta)/2+beta+alfa;
+            offsetX = 2*d*Math.sin(beta/2)*Math.cos(theta);
+
+            offsetY = 2*d*Math.sin(beta/2)*Math.sin(theta);
+
+
+        }else{
+            offsetX = 0;
+            offsetY = 0;
+       }
+*/
+       
+
+
+        
+
+        processing.translate(processing.width/2, processing.width/4,zoom-800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+        processing.rotateX(rotX);
+        processing.rotateY(rotY);
+        processing.rotateZ(rotZ);
+
+        processing.translate(transX, transY,0); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+
+        processing.scale(2);
+
+       
 
         //processing.rotateY(roty);
         //processing.rotateX(rotx);
         //}else{
-        processing.rotateX(rotX);
-        processing.rotateY(rotY);
-        processing.rotateZ(rotZ);
+        
+        
+
+
+        
         if(rotando){
             rotZ = (rotZ+2*Math.PI/segundosPorVuelta/fr)%(2*Math.PI);
         }
@@ -168,12 +241,30 @@ sketch.attachFunction = function (processing) {
         processing.vertex(1000, 800, 0, 1, 1);
         processing.vertex(-1000, 800, 0, 0, 1);
         processing.endShape();
+/* Mostrar Ejes X,Y,Z
+        processing.stroke(255);
+
+        processing.line(0,0,0,0,1000,0);
+        processing.line(0,0,0,1000,0,0);
+        processing.line(0,0,0,0,0,1000);
+
+        processing.noStroke();
+
+      */
+
+
+        var iter=0;
 
         //for ( indi=0; indi<arrayCheckins.length;indi++){
         $.each(arrayVenues, function (key, value) {
             var minCount = 999999;
             var activeCheckins = 0;
+            var totalCheckins = 0;
+            if (value.checkins.length>umbralTrending){
+                listaTrending[iter++]=value;
+            }
             $.each(value.checkins, function (index, val) {
+                
                 if (val != null && val.count < tiempoCheckin * fr) {
                     minCount = Math.min(minCount, val.count);
                     activeCheckins++;
@@ -181,6 +272,7 @@ sketch.attachFunction = function (processing) {
                 }
             });
             if (activeCheckins>0){
+                
                 if (value.altura == null){
                     value.altura = 0;
                 }
@@ -220,7 +312,7 @@ sketch.attachFunction = function (processing) {
                     informacion.z = processing.screenZ(0, 0, value.altura);
                 }       
                 //  processing.box(ladoCheckin,ladoCheckin,altura);
-                ladoCheckin = 7*Math.log(15/zoom)
+                ladoCheckin = 7*Math.log(15/processing.map(zoom+300,minZoom,maxZoom,0.5,7));
                 processing.dibujaCheckin(ladoCheckin, value.altura, value);
                 value.active = true;
                 /*if (activeCheckins > 1) {
@@ -247,12 +339,17 @@ sketch.attachFunction = function (processing) {
             processing.rect(25,25,10,10);
             processing.fill(240,processing.map(contadorGui,(tiempoGui-tiempoDisolucionGui)*fr,tiempoGui*fr,100,0));
             processing.rect(processing.width-50,0,50,50);
-            processing.fill(0);
+            playIcon = processing.loadImage("img/play.png");
             if(rotando){
+                processing.fill(0);
               processing.rect(processing.width-40,10,10,30);
               processing.rect(processing.width-20,10,10,30);
+
             }else{
-              processing.triangle(processing.width-40,10,processing.width-40,40,processing.width-10,25);
+                        
+
+              //processing.triangle(processing.width-40,10,processing.width-40,40,processing.width-10,25);
+              processing.image(playIcon,processing.width-45,5,40,40);
             }
          }        
         if (informacion.display) {
@@ -269,7 +366,12 @@ sketch.attachFunction = function (processing) {
             //alert(arrayVenues[informacion.venue].venue.name);
         }
 
-         i = (i + 1) % (fr * segundosPorVuelta);
+        //processing.fill(255,processing.map(processing.millis()%1000,0,1000,255,0));
+        //processing.image(playIcon,150,150);
+
+        listaTrending = listaTrending.sort(ordenarPorNumeroCheckins);
+
+        i = (i + 1) % (fr * segundosPorVuelta);
 
          if (contadorGui < tiempoGui*fr) contadorGui++;
     };
@@ -328,17 +430,21 @@ sketch.attachFunction = function (processing) {
     };
 
     processing.keyPressed = function() {
-      if (processing.keyCode == processing.RIGHT) {
-         transX = Math.min(2000, transX + 20);
-      }
-      if (processing.keyCode == processing.LEFT) {
-         transX = Math.max(-2000, transX - 20);
-      }
       if (processing.keyCode == processing.UP) {
-         transY = Math.max(-2000, transY - 20);
+         transX = Math.min(2000, transX + 20*Math.sin(rotZ));
+         transY = Math.min(2000, transY + 20*Math.cos(rotZ));
       }
       if (processing.keyCode == processing.DOWN) {
-         transY = Math.min(2000, transY + 20);
+         transX = Math.max(-2000, transX - 20*Math.sin(rotZ));
+         transY = Math.max(-2000, transY - 20*Math.cos(rotZ));
+      }
+      if (processing.keyCode == processing.LEFT) {
+         transX = Math.min(2000, transX + 20*Math.cos(rotZ));
+         transY = Math.max(-2000, transY - 20*Math.sin(rotZ));
+      }
+      if (processing.keyCode == processing.RIGHT) {
+         transX = Math.max(-2000, transX - 20*Math.cos(rotZ));
+         transY = Math.min(2000, transY + 20*Math.sin(rotZ));
       }
     };
 
@@ -447,8 +553,8 @@ sketch.attachFunction = function (processing) {
 
 function handle(delta) {
     var s = delta + ": ";
-    if (delta < 0) zoom = Math.max(0.3, zoom / 1.01);
-    else zoom = Math.min(7.5, zoom*1.01);
+    if (delta < 0) zoom = Math.max(minZoom, zoom-10);
+    else zoom = Math.min(maxZoom, zoom+10);
 }
 
 function wheel(event) {
@@ -481,4 +587,12 @@ function dentroTriangulo(p, a, b, c) {
 
 function xProd(p, v1, v2) {
     return (eval((p.y - v1.y) * (v2.x - v1.x) - (p.x - v1.x) * (v2.y - v1.y)));
+}
+
+function ordenarPorNumeroCheckins(a,b){
+    if(a.checkins.length<b.checkins.length){
+        return 1;
+    }if (a.checkins.length>b.checkins.length){
+        return -1;
+    }return 0;
 }
