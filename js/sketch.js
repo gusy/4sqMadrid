@@ -92,9 +92,8 @@ sketch.attachFunction = function (processing) {
                         showTweet(ci,false);
                     }
                     if (ci.tweet != null) {
-                        var dated = new Date();
 
-                        var offset = (dated.getTime() / 1000) - parseInt(ci.tweet.tweet_timestamp) - timeOffset;
+                        var offset = (new Date().getTime() / 1000) - parseInt(ci.tweet.tweet_timestamp) - timeOffset;
                         ci.count = Math.floor(offset) * fr;
                         if (arrayVenues[ci.venue.id] == null) {
                             arrayVenues[ci.venue.id] = new Object();
@@ -125,6 +124,7 @@ sketch.attachFunction = function (processing) {
         processing.background(0);
         
         if (i % (fr * tRefresh) == 0) {
+            updateAllTimes();
             $.ajax({
                 url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId=1&lastCheckin=' + lastCheckinReceived,
                 dataType: 'json',
@@ -146,7 +146,8 @@ sketch.attachFunction = function (processing) {
                             arrayVenues[ci.venue.id].checkins[arrayVenues[ci.venue.id].checkins.length] = ci;
                         } else {
                             // alert(ci.checkid);
-                            ci.count = 0;
+                            var offset = (new Date().getTime() / 1000) - parseInt(ci.tweet.tweet_timestamp) - timeOffset;
+                            ci.count = Math.floor(offset) * fr;
                         }
                         //arrayCheckins[arrayCheckins.length] = ci;
                         lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
