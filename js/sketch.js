@@ -139,7 +139,6 @@ sketch.attachFunction = function (processing) {
 
             timeEpoch = Math.min(timeframeTo,processing.map(processing.millis(),0,1000*segundosTimeframe,timeframeFrom,timeframeTo));
         
-            timeEpoch = processing.map(processing.millis(),0,1000*segundosTimeframe,timeframeFrom,timeframeTo);
             var date=new Date(Math.floor(timeEpoch)*1000+3600*1000)
 
             $("#test").html(date.toString().substring(0,date.toString().indexOf('GMT')));
