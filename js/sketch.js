@@ -7,6 +7,8 @@ var zoom = -500;
 var minZoom = -1300;
 var maxZoom = 800;
 var timeOffset = 0;
+var timeframeMode = false;
+var timeEpoch = 0;
 
 sketch.attachFunction = function (processing) {
     /* @pjs globalKeyEvents="true"; */
@@ -37,7 +39,10 @@ sketch.attachFunction = function (processing) {
     var alturaInicialCheckin = 150;
     var alturaCheckin = 120;
     var tRefresh = 2;
+    var segundosTimeframe = 60;
     
+    var timeframeFrom = 0;
+    var timeframeTo = 0;
 
     var arrayCheckins = new Array();
     var arrayVenues = new Object();
@@ -62,6 +67,17 @@ sketch.attachFunction = function (processing) {
 
 
     processing.setup = function () {
+
+        if (getParameterByName("timeframe")==("true")){
+            if (getParameterByName("from")!=("")&&getParameterByName("to")!=("")){
+                timeframeFrom=parseInt(getParameterByName("from"));
+                timeframeTo=parseInt(getParameterByName("to"));
+                timeframeMode=true;
+                timeEpoch = processing.map(processing.millis(),0,1000*segundosTimeframe,timeframeFrom,timeframeTo);
+            }
+        }
+
+
         processing.textMode(processing.SCREEN);
         processing.frameRate(fr);
         sketch.imageCache.add("img/play.png");
@@ -117,6 +133,15 @@ sketch.attachFunction = function (processing) {
 
 
     processing.draw = function () {
+
+
+        if (timeframeMode){
+            timeEpoch = processing.map(processing.millis(),0,1000*segundosTimeframe,timeframeFrom,timeframeTo);
+            $("#test").html(timeEpoch);
+
+
+        }
+
 
         processing.hint(processing.ENABLE_DEPTH_TEST);
         processing.pushMatrix();
@@ -611,4 +636,16 @@ function ordenarPorNumeroCheckins(a,b){
     }if (a.checkins.length>b.checkins.length){
         return -1;
     }return 0;
+}
+
+function getParameterByName(name)
+{
+  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+  var regexS = "[\\?&]" + name + "=([^&#]*)";
+  var regex = new RegExp(regexS);
+  var results = regex.exec(window.location.href);
+  if(results == null)
+    return "";
+  else
+    return decodeURIComponent(results[1].replace(/\+/g, " "));
 }
