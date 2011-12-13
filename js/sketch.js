@@ -129,7 +129,7 @@ sketch.attachFunction = function (processing) {
                 url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId=1&lastCheckin=' + lastCheckinReceived,
                 dataType: 'json',
                 success: function (data) {
-                    checkinPhp = data;
+                    checkinPhp = data.checkins;
                     $.each(checkinPhp, function (index, value) {
 
                         var ci = value;
