@@ -77,7 +77,7 @@ function formatTweet(json, opts) {
 	  + json.author_name  + '</a></span>';
 	pretty = prettyDate(new Date(json.tweet_timestamp*1000+timeOffset*1000));
 	if (opts.time && pretty)
-		str += ' <span class="twitterSearchTime">('+ pretty +')</span>'
+		str += ' <span class="twitterSearchTime" title="'+json.tweet_timestamp+'">('+ pretty +')</span>'
 	 str += '<div class="twitterSearchText">' + text + '</div></div></div>';
 	 return str;
 }
@@ -101,4 +101,13 @@ function prettyDate(time){
 	if (!v)
 		window.console && console.log(time);
 	return v ? v : '';
+}
+
+function updateAllTimes(){
+	$("span.twitterSearchTime").each(function(index) {
+   		var tstamp=parseInt($(this).attr('title'));
+   		$(this).html(prettyDate(new Date(tstamp*1000+timeOffset*1000)))
+
+   		
+	});
 }
