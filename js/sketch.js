@@ -5,7 +5,9 @@ sketch.globalKeyEvents = true;
 //sketch.imageCache.add("Madrid.jpg");
 var zoom = -500;
 var minZoom = -1300;
-    var maxZoom = 800;
+var maxZoom = 800;
+var timeOffset = 0;
+
 sketch.attachFunction = function (processing) {
     /* @pjs globalKeyEvents="true"; */
     var tiempoGui = 2;
@@ -35,11 +37,18 @@ sketch.attachFunction = function (processing) {
     var alturaInicialCheckin = 150;
     var alturaCheckin = 120;
     var tRefresh = 2;
+    
+
     var arrayCheckins = new Array();
     var arrayVenues = new Object();
+
+
     var informacion = {
         "display": false
     };
+
+
+
     var checkinPhp;
     //i
     var sobre = false;
@@ -71,8 +80,11 @@ sketch.attachFunction = function (processing) {
             url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId=1&lastCheckin=' + lastCheckinReceived,
             dataType: 'json',
             success: function (data) {
-                checkinPhp = data;
+                checkinPhp = data.checkins;
                 var countTimeLine=0;
+
+                timeOffset = (new Date()).getTime()/1000-(data.metadata.offset + data.metadata.lastTimeStamp);
+
                $.each(checkinPhp, function (index, value) {
                     var ci = value;
                     countTimeLine++;
@@ -81,7 +93,8 @@ sketch.attachFunction = function (processing) {
                     }
                     if (ci.tweet != null) {
                         var dated = new Date();
-                        var offset = (dated.getTime() / 1000) - parseInt(ci.tweet.tweet_timestamp) - 3600;
+
+                        var offset = (dated.getTime() / 1000) - parseInt(ci.tweet.tweet_timestamp) - timeOffset;
                         ci.count = Math.floor(offset) * fr;
                         if (arrayVenues[ci.venue.id] == null) {
                             arrayVenues[ci.venue.id] = new Object();
@@ -204,15 +217,17 @@ sketch.attachFunction = function (processing) {
         
 
         processing.translate(processing.width/2, processing.width/4,zoom-800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+        
         processing.rotateX(rotX);
         processing.rotateY(rotY);
         processing.rotateZ(rotZ);
 
         processing.translate(transX, transY,0); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
 
+
+
         processing.scale(2);
 
-       
 
         //processing.rotateY(roty);
         //processing.rotateX(rotx);
