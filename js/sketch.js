@@ -136,7 +136,7 @@ sketch.attachFunction = function (processing) {
 
 
         if (timeframeMode){
-            timeEpoch = processing.map(processing.millis(),0,1000*segundosTimeframe,timeframeFrom,timeframeTo);
+            timeEpoch = Math.min(timeframeTo,processing.map(processing.millis(),0,1000*segundosTimeframe,timeframeFrom,timeframeTo));
             $("#test").html(timeEpoch);
 
 
@@ -162,7 +162,8 @@ sketch.attachFunction = function (processing) {
                         if (ci.tweet != null) {
                             //var dated = new Date();
                             //var offset = (dated.getTime()/1000)-parseInt(ci.tweet.tweet_timestamp)-3600;
-                            ci.count = 0 //Math.floor(offset)*fr;
+                            var offset = (new Date().getTime() / 1000) - parseInt(ci.tweet.tweet_timestamp) - timeOffset;
+                            ci.count = Math.floor(offset) * fr;
                             if (arrayVenues[ci.venue.id] == null) {
                                 arrayVenues[ci.venue.id] = new Object();
                                 arrayVenues[ci.venue.id].checkins = new Array();
@@ -171,8 +172,8 @@ sketch.attachFunction = function (processing) {
                             arrayVenues[ci.venue.id].checkins[arrayVenues[ci.venue.id].checkins.length] = ci;
                         } else {
                             // alert(ci.checkid);
-                            var offset = (new Date().getTime() / 1000) - parseInt(ci.tweet.tweet_timestamp) - timeOffset;
-                            ci.count = Math.floor(offset) * fr;
+                            ci.count=0;
+                            
                         }
                         //arrayCheckins[arrayCheckins.length] = ci;
                         lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
