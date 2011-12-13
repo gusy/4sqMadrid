@@ -168,6 +168,8 @@ sketch.attachFunction = function (processing) {
                             //var offset = (dated.getTime()/1000)-parseInt(ci.tweet.tweet_timestamp)-3600;
                             var offset = (new Date().getTime() / 1000) - parseInt(ci.tweet.tweet_timestamp) - timeOffset;
                             ci.count = Math.floor(offset) * fr;
+                                                    
+
                             if (arrayVenues[ci.venue.id] == null) {
                                 arrayVenues[ci.venue.id] = new Object();
                                 arrayVenues[ci.venue.id].checkins = new Array();
@@ -175,7 +177,6 @@ sketch.attachFunction = function (processing) {
                             }
                             arrayVenues[ci.venue.id].checkins[arrayVenues[ci.venue.id].checkins.length] = ci;
                         } else {
-                            // alert(ci.checkid);
                             ci.count=0;
                             
                         }
