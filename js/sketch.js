@@ -524,7 +524,7 @@ sketch.attachFunction = function (processing) {
 
         trendingPlaces = listaTrending.sort(ordenarPorNumeroCheckins).slice(0,Math.min(listaTrending.length,10));
         if (trendingPlaces.length>0){
-            //showTrending();
+            nowTrending();
         }
 
 
