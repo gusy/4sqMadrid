@@ -25,6 +25,9 @@ sketch.attachFunction = function (processing) {
     var parisConfig = {"satImage":'ParisSat.jpg',"mapImage":'ParisSat.jpg',
                         "latN":48.909,"latS":48.812,"lngW":2.201,"lngE":2.424,
                         "mapWidth":2000,"mapHeight":1332,"locationId":3};
+    var newYorkConfig = {"satImage":'NewYorkSat.jpg',"mapImage":'NewYorkSat.jpg',
+                        "latN":40.806035,"latS":40.699695,"lngW":-74.02,"lngE":-73.93361,
+                        "mapWidth":1000,"mapHeight":1638,"locationId":4};
 
     var currentConfig;
 
@@ -36,6 +39,8 @@ sketch.attachFunction = function (processing) {
         currentConfig = madridConfig;
     }else if (ciudad == "PAR"){
         currentConfig = parisConfig;
+    }else if (ciudad == "NYC"){
+        currentConfig = newYorkConfig;
     }else{
         currentConfig = madridConfig;
     }
