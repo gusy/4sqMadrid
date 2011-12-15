@@ -1,6 +1,5 @@
 $(document).ready(function() {
 	// Handler for .ready() called.
-	
 	$('#twitter').height($('#canvas').height());
 	
 });
