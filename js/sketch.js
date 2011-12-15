@@ -15,6 +15,27 @@ sketch.attachFunction = function (processing) {
     var tiempoGui = 2;
     
     var listaTrending = new Array();
+    var madridConfig = {"satImage":'MadridSat.jpg',"mapImage":'MadridMap.jpg',
+                        "latN":40.5735,"latS":40.363,"lngW":-3.84,"lngE":-3.495,
+                        "mapWidth":2000,"mapHeight":1600,"locationId":1};
+    var singaporeConfig = {"satImage":'SingaporeSat.jpg',"mapImage":'SingaporeSat.jpg',
+                        "latN":1.48,"latS":1.23,"lngW":103.62,"lngE":104,
+                        "mapWidth":2000,"mapHeight":1316,"locationId":2};
+
+    var currentConfig;
+
+    var ciudad = getParameterByName("city");
+
+    if (ciudad == "SIN"){
+        currentConfig = singaporeConfig;
+        
+    }else if (ciudad == "MAD"){
+        currentConfig = madridConfig;
+    }else{
+        currentConfig = madridConfig;
+    }
+
+
     var umbralTrending = 1;
     var tiempoDisolucionGui = 1;
     var contadorGui = 0;
@@ -90,7 +111,7 @@ sketch.attachFunction = function (processing) {
         transX = 0;
         transY = 0;
         processing.smooth();
-        tex = processing.requestImage("img/MadridSat.jpg");
+        tex = processing.requestImage("img/"+currentConfig.satImage);
 
         processing.textureMode(processing.NORMALIZED);
         processing.fill(55);
@@ -99,7 +120,7 @@ sketch.attachFunction = function (processing) {
 
         if (timeframeMode){
             $.ajax({
-            url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId=1&from='+timeframeFrom+'&to='+timeframeTo,
+            url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId='+currentConfig.locationId+'&from='+timeframeFrom+'&to='+timeframeTo,
             dataType: 'json',
             success: function (data) {
                 checkinPhp = data.checkins;
@@ -130,7 +151,7 @@ sketch.attachFunction = function (processing) {
             
         }else{
         $.ajax({
-            url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId=1&lastCheckin=' + lastCheckinReceived,
+            url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId='+currentConfig.locationId+'&lastCheckin=' + lastCheckinReceived,
             dataType: 'json',
             success: function (data) {
                 checkinPhp = data.checkins;
@@ -191,7 +212,7 @@ sketch.attachFunction = function (processing) {
             if (i % (fr * tRefresh) == 0) {
             updateAllTimes();
             $.ajax({
-                url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId=1&lastCheckin=' + lastCheckinReceived,
+                url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId='+currentConfig.locationId+'&lastCheckin=' + lastCheckinReceived,
                 dataType: 'json',
                 success: function (data) {
                     checkinPhp = data.checkins;
@@ -326,10 +347,10 @@ sketch.attachFunction = function (processing) {
             processing.fill(255);
         }
 
-        processing.vertex(-1000, -800, 0, 0, 0);
-        processing.vertex(1000, -800, 0, 1, 0);
-        processing.vertex(1000, 800, 0, 1, 1);
-        processing.vertex(-1000, 800, 0, 0, 1);
+        processing.vertex(-currentConfig.mapWidth/2, -currentConfig.mapHeight/2, 0, 0, 0);
+        processing.vertex(currentConfig.mapWidth/2, -currentConfig.mapHeight/2, 0, 1, 0);
+        processing.vertex(currentConfig.mapWidth/2, currentConfig.mapHeight/2, 0, 1, 1);
+        processing.vertex(-currentConfig.mapWidth/2, currentConfig.mapHeight/2, 0, 0, 1);
         processing.endShape();
 
         /* Madrid
@@ -370,7 +391,7 @@ sketch.attachFunction = function (processing) {
                             val.count = (timeEpoch-val.dateAppear)*fr;
                             if (val.count < tiempoCheckin * fr){
                                 if (!val.timelined){
-                                    showTweet(val,true);
+                                    showTweet(val,false);
                                     val.timelined=true;
                                 }
                                 
@@ -419,7 +440,8 @@ sketch.attachFunction = function (processing) {
                             processing.fill(100);
                         }
                     }
-                    processing.translate(processing.map(value.venue.location.lng, -3.84, -3.495, -1000, 1000), processing.map(value.venue.location.lat, 40.363, 40.5735, 800, -800), 0);
+                    processing.translate(processing.map(value.venue.location.lng, currentConfig.lngE, currentConfig.lngW, -currentConfig.mapWidth/2, currentConfig.mapWidth/2), 
+                                         processing.map(value.venue.location.lat, currentConfig.latS, currentConfig.latN, currentConfig.mapHeight/2, -currentConfig.mapHeight/2), 0);
                     if (informacion.display && informacion.venue == key) {
                         informacion.x = processing.screenX(0, 0, value.altura);
                         informacion.y = processing.screenY(0, 0, value.altura);
@@ -582,10 +604,10 @@ sketch.attachFunction = function (processing) {
 
     processing.cambiaMapa = function() {
        if (satellite){
-          tex = processing.requestImage("img/MadridMap.jpg");
+          tex = processing.requestImage("img/"+currentConfig.mapImage);
           satellite=false;
        }else{
-          tex = processing.requestImage("img/MadridSat.jpg");
+          tex = processing.requestImage("img/"+currentConfig.satImage);
           satellite=true;
        }
     };
