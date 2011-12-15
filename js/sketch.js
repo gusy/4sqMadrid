@@ -31,11 +31,10 @@ sketch.attachFunction = function (processing) {
     var ciudad = getParameterByName("city");
 
     if (ciudad == "SIN"){
-        currentConfig = singaporeConfig;
-        
+        currentConfig = singaporeConfig;        
     }else if (ciudad == "MAD"){
         currentConfig = madridConfig;
-    }if (ciudad == "PAR"){
+    }else if (ciudad == "PAR"){
         currentConfig = parisConfig;
     }else{
         currentConfig = madridConfig;
@@ -524,7 +523,9 @@ sketch.attachFunction = function (processing) {
         //processing.image(playIcon,150,150);
 
         trendingPlaces = listaTrending.sort(ordenarPorNumeroCheckins).slice(0,Math.min(listaTrending.length,10));
-
+        if (trendingPlaces.length>0){
+            //showTrending();
+        }
 
 
         i = (i + 1) % (fr * segundosPorVuelta);
