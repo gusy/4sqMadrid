@@ -22,16 +22,20 @@ sketch.attachFunction = function (processing) {
     var singaporeConfig = {"satImage":'SingaporeSat.jpg',"mapImage":'SingaporeSat.jpg',
                         "latN":1.48,"latS":1.23,"lngW":103.62,"lngE":104,
                         "mapWidth":2000,"mapHeight":1316,"locationId":2};
+    var parisConfig = {"satImage":'ParisSat.jpg',"mapImage":'ParisSat.jpg',
+                        "latN":48.909,"latS":48.812,"lngW":2.201,"lngE":2.424,
+                        "mapWidth":2000,"mapHeight":1332,"locationId":3};
 
     var currentConfig;
 
     var ciudad = getParameterByName("city");
 
     if (ciudad == "SIN"){
-        currentConfig = singaporeConfig;
-        
+        currentConfig = singaporeConfig;        
     }else if (ciudad == "MAD"){
         currentConfig = madridConfig;
+    }else if (ciudad == "PAR"){
+        currentConfig = parisConfig;
     }else{
         currentConfig = madridConfig;
     }
@@ -519,7 +523,9 @@ sketch.attachFunction = function (processing) {
         //processing.image(playIcon,150,150);
 
         trendingPlaces = listaTrending.sort(ordenarPorNumeroCheckins).slice(0,Math.min(listaTrending.length,10));
-
+        if (trendingPlaces.length>0){
+            //showTrending();
+        }
 
 
         i = (i + 1) % (fr * segundosPorVuelta);
