@@ -1,6 +1,5 @@
 $(document).ready(function() {
 	// Handler for .ready() called.
-	
 	$('#twitter').height($('#canvas').height());
 	
 });
@@ -19,8 +18,12 @@ function showTweet(jsonstatus,animation){
     }else{
     	$tweet.hide().prependTo('#twitter').show().css({backgroundColor:'fff'});
     }
-
-}
+    var size=$("#twitter").children().length;
+  
+    if(size>40){	
+   	 $("#twitter div.twitterSearchTweet").last().remove();
+     }
+ }
 function getDefaults(){
 var optdefaults = {
 		anchors: true,				// true or false (enable embedded links in tweets)
