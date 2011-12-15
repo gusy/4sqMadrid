@@ -3,8 +3,17 @@ $(document).ready(function() {
 	$('#twitter').height($('#canvas').height());
 	
 });
+var lastPaintedTime=0;
+var lastWasPainted=true;
 
 function showTweet(jsonstatus,animation){
+	if(timeframeMode && new Date().getTime()-lastPaintedTime<300){
+		lastWasPainted=false;
+		return(0);
+	}
+	if(!lastWasPainted){
+		$("#twitter").prepend('<div>....</div>');
+	}
 	var status=jsonstatus.tweet;
 	var opts=getDefaults()
 	var $tweet=$(formatTweet(status,opts));
@@ -19,7 +28,8 @@ function showTweet(jsonstatus,animation){
     	$tweet.hide().prependTo('#twitter').show().css({backgroundColor:'fff'});
     }
     var size=$("#twitter").children().length;
-  
+    lastPaintedTime=new Date().getTime();
+    lastWasPainted=true;
     if(size>40){	
    	 $("#twitter div.twitterSearchTweet").last().remove();
      }
