@@ -30,7 +30,15 @@ body,div{
 #timeFrameValue{
 	display:None;
 }
-
+#timeFrameButton{
+	background-image:url('../img/timelapse.png');
+	width:128px;
+	height:128px;
+	float:left;
+}
+#menu{
+margin-top:50px;
+}
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header {margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }
