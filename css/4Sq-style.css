@@ -31,13 +31,13 @@ body,div{
 	display:None;
 }
 #timeFrameButton{
-	background-image:url('../img/timelapse.png');
-	width:128px;
-	height:128px;
+	background-image:url('../img/menu.png');
+	width:64px;
+	height:64px;
 	float:left;
 }
 #menu{
-	margin-top:50px;
+	margin-top:15px;
 }
 #canvas{
 }
