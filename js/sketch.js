@@ -80,7 +80,10 @@ sketch.attachFunction = function (processing) {
 
         processing.textMode(processing.SCREEN);
         processing.frameRate(fr);
-        sketch.imageCache.add("img/play.png");
+        sketch.imageCache.add("img/play2.png");
+        sketch.imageCache.add("img/pause2.png");
+        sketch.imageCache.add("img/mapSat.png");
+        sketch.imageCache.add("img/mapStreet.png");
         processing.size(1280, 720, processing.OPENGL);
         //processing.hint(processing.ENABLE_OPENGL_4X_SMOOTH);
 
@@ -380,24 +383,29 @@ sketch.attachFunction = function (processing) {
         processing.hint(processing.DISABLE_DEPTH_TEST);        
 
         if(contadorGui<tiempoGui*fr){
-            processing.fill(240,processing.map(contadorGui,(tiempoGui-tiempoDisolucionGui)*fr,tiempoGui*fr,100,0));
-            processing.rect(0,0,50,50);
-            processing.fill(0);
-            processing.rect(25,25,10,10);
-            processing.fill(240,processing.map(contadorGui,(tiempoGui-tiempoDisolucionGui)*fr,tiempoGui*fr,100,0));
-            processing.rect(processing.width-50,0,50,50);
-            playIcon = processing.loadImage("img/play.png");
+			playIcon = processing.loadImage("img/play2.png");
+            pauseIcon = processing.loadImage("img/pause2.png");
+            satIcon = processing.loadImage("img/mapSat.png");
+            streetIcon = processing.loadImage("img/mapStreet.png");          
+            processing.fill(255,processing.map(contadorGui,(tiempoGui-tiempoDisolucionGui)*fr,tiempoGui*fr,100,0));
+            if((processing.resizedMouseX()<70&&processing.resizedMouseY()<70)){	
+				contadorGui=0;
+			}			
+            if(satellite){
+				processing.image(streetIcon,0,5,70,70);
+			}else{
+				processing.image(satIcon,0,5,70,70);
+			}
+			processing.fill(255,processing.map(contadorGui,(tiempoGui-tiempoDisolucionGui)*fr,tiempoGui*fr,100,0));
+			if((processing.resizedMouseX()>processing.width-60&&processing.resizedMouseY()<60)){
+			    contadorGui=0;
+			}
             if(rotando){
-                processing.fill(0);
-              processing.rect(processing.width-40,10,10,30);
-              processing.rect(processing.width-20,10,10,30);
-
-            }else{
-                        
-
-              //processing.triangle(processing.width-40,10,processing.width-40,40,processing.width-10,25);
-              processing.image(playIcon,processing.width-45,5,40,40);
+				processing.image(pauseIcon,processing.width-65,5,60,60);			
+            }else{      
+              processing.image(playIcon,processing.width-65,5,60,60);
             }
+            
          }        
         if (informacion.display) {
             processing.translate(informacion.x, informacion.y, 0);
@@ -459,6 +467,7 @@ sketch.attachFunction = function (processing) {
             "x": processing.resizedMouseX(),
             "y": processing.resizedMouseY()
         };
+        
         $.each(arrayVenues, function (key, value) {
             if (value.v1 != null && value.v2 != null && value.v3 != null) {
                 var mouseSobre = false;
