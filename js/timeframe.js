@@ -1,11 +1,9 @@
 $(document).ready(function() {
 	$('#from').datetimepicker({
-		minDate: new Date(2011, 12, 20, 8, 30),
-		maxDate: new Date(2011, 12, 27, 17, 30)
+		minDate: new Date(2011, 11, 1, 8, 30), maxDate: new Date(2011, 11, 31, 17, 30)
 		});
 	$('#to').datetimepicker({
-		minDate: new Date(2011, 12, 20, 8, 30),
-		maxDate: new Date(2011, 12, 27, 17, 30)
+		minDate: new Date(2011, 11, 1, 8, 30), maxDate: new Date(2011, 11, 31, 17, 30)
 		});
 });
 
