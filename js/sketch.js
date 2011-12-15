@@ -440,7 +440,7 @@ sketch.attachFunction = function (processing) {
                             processing.fill(100);
                         }
                     }
-                    processing.translate(processing.map(value.venue.location.lng, currentConfig.lngE, currentConfig.lngW, -currentConfig.mapWidth/2, currentConfig.mapWidth/2), 
+                    processing.translate(processing.map(value.venue.location.lng, currentConfig.lngW, currentConfig.lngE, -currentConfig.mapWidth/2, currentConfig.mapWidth/2), 
                                          processing.map(value.venue.location.lat, currentConfig.latS, currentConfig.latN, currentConfig.mapHeight/2, -currentConfig.mapHeight/2), 0);
                     if (informacion.display && informacion.venue == key) {
                         informacion.x = processing.screenX(0, 0, value.altura);
