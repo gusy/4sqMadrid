@@ -9,7 +9,7 @@ body,div{
 #canvas{
 
     border-color: #aaaaaa;
-      border-width: 1px;
+    border-width: 1px;
     border-style: solid;
     width:100%;
 }
@@ -37,7 +37,9 @@ body,div{
 	float:left;
 }
 #menu{
-margin-top:50px;
+	margin-top:50px;
+}
+#canvas{
 }
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header {margin-bottom: 8px; }
