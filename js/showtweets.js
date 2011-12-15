@@ -1,10 +1,32 @@
 $(document).ready(function() {
 	// Handler for .ready() called.
 	$('#twitter').height($('#canvas').height());
-	
+	nowTrending();	
 });
+var lastPaintedTime=0;
+var lastWasPainted=true;
+function nowTrending(){
+var str="";
+$.each(trendingPlaces,function(index, place) { 
+      if(index<3){
+	   str+=place.checkins[0].venue.name;
+	   str+="("+place.activeCheckins+") --";
+      }
+
+});
+$("#trending").html(str);
+
+}
 
 function showTweet(jsonstatus,animation){
+	if(timeframeMode && new Date().getTime()-lastPaintedTime<300){
+		lastWasPainted=false;
+		return(0);
+	}
+	if(!lastWasPainted){
+		$("#twitter").prepend('<div>....</div>');
+	}
+	nowTrending();
 	var status=jsonstatus.tweet;
 	var opts=getDefaults()
 	var $tweet=$(formatTweet(status,opts));
@@ -18,8 +40,9 @@ function showTweet(jsonstatus,animation){
     }else{
     	$tweet.hide().prependTo('#twitter').show().css({backgroundColor:'fff'});
     }
-    var size=$("#twitter").children().length;
-  
+    var size=$("#twitter").children().length
+    lastPaintedTime=new Date().getTime();
+    lastWasPainted=true;
     if(size>40){	
    	 $("#twitter div.twitterSearchTweet").last().remove();
      }
