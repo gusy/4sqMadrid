@@ -407,8 +407,9 @@ sketch.attachFunction = function (processing) {
                         val.count++;
                     }
                 });
-                if (value.checkins.length>umbralTrending){
-                    listaTrending[iter++]=value;
+                if (activeCheckins>umbralTrending){
+                    listaTrending[iter]=value;
+                    listaTrending[iter++].activeCheckins = activeCheckins;
                 }
 
 
@@ -741,9 +742,9 @@ function xProd(p, v1, v2) {
 }
 
 function ordenarPorNumeroCheckins(a,b){
-    if(a.checkins.length<b.checkins.length){
+    if(a.activeCheckins<b.activeCheckins){
         return 1;
-    }if (a.checkins.length>b.checkins.length){
+    }if (b.activeCheckins.length>b.activeCheckins){
         return -1;
     }return 0;
 }
