@@ -95,6 +95,40 @@ sketch.attachFunction = function (processing) {
         processing.textureMode(processing.NORMALIZED);
         processing.fill(55);
         processing.stroke(processing.color(44, 48, 32));
+
+
+        if (timeframeMode){
+            $.ajax({
+            url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId=1&from='+timeframeFrom+'&to='+timeframeTo,
+            dataType: 'json',
+            success: function (data) {
+                checkinPhp = data.checkins;
+
+
+               $.each(checkinPhp, function (index, value) {
+                    var ci = value;
+              
+                    if (ci.tweet != null) {
+
+                        ci.count = 999999;
+                        ci.dateAppear = parseInt(ci.tweet.tweet_timestamp);
+                        if (arrayVenues[ci.venue.id] == null) {
+                            arrayVenues[ci.venue.id] = new Object();
+                            arrayVenues[ci.venue.id].checkins = new Array();
+                            arrayVenues[ci.venue.id].venue = ci.venue;
+                        }
+                        arrayVenues[ci.venue.id].checkins[arrayVenues[ci.venue.id].checkins.length] = ci;
+                    } else {
+                        // alert(ci.checkid);
+                        ci.count = 0;
+                    }
+                    //arrayCheckins[arrayCheckins.length] = ci;
+                    lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
+                });
+            }
+        });
+            
+        }else{
         $.ajax({
             url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId=1&lastCheckin=' + lastCheckinReceived,
             dataType: 'json',
@@ -128,7 +162,7 @@ sketch.attachFunction = function (processing) {
                     lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
                 });
             }
-        });
+        });}
         processing.noStroke();
 
 
@@ -136,6 +170,12 @@ sketch.attachFunction = function (processing) {
 
 
     processing.draw = function () {
+
+
+        processing.hint(processing.ENABLE_DEPTH_TEST);
+        processing.pushMatrix();
+        processing.fill(55);
+        processing.background(0);
 
 
         if (timeframeMode){
@@ -147,15 +187,8 @@ sketch.attachFunction = function (processing) {
             $("#test").html(date.toString().substring(0,date.toString().indexOf('GMT')));
 
 
-        }
-
-
-        processing.hint(processing.ENABLE_DEPTH_TEST);
-        processing.pushMatrix();
-        processing.fill(55);
-        processing.background(0);
-        
-        if (i % (fr * tRefresh) == 0) {
+        }else{
+            if (i % (fr * tRefresh) == 0) {
             updateAllTimes();
             $.ajax({
                 url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId=1&lastCheckin=' + lastCheckinReceived,
@@ -189,6 +222,13 @@ sketch.attachFunction = function (processing) {
 
                 }
             });
+
+        }
+    }
+
+
+        /*
+        
             listaTrending = listaTrending.sort(ordenarPorNumeroCheckins)
             var query ="";
             var asd = 0;
@@ -197,7 +237,7 @@ sketch.attachFunction = function (processing) {
                 if (asd<9){
                     query += "-";
                 }
-            }/*
+            }
 
             $.ajax({
                 url: 'http://pregel.mat.upm.es/get-venue.php?locationIds=' + query,
@@ -213,7 +253,7 @@ sketch.attachFunction = function (processing) {
    arrayCheckins[arrayCheckins.length] = checkinTest[iArray];
    iArray = (iArray+1)%checkinTest.length; 
  */
-        }
+        
         processing.ambientLight(242, 242, 240);
         //processing.lightSpecular(204, 204, 204); 
         //processing.directionalLight(202, 202, 202, 0, -1, -1);
@@ -307,74 +347,89 @@ sketch.attachFunction = function (processing) {
 
         //for ( indi=0; indi<arrayCheckins.length;indi++){
         $.each(arrayVenues, function (key, value) {
-            var minCount = 999999;
-            var activeCheckins = 0;
-            var totalCheckins = 0;
-            if (value.checkins.length>umbralTrending){
-                listaTrending[iter++]=value;
-            }
-            $.each(value.checkins, function (index, val) {
-                
-                if (val != null && val.count < tiempoCheckin * fr) {
-                    minCount = Math.min(minCount, val.count);
-                    activeCheckins++;
-                    val.count++;
+                var minCount = 999999;
+                var activeCheckins = 0;
+                var totalCheckins = 0;
+                if (value.checkins.length>umbralTrending){
+                    listaTrending[iter++]=value;
                 }
-            });
-            if (activeCheckins>0){
-                
-                if (value.altura == null){
-                    value.altura = 0;
-                }
-                value.alturaObjetivo= alturaCheckin*(Math.log(activeCheckins+1)/Math.log(2));
-                if (value.altura<value.alturaObjetivo){
-                    value.altura=Math.min(value.altura+ritmoCambioAltura,value.alturaObjetivo);
-                }else{
-                    value.altura=Math.max(value.altura-ritmoCambioAltura,value.alturaObjetivo);
-                }
-                processing.pushMatrix();
-                    var red;
-                    var green;
-                    var blue;
-                if (minCount < (tiempoFlashCheckin * fr)) {
-                    green = processing.map(minCount, 0, tiempoFlashCheckin * fr, 255,100);
-                    red = processing.map(minCount, 0, tiempoFlashCheckin * fr, 0, 255);
-                    blue = processing.map(minCount, 0, tiempoFlashCheckin * fr, 0, 50);
-                } else {
-                    green = processing.map(minCount, tiempoFlashCheckin, tiempoCheckin * fr, 100, 100);
-                    red = processing.map(minCount, tiempoFlashCheckin, tiempoCheckin * fr, 255, 100);
-                    blue = processing.map(minCount, tiempoFlashCheckin, tiempoCheckin * fr, 50, 255);
-                }
-                processing.shininess(15.0);
-                processing.fill(red, green, blue, 180);
-                if (value.mouseSobre) {
-                    processing.fill(240, 130);
-                    if (pulsado) {
-                        informacion.display = true;
-                        informacion.venue = key;
-                        processing.fill(100);
-                    }
-                }
-                processing.translate(processing.map(value.venue.location.lng, -3.84, -3.495, -1000, 1000), processing.map(value.venue.location.lat, 40.363, 40.5735, 800, -800), 0);
-                if (informacion.display && informacion.venue == key) {
-                    informacion.x = processing.screenX(0, 0, value.altura);
-                    informacion.y = processing.screenY(0, 0, value.altura);
-                    informacion.z = processing.screenZ(0, 0, value.altura);
-                }       
-                //  processing.box(ladoCheckin,ladoCheckin,altura);
-                ladoCheckin = 7*Math.log(15/processing.map(zoom+300,minZoom,maxZoom,0.5,7));
-                processing.dibujaCheckin(ladoCheckin, value.altura, value);
-                value.active = true;
-                /*if (activeCheckins > 1) {
-                    processing.translate(0, 0, 1 + Math.ceil(alturaCheckinFrio / 2));
-                    processing.fill(240, 175, 0, 40);
 
-                    processing.box(Math.min(processing.map(activeCheckins, 1, 2, ladoCheckin, ladoCheckin * 2), 350), Math.min(processing.map(activeCheckins, 1, 2, ladoCheckin, ladoCheckin * 2), 250), alturaCheckinFrio);
-                }*/
-                processing.popMatrix();
-            } else {
-                value.active = false;
-            }
+                $.each(value.checkins, function (index, val) {
+                    if (timeframeMode){
+                        if(val != null && val.dateAppear < timeEpoch){
+                            val.count = (timeEpoch-val.dateAppear)*fr;
+                            if (val.count < tiempoCheckin * fr){
+                                if (!val.timelined){
+                                    showTweet(val,true);
+                                    val.timelined=true;
+                                }
+                                
+                                activeCheckins++;
+                            }
+                            minCount = Math.min(minCount, val.count);
+                        }                        
+
+                    }else if (val != null && val.count < tiempoCheckin * fr) {
+                        minCount = Math.min(minCount, val.count);
+                        activeCheckins++;
+                        val.count++;
+                    }
+                });
+                if (activeCheckins>0||value.altura!=null&&value.altura>0){
+                    
+                    if (value.altura == null){
+                        value.altura = 0;
+                    }
+                    value.alturaObjetivo= alturaCheckin*(Math.log(activeCheckins+1)/Math.log(2));
+                    if (value.altura<value.alturaObjetivo){
+                        value.altura=Math.min(value.altura+ritmoCambioAltura,value.alturaObjetivo);
+                    }else{
+                        value.altura=Math.max(value.altura-ritmoCambioAltura,value.alturaObjetivo);
+                    }
+                    processing.pushMatrix();
+                        var red;
+                        var green;
+                        var blue;
+                    if (minCount < (tiempoFlashCheckin * fr)) {
+                        green = processing.map(minCount, 0, tiempoFlashCheckin * fr, 255,100);
+                        red = processing.map(minCount, 0, tiempoFlashCheckin * fr, 0, 255);
+                        blue = processing.map(minCount, 0, tiempoFlashCheckin * fr, 0, 50);
+                    } else {
+                        green = processing.map(minCount, tiempoFlashCheckin, tiempoCheckin * fr, 100, 100);
+                        red = processing.map(minCount, tiempoFlashCheckin, tiempoCheckin * fr, 255, 100);
+                        blue = processing.map(minCount, tiempoFlashCheckin, tiempoCheckin * fr, 50, 255);
+                    }
+                    processing.shininess(15.0);
+                    processing.fill(red, green, blue, 180);
+                    if (value.mouseSobre) {
+                        processing.fill(240, 130);
+                        if (pulsado) {
+                            informacion.display = true;
+                            informacion.venue = key;
+                            processing.fill(100);
+                        }
+                    }
+                    processing.translate(processing.map(value.venue.location.lng, -3.84, -3.495, -1000, 1000), processing.map(value.venue.location.lat, 40.363, 40.5735, 800, -800), 0);
+                    if (informacion.display && informacion.venue == key) {
+                        informacion.x = processing.screenX(0, 0, value.altura);
+                        informacion.y = processing.screenY(0, 0, value.altura);
+                        informacion.z = processing.screenZ(0, 0, value.altura);
+                    }       
+                    //  processing.box(ladoCheckin,ladoCheckin,altura);
+                    ladoCheckin = 7*Math.log(15/processing.map(zoom+300,minZoom,maxZoom,0.5,7));
+                    processing.dibujaCheckin(ladoCheckin, value.altura, value);
+                    value.active = true;
+                    /*if (activeCheckins > 1) {
+                        processing.translate(0, 0, 1 + Math.ceil(alturaCheckinFrio / 2));
+                        processing.fill(240, 175, 0, 40);
+
+                        processing.box(Math.min(processing.map(activeCheckins, 1, 2, ladoCheckin, ladoCheckin * 2), 350), Math.min(processing.map(activeCheckins, 1, 2, ladoCheckin, ladoCheckin * 2), 250), alturaCheckinFrio);
+                    }*/
+                    processing.popMatrix();
+                } else {
+                    value.active = false;
+                }
+                
         });
 
         /*Capa en "2D" para información y GUI */
