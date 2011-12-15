@@ -9,12 +9,13 @@ var maxZoom = 800;
 var timeOffset = 0;
 var timeframeMode = false;
 var timeEpoch = 0;
+var trendingPlaces = new Array();
+
 
 sketch.attachFunction = function (processing) {
     /* @pjs globalKeyEvents="true"; */
     var tiempoGui = 2;
     
-    var listaTrending = new Array();
     var madridConfig = {"satImage":'MadridSat.jpg',"mapImage":'MadridMap.jpg',
                         "latN":40.5735,"latS":40.363,"lngW":-3.84,"lngE":-3.495,
                         "mapWidth":2000,"mapHeight":1600,"locationId":1};
@@ -375,15 +376,14 @@ sketch.attachFunction = function (processing) {
 
 
         var iter=0;
+        listaTrending = new Array();
 
         //for ( indi=0; indi<arrayCheckins.length;indi++){
         $.each(arrayVenues, function (key, value) {
                 var minCount = 999999;
                 var activeCheckins = 0;
                 var totalCheckins = 0;
-                if (value.checkins.length>umbralTrending){
-                    listaTrending[iter++]=value;
-                }
+                
 
                 $.each(value.checkins, function (index, val) {
                     if (timeframeMode){
@@ -407,6 +407,11 @@ sketch.attachFunction = function (processing) {
                         val.count++;
                     }
                 });
+                if (value.checkins.length>umbralTrending){
+                    listaTrending[iter++]=value;
+                }
+
+
                 if (activeCheckins>0||value.altura!=null&&value.altura>0){
                     
                     if (value.altura == null){
@@ -512,7 +517,9 @@ sketch.attachFunction = function (processing) {
         //processing.fill(255,processing.map(processing.millis()%1000,0,1000,255,0));
         //processing.image(playIcon,150,150);
 
-        listaTrending = listaTrending.sort(ordenarPorNumeroCheckins);
+        trendingPlaces = listaTrending.sort(ordenarPorNumeroCheckins).slice(0,Math.min(listaTrending.length,10));
+
+
 
         i = (i + 1) % (fr * segundosPorVuelta);
 
