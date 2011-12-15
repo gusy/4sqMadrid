@@ -19,13 +19,13 @@ sketch.attachFunction = function (processing) {
     var madridConfig = {"satImage":'MadridSat.jpg',"mapImage":'MadridMap.jpg',
                         "latN":40.5735,"latS":40.363,"lngW":-3.84,"lngE":-3.495,
                         "mapWidth":2000,"mapHeight":1600,"locationId":1};
-    var singaporeConfig = {"satImage":'SingaporeSat.jpg',"mapImage":'SingaporeSat.jpg',
+    var singaporeConfig = {"satImage":'SingaporeSat.jpg',"mapImage":'SingaporeMap.jpg',
                         "latN":1.48,"latS":1.23,"lngW":103.62,"lngE":104,
                         "mapWidth":2000,"mapHeight":1316,"locationId":2};
-    var parisConfig = {"satImage":'ParisSat.jpg',"mapImage":'ParisSat.jpg',
+    var parisConfig = {"satImage":'ParisSat.jpg',"mapImage":'ParisMap.jpg',
                         "latN":48.909,"latS":48.812,"lngW":2.201,"lngE":2.424,
                         "mapWidth":2000,"mapHeight":1332,"locationId":3};
-    var newYorkConfig = {"satImage":'NewYorkSat.jpg',"mapImage":'NewYorkSat.jpg',
+    var newYorkConfig = {"satImage":'NewYorkSat.jpg',"mapImage":'NewYorkMap.jpg',
                         "latN":40.806035,"latS":40.699695,"lngW":-74.02,"lngE":-73.93361,
                         "mapWidth":1000,"mapHeight":1638,"locationId":4};
 
