@@ -14,13 +14,25 @@ $(document).ready(function() {
 });
 
 function conversion(){
-	var from = new Date(document.getElementById("from").value);
-    var to = new Date(document.getElementById("to").value);
-    var fromEpoch = Math.round(from.getTime()/1000);
-    var toEpoch = Math.round(to.getTime()/1000);
+	
+	var fromString = document.getElementById("from").value
+	var toString = document.getElementById("to").value
+	if (fromString != "" && toEpoch != ""){
+		var from = new Date(fromString);
+		var to = new Date(toString);
+		
+		var fromEpoch = Math.round(from.getTime()/1000);
+		var toEpoch = Math.round(to.getTime()/1000);
+		document.timeFrameData.from.value = fromEpoch;
+		document.timeFrameData.to.value = toEpoch;
+		document.timeframeData.timeframe=true;
+	   
+	}
+	
+    
+    
 
-    document.timeFrameData.from.value = fromEpoch;
-    document.timeFrameData.to.value = toEpoch;
+    
     
 }
 

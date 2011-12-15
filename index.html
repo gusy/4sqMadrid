@@ -38,10 +38,16 @@
         <div id ="menu">
 			<div id ="timeframeSelection">
 				<form id = "timeFrameData" name ="timeFrameData" method="get" onsubmit="conversion();">
-					<input id ="timeFrameValue" type ="text"  name = "timeframe" value = "true" >
+					<input id ="timeFrameValue" type ="text"  name = "timeframe" value = "false" >
 					<input type="text" value="" id="from" name="from">
 					<input type="text" value="" id="to" name="to">
-					<input type= "submit" value = "Iniciar TimeFrame"/>
+					<select name = "city" >
+						<option value="MAD"> Madrid</option>
+						<option value="PAR"> Paris</option>
+						<option value="SIN"> Singapur</option>
+						<option value="NYC"> New York</option>
+					</select>
+					<input type= "submit" value = "Submit"/>
 				</form>
 			</div>
 		
