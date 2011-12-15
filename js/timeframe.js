@@ -5,6 +5,7 @@ $(document).ready(function() {
 	$('#to').datetimepicker({
 		minDate: new Date(2011, 11, 1, 8, 30), maxDate: new Date(2011, 11, 31, 17, 30)
 		});
+	//$('#menu').hide();
 });
 
 function conversion(){
@@ -18,3 +19,8 @@ function conversion(){
     
 }
 
+$('#test').click(function() {
+  $('#menu').slideDown('slow', function() {
+    // Animation complete.
+  });
+});
