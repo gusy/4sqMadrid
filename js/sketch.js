@@ -331,6 +331,16 @@ sketch.attachFunction = function (processing) {
         processing.vertex(1000, 800, 0, 1, 1);
         processing.vertex(-1000, 800, 0, 0, 1);
         processing.endShape();
+
+        /* Madrid
+        processing.vertex(-1000, -658, 0, 0, 0);
+        processing.vertex(1000, -658, 0, 1, 0);
+        processing.vertex(1000, 658, 0, 1, 1);
+        processing.vertex(-1000, 658, 0, 0, 1);
+        processing.endShape();
+        */
+
+
 /* Mostrar Ejes X,Y,Z
         processing.stroke(255);
 
