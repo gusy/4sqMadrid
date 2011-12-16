@@ -755,7 +755,7 @@ function xProd(p, v1, v2) {
 function ordenarPorNumeroCheckins(a,b){
     if(a.activeCheckins<b.activeCheckins){
         return 1;
-    }if (b.activeCheckins.length>b.activeCheckins){
+    }if (a.activeCheckins>b.activeCheckins){
         return -1;
     }return 0;
 }
