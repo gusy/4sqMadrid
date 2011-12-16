@@ -63,6 +63,48 @@ border:1px #000;
 	margin-top:15px;
 }
 
+
+#trending{
+	background-image:url('../img/twitterPaleta.png');
+	height:26px;
+	text-shadow: 1px 1px #444,-1px -1px #000;
+	color: #ccc;
+	padding-top:0px;
+}
+
+#trendingList{
+	margin:0;
+	padding:0;
+	height: 26px;
+}
+
+#trendingList .trendingPlace{
+	float:left;
+	margin-right:8px;
+	margin-left:2px;
+	margin-left:3px;
+	padding-right:5px;
+	padding-left:2px;
+	border-right-color: #aaaaaa;
+    border-right-width: 2px;
+    border-right-style: solid;
+    padding-top:4px;
+    padding-bottom:4px;
+
+
+}
+
+#trendingList .trendingCount{
+	margin-left:3px;
+	padding-right:2px;
+	padding-left:2px;
+	border-color: #aaaaaa;
+    border-width: 2px;
+    border-radius: 5px;
+    border-style: solid;
+}
+
+
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header {margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }

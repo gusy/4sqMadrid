@@ -78,6 +78,8 @@ sketch.attachFunction = function (processing) {
     var arrayCheckins = new Array();
     var arrayVenues = new Object();
 
+    var lastNowTrendingMillis = -500;
+
 
     var informacion = {
         "display": false
@@ -530,7 +532,11 @@ sketch.attachFunction = function (processing) {
 
         trendingPlaces = listaTrending.sort(ordenarPorNumeroCheckins).slice(0,Math.min(listaTrending.length,10));
         if (trendingPlaces.length>0){
-            nowTrending();
+            if (processing.millis()-lastNowTrendingMillis>500){
+                nowTrending();
+                lastNowTrendingMillis = processing.millis();
+            }
+            
         }
 
 

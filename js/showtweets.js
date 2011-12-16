@@ -7,14 +7,16 @@ $(document).ready(function() {
 var lastPaintedTime=0;
 var lastWasPainted=true;
 function nowTrending(){
-var str="";
+var str="<ul id='trendingList'>";
 $.each(trendingPlaces,function(index, place) { 
       if(index<3){
-	   str+=place.checkins[0].venue.name;
-	   str+="("+place.activeCheckins+") --";
+	   str+="<li class='trendingPlace'><span class='trendingName'>"+place.checkins[0].venue.name+"</span>";
+	   str+="<span class='trendingCount'>"+place.activeCheckins+"</span></li>";
       }
 
+
 });
+str+="</ul>";
 $("#trending").html(str);
 
 }
@@ -27,7 +29,6 @@ function showTweet(jsonstatus,animation){
 	if(!lastWasPainted){
 		$("#twitter").prepend('<div>....</div>');
 	}
-	nowTrending();
 	var status=jsonstatus.tweet;
 	var opts=getDefaults()
 	var $tweet=$(formatTweet(status,opts));
