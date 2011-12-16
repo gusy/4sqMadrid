@@ -1,3 +1,5 @@
+var menuShown = false;
+
 $(document).ready(function() {
 	$('#from').datetimepicker({
 		minDate: new Date(2011, 11, 1, 8, 30), maxDate: new Date(2011, 11, 31, 17, 30)
@@ -7,9 +9,18 @@ $(document).ready(function() {
 		});
 	$('#menu').hide();
 	$('#timeFrameButton').click(function() {
-		$('#menu').slideDown('slow', function() {
+		if (!menuShown){
+			$('#menu').slideDown('slow', function() {
 		// Animation complete.
 		});
+			menuShown=true;
+		}else{
+			$('#menu').slideUp('slow', function() {
+		// Animation complete.
+		});
+			menuShown=false;
+		}
+		
 	});
 });
 
