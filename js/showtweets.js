@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	// Handler for .ready() called.
-	$('#twitter').height($('#canvas').height());
+	$('#twitterCanvas').height($('#canvas').height()+20);
+	$('#twitter').height($('#twitterCanvas').height()-50);
 	nowTrending();	
 });
 var lastPaintedTime=0;

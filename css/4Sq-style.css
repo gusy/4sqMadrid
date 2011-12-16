@@ -17,16 +17,39 @@ body,div{
     margin-left:50px;
     margin-right:370px;
 }
-#twitter{
+#twitterCanvas{
     width:300px;
-    height:100%;
-    border:10px solid #9AE4E8;
-    border-radius: 10px 10px 10px 10px;
+    /*border-radius: 10px 10px 10px 10px;*/
     float:right;
     margin-left:-350px;
-    overflow:auto;
     background-color:#fff;
-}    
+}
+#twitterHeader{
+	background-image:url('../img/twitterPaleta.png');
+	height: 40px;
+}
+#twitterlogo{
+	background-image:url('../img/twitter_logo_top_bar.png');
+	height:20px;
+	width:105px;
+	position:absolute;
+	margin-top:10px;
+	margin-left:97px;
+	margin-right:98px;
+	
+}
+
+#twitter{
+	overflow:auto;
+	height:100%;
+	margin:10px;
+	margin-top:0px;
+    border-top:0px;
+    background-color:#fff;
+} 
+.twitterSearchTweet{
+border:1px #000;
+}
 #timeFrameValue{
 	display:None;
 }
@@ -39,8 +62,7 @@ body,div{
 #menu{
 	margin-top:15px;
 }
-#canvas{
-}
+
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header {margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }
