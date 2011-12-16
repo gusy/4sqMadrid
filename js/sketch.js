@@ -104,6 +104,7 @@ sketch.attachFunction = function (processing) {
                 timeframeFrom=parseInt(getParameterByName("from"));
                 timeframeTo=parseInt(getParameterByName("to"));
                 timeframeMode=true;
+                ritmoCambioAltura *= 5;
                 timeEpoch = processing.map(processing.millis(),0,1000*segundosTimeframe,timeframeFrom,timeframeTo);
             }
         }
