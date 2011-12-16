@@ -25,7 +25,7 @@ function conversion(){
 		var toEpoch = Math.round(to.getTime()/1000);
 		document.timeFrameData.from.value = fromEpoch;
 		document.timeFrameData.to.value = toEpoch;
-		document.timeframeData.timeframe=true;
+		document.timeFrameData.timeFrameValue.value="true";
 	   
 	}
 	
