@@ -9,17 +9,25 @@ $(document).ready(function() {
 		});
 	$('#menu').hide();
 	$('#timeFrameButton').click(function() {
+		var menuPosition = $('#timeFrameButton').offset();
+		menuPosition.left += 70;
+		menuPosition.top += 40;
+		menuPosition.top -= $('#menu').outerHeight();
+		$('#menu').css(menuPosition);
+		$('#menu').fadeToggle('slow');
+		/*
+		
 		if (!menuShown){
 			$('#menu').slideDown('slow', function() {
-		// Animation complete.
-		});
-			menuShown=true;
+		        menuShown=true;
+		    });
+			
 		}else{
 			$('#menu').slideUp('slow', function() {
 		// Animation complete.
 		});
 			menuShown=false;
-		}
+		}*/
 		
 	});
 });

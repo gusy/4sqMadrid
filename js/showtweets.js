@@ -27,7 +27,7 @@ function showTweet(jsonstatus,animation){
 		return(0);
 	}
 	if(!lastWasPainted){
-		$("#twitter").prepend('<div>....</div>');
+		$("#twitter").prepend('<div class="emptyTweet"></div>');
 	}
 	var status=jsonstatus.tweet;
 	var opts=getDefaults()

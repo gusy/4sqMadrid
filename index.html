@@ -23,31 +23,44 @@
         <h1 id ="titulo"></h1>
     
         
-        <div id = "twitterCanvas">
-			<div id = "twitterHeader"><div id ="twitterlogo"></div> </div>
-			<div id = "twitter"></div>
-					  
-		</div>
+        
 	
 
         <div id="wrapper">
-        <div id="trending"></div>
+        <div id="wrapper-map">
+            <div id="trending"></div>
             <canvas id="canvas"></canvas>
+        </div>
+        <div id = "twitterCanvas">
+			<div id = "twitterHeader">
+			    <div id ="twitterlogo"></div> 
+			</div>
+			<div id = "twitter">
+              
+			</div>	
+			<div id = "twitterBottom"></div>				  
+		</div>
             
         </div>
         <div id ="timeFrameButton"></div>
         <div id ="menu">
 			<div id ="timeframeSelection">
 				<form id = "timeFrameData" name ="timeFrameData" method="get" onsubmit="conversion();">
-					<input id ="timeFrameValue" type ="text"  name = "timeframe" value = "false" >
-					<input type="text" value="" id="from" name="from">
-					<input type="text" value="" id="to" name="to">
-					<select name = "city" >
-						<option value="MAD"> Madrid</option>
-						<option value="PAR"> Paris</option>
-						<option value="SIN"> Singapur</option>
-						<option value="NYC"> New York</option>
-					</select>
+				    <fieldset>
+				    	<legend>Ventana de tiempo</legend>
+						<input id ="timeFrameValue" type ="text"  name = "timeframe" value = "false" >
+						<input type="text" value="" id="from" name="from"><br />
+						<input type="text" value="" id="to" name="to">
+					</fieldset>
+					<fieldset>
+						<legend>Ciudad</legend>
+						<select name = "city" >
+							<option value="MAD"> Madrid</option>
+							<option value="PAR"> Paris</option>
+							<option value="SIN"> Singapur</option>
+							<option value="NYC"> New York</option>
+						</select>
+				    </fieldset>
 					<input type= "submit" value = "Submit"/>
 				</form>
 			</div>
