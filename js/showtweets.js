@@ -1,8 +1,36 @@
+var extended =0;
+var wrappermapwidth=0;
 $(document).ready(function() {
 	// Handler for .ready() called.
+	wrappermapwidth = $('#wrapper-map').width();
 	$('#twitterCanvas').height($('#canvas').height()+20);
 	$('#twitter').height($('#twitterCanvas').height()-50);
-	nowTrending();	
+	nowTrending();
+	$('#twitterlogo').click(function(){
+		if(extended==0){
+			extended=1;
+			$('#twitter').slideUp('slow',function(){
+				$('#twitterBottom').slideUp('slow');
+				$('#twitterlogo').css({'background-image':'url(img/logoHidden.png)'},'slow');
+				$('#twitterCanvas').animate({height:'40px'},'slow',function(){
+					$('#twitterCanvas').animate({width:'40px'},'slow',function(){
+						$('#wrapper-map').animate({width:($('#wrapper').width()-140)},'slow');
+					});
+				});										
+			});
+		}else{
+			extended=0;
+			$('#wrapper-map').animate({width:wrappermapwidth},'slow',function(){
+				$('#twitterCanvas').animate({width:'300px'},'slow',function(){
+					$('#twitterlogo').css({'background-image':'url(img/twitter_logo_top_bar.png)'},'slow');
+					$('#twitterCanvas').animate({height:($('#wrapper-map').height())},'slow',function(){
+						$('#twitter').slideDown('slow');
+						$('#twitterBottom').slideDown('slow');		
+					});
+				});
+			});
+		}	
+	});
 });
 var lastPaintedTime=0;
 var lastWasPainted=true;
