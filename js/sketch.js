@@ -59,7 +59,7 @@ sketch.attachFunction = function (processing) {
     var rotY = 0;
     var rotZ = 0;
     var i = 1;
-    var fr = 15;
+    var fr =10;
     var lastCheckinReceived = 0;
     var segundosPorVuelta = 60;
     var iArray = 0;
@@ -82,7 +82,7 @@ sketch.attachFunction = function (processing) {
 
 
     var informacion = {
-        "display": false
+        "display": false,"clicked":false
     };
 
 
@@ -97,6 +97,7 @@ sketch.attachFunction = function (processing) {
     var oldRotY;
     var oldRotZ;
 
+    var wasExtended;
 
 
     processing.setup = function () {
@@ -449,12 +450,30 @@ sketch.attachFunction = function (processing) {
                         red = processing.map(minCount, tiempoFlashCheckin, tiempoCheckin * fr, 255, 100);
                         blue = processing.map(minCount, tiempoFlashCheckin, tiempoCheckin * fr, 50, 255);
                     }
+                    if(extended){
+                        if(green>100 && !informacion.clicked){
+                            informacion.venue=key;
+                            informacion.display=true;    
+                            wasExtended=true;
+                        }else{
+                            if(!informacion.clicked){
+                            informacion.display=false;
+                            }
+                        }
+
+                    }else{
+                        if(wasExtended==true){
+                            wasExtended==false;
+                            informacion.display=false;
+                        }
+                    }
                     processing.shininess(15.0);
                     processing.fill(red, green, blue, 180);
                     if (value.mouseSobre) {
                         processing.fill(240, 130);
                         if (pulsado) {
                             informacion.display = true;
+                            informacion.clicked =true;
                             informacion.venue = key;
                             processing.fill(100);
                         }
@@ -558,6 +577,10 @@ sketch.attachFunction = function (processing) {
         }
         if(informacion.display)
            informacion.display=false;
+           if(extended){
+                informacion.clicked=false;
+            }
+        
     };
     processing.mouseReleased = function () {
         pulsado = false;
