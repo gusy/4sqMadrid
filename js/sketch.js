@@ -1,3 +1,4 @@
+
 var sketch = new Processing.Sketch();
 sketch.use3DContext = true;
 sketch.globalKeyEvents = true;
@@ -12,6 +13,8 @@ var trendingPlaces = new Array();
 
 
 sketch.attachFunction = function (processing) {
+    /* @pjs globalKeyEvents="true"; */
+    var tiempoGui = 2;
     
     var madridConfig = {"satImage":'MadridSat.jpg',"mapImage":'MadridMap.jpg',
                         "latN":40.5735,"latS":40.363,"lngW":-3.84,"lngE":-3.495,
@@ -43,35 +46,31 @@ sketch.attachFunction = function (processing) {
     }
 
 
-    var umbralTrending = 1;       // Threesold of required checkins to place venue into trending list (would be considered if is greater than this value)
-    var tiempoDisolucionGui = 2;  // Time in seconds to fade the GUI
-    var guiDisplayedTime = 0;     // When (in ms since load) was the GUI first displayed
+    var umbralTrending = 1;
+    var tiempoDisolucionGui = 1;
+    var contadorGui = 0;
     var tex;
-    var playIcon;                 
-    var satellite=true;           // Flag to switch between map images (true=Satellite, false=Street Map)
-    var rotando=false;             // Flag for switching auto-rotation
-    var transX;                   // Current translation of the center of the map
-    var transY;                   // Current translation of the center of the map
-    var rotX = Math.PI / 4;       // Current X-axis rotation of the map (rad)
-    var rotY = 0;                 // Current Y-axis rotation of the map (rad)
-    var rotZ = 0;                 // Current Z-axis rotation of the map (rad)
-    var lastServerRequest = 0;    // When (in ms since load) was the last ajax request
-    var fr =10;                   // Rendering framerate
-    var lastCheckinReceived = 0;  // Index of the newest checkin received
-    var segundosPorVuelta = 60;   // Seconds to rotate the map 360º
-    var tiempoCheckin = 3600;     // Seconds during which a checkin is displayed
-    var tiempoFlashCheckin = 20;  // Seconds during which a new checkin is highlighted
-    var ritmoCambioAltura=5;      // Variation of height per frame when growing or reducing checkins
-    var alturaCheckin = 120;      // Initial height of the checkins (when only 1 checkin)
-    var tRefresh = 2;             // Seconds to periodically call the server for updates
-    var segundosTimeframe = 60;   // Duration in seconds of the 'timeframe' animation
-    var timeBetweenTrendingChecks = 500; // Lapse (in ms) betweeen trending places check
-  
-    var timeRate;                 // Relation between real time and timeframe time
-    var oldTime;                  // Virtual (timeframe) time last time it was checked
-    var oldMillis=0;              // Real time when virtual time was last checked
-    var startTime;
-    var endTime;
+    var playIcon;
+    var satellite=true;
+    var rotando=true;
+    var transX; //= processing.width/2;
+    var transY; //= processing.height/2;
+    var rotX = Math.PI / 4;
+    var rotY = 0;
+    var rotZ = 0;
+    var i = 1;
+    var fr =10;
+    var lastCheckinReceived = 0;
+    var segundosPorVuelta = 60;
+    var iArray = 0;
+    var tiempoCheckin = 3600;
+    var tiempoFlashCheckin = 20;
+    var ritmoCambioAltura=5;
+    var ladoCheckin = 15;
+    var alturaInicialCheckin = 150;
+    var alturaCheckin = 120;
+    var tRefresh = 2;
+    var segundosTimeframe = 60;
     
     var timeframeFrom = 0;
     var timeframeTo = 0;
@@ -89,6 +88,7 @@ sketch.attachFunction = function (processing) {
 
 
     var checkinPhp;
+    //i
     var sobre = false;
     var pulsado = false;
     var oldX;
@@ -104,17 +104,11 @@ sketch.attachFunction = function (processing) {
 
         if (getParameterByName("timeframe")==("true")){
             if (getParameterByName("from")!=("")&&getParameterByName("to")!=("")){
-                
                 timeframeFrom=parseInt(getParameterByName("from"));
                 timeframeTo=parseInt(getParameterByName("to"));
-
-                ritmoCambioAltura *= 10;
-
                 timeframeMode=true;
-                startTime = parseInt(getParameterByName("from"))*1000;
-                endTime = parseInt(getParameterByName("to"))*1000;
-                timeRate = (endTime-startTime)/(segundosTimeframe*1000);
-                oldTime = startTime;
+                ritmoCambioAltura *= 5;
+                timeEpoch = processing.map(processing.millis(),0,1000*segundosTimeframe,timeframeFrom,timeframeTo);
             }
         }
 
@@ -126,6 +120,7 @@ sketch.attachFunction = function (processing) {
         sketch.imageCache.add("img/mapSat.png");
         sketch.imageCache.add("img/mapStreet.png");
         processing.size(1280, 720, processing.OPENGL);
+        //processing.hint(processing.ENABLE_OPENGL_4X_SMOOTH);
 
         transX = 0;
         transY = 0;
@@ -150,7 +145,8 @@ sketch.attachFunction = function (processing) {
               
                     if (ci.tweet != null) {
 
-                        ci.displayedTime = ci.tweet.tweet_timestamp*1000;
+                        ci.count = 999999;
+                        ci.dateAppear = parseInt(ci.tweet.tweet_timestamp);
                         if (arrayVenues[ci.venue.id] == null) {
                             arrayVenues[ci.venue.id] = new Object();
                             arrayVenues[ci.venue.id].checkins = new Array();
@@ -158,8 +154,10 @@ sketch.attachFunction = function (processing) {
                         }
                         arrayVenues[ci.venue.id].checkins[arrayVenues[ci.venue.id].checkins.length] = ci;
                     } else {
-                        ci.displayedTime = -999999;
+                        // alert(ci.checkid);
+                        ci.count = 0;
                     }
+                    //arrayCheckins[arrayCheckins.length] = ci;
                     lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
                 });
             }
@@ -184,7 +182,7 @@ sketch.attachFunction = function (processing) {
                     if (ci.tweet != null) {
 
                         var offset = (new Date().getTime() / 1000) - parseInt(ci.tweet.tweet_timestamp) - timeOffset;
-                        ci.displayedTime = processing.millis()-offset*1000;
+                        ci.count = Math.floor(offset) * fr;
                         if (arrayVenues[ci.venue.id] == null) {
                             arrayVenues[ci.venue.id] = new Object();
                             arrayVenues[ci.venue.id].checkins = new Array();
@@ -192,15 +190,15 @@ sketch.attachFunction = function (processing) {
                         }
                         arrayVenues[ci.venue.id].checkins[arrayVenues[ci.venue.id].checkins.length] = ci;
                     } else {
-                        ci.displayedTime = -99999999999;
+                        // alert(ci.checkid);
+                        ci.count = 0;
                     }
+                    //arrayCheckins[arrayCheckins.length] = ci;
                     lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
                 });
             }
         });}
         processing.noStroke();
-        processing.switchRotate();
-
 
 
     };
@@ -213,20 +211,19 @@ sketch.attachFunction = function (processing) {
         processing.pushMatrix();
         processing.fill(55);
         processing.background(0);
-        timeEpoch = processing.currentMillis();
 
 
         if (timeframeMode){
 
-            
-            var date =new Date(timeEpoch+3600*1000);
+            timeEpoch = Math.min(timeframeTo,processing.map(processing.millis(),0,1000*segundosTimeframe,timeframeFrom,timeframeTo));
+        
+            var date=new Date(Math.floor(timeEpoch)*1000+3600*1000)
 
             $("#test").html(date.toString().substring(0,date.toString().indexOf('GMT')));
 
 
         }else{
-            if (timeEpoch-lastServerRequest>2000) {
-                lastServerRequest=timeEpoch;
+            if (i % (fr * tRefresh) == 0) {
             updateAllTimes();
             $.ajax({
                 url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId='+currentConfig.locationId+'&lastCheckin=' + lastCheckinReceived,
@@ -238,8 +235,10 @@ sketch.attachFunction = function (processing) {
                         var ci = value;
                         showTweet(ci,true);
                         if (ci.tweet != null) {
+                            //var dated = new Date();
+                            //var offset = (dated.getTime()/1000)-parseInt(ci.tweet.tweet_timestamp)-3600;
                             var offset = (new Date().getTime() / 1000) - parseInt(ci.tweet.tweet_timestamp) - timeOffset;
-                            ci.displayedTime = timeEpoch - offset*1000;
+                            ci.count = Math.floor(offset) * fr;
                                                     
 
                             if (arrayVenues[ci.venue.id] == null) {
@@ -249,9 +248,10 @@ sketch.attachFunction = function (processing) {
                             }
                             arrayVenues[ci.venue.id].checkins[arrayVenues[ci.venue.id].checkins.length] = ci;
                         } else {
-                            ci.displayedTime = -99999999;
+                            ci.count=0;
                             
                         }
+                        //arrayCheckins[arrayCheckins.length] = ci;
                         lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
                     });
 
@@ -259,7 +259,70 @@ sketch.attachFunction = function (processing) {
             });
 
         }
+    }
+
+
+        /*
+        
+            listaTrending = listaTrending.sort(ordenarPorNumeroCheckins)
+            var query ="";
+            var asd = 0;
+            for (asd = 0; asd<10;asd++){
+                query += listaTrending[asd].venue.id;
+                if (asd<9){
+                    query += "-";
+                }
+            }
+
+            $.ajax({
+                url: 'http://pregel.mat.upm.es/get-venue.php?locationIds=' + query,
+                dataType: 'json',
+                success: function (data) {
+                    alert(data);
+                
+
+                }
+            });*/
+
+/*
+   arrayCheckins[arrayCheckins.length] = checkinTest[iArray];
+   iArray = (iArray+1)%checkinTest.length; 
+ */
+        
         processing.ambientLight(242, 242, 240);
+        //processing.lightSpecular(204, 204, 204); 
+        //processing.directionalLight(202, 202, 202, 0, -1, -1);
+        //if (processing.mousePressed&&(processing.mouseButton==processingLEFT)){
+
+    //    processing.translate(transX+processing.width/2, (Math.cos(rotX)*zoom)+(Math.sin(rotX)*transY)+processing.width/4,Math.sin(rotX)*zoom+Math.cos(rotX)*transY-800); // processing.map(processing.mouseY,0,processing.height,-1000,0) );
+/*
+        var alfa = Math.atan(transY/transX);
+        if(transY<0){
+            alfa=alfa+Math.PI;
+        }
+        $("#test").html(alfa);
+        var beta = rotZ;
+
+        var d = Math.sqrt(Math.pow(transX,2)+Math.pow(transY,2));
+
+
+        var offsetX;
+        var offsetY;
+        if (d>0){
+
+        var theta = Math.PI-(Math.PI-beta)/2+beta+alfa;
+            offsetX = 2*d*Math.sin(beta/2)*Math.cos(theta);
+
+            offsetY = 2*d*Math.sin(beta/2)*Math.sin(theta);
+
+
+        }else{
+            offsetX = 0;
+            offsetY = 0;
+       }
+*/
+       
+
 
         
 
@@ -276,13 +339,21 @@ sketch.attachFunction = function (processing) {
         processing.scale(2);
 
 
+        //processing.rotateY(roty);
+        //processing.rotateX(rotx);
+        //}else{
+        
+        
+
 
         
         if(rotando){
-            rotZ += processing.map(timeEpoch-lastRotZIncreaseTime,0,1000*segundosPorVuelta,0,2*Math.PI)%(2*Math.PI);
-            lastRotZIncreaseTime = timeEpoch;
+            rotZ = (rotZ+2*Math.PI/segundosPorVuelta/fr)%(2*Math.PI);
         }
 
+         //}
+
+        //processing.rotateZ(processing.map(i, 0, fr * segundosPorVuelta, -Math.PI, Math.PI));
         processing.textureMode(processing.NORMALIZED);
         processing.beginShape();
         if(tex.width>0&&tex.height>0){
@@ -296,36 +367,57 @@ sketch.attachFunction = function (processing) {
         processing.vertex(-currentConfig.mapWidth/2, currentConfig.mapHeight/2, 0, 0, 1);
         processing.endShape();
 
+        /* Madrid
+        processing.vertex(-1000, -658, 0, 0, 0);
+        processing.vertex(1000, -658, 0, 1, 0);
+        processing.vertex(1000, 658, 0, 1, 1);
+        processing.vertex(-1000, 658, 0, 0, 1);
+        processing.endShape();
+        */
+
+
+/* Mostrar Ejes X,Y,Z
+        processing.stroke(255);
+
+        processing.line(0,0,0,0,1000,0);
+        processing.line(0,0,0,1000,0,0);
+        processing.line(0,0,0,0,0,1000);
+
+        processing.noStroke();
+
+      */
+
 
         var iter=0;
         listaTrending = new Array();
 
+        //for ( indi=0; indi<arrayCheckins.length;indi++){
         $.each(arrayVenues, function (key, value) {
-                var minCount = 999999; //TODO remove
-                var newestCheckinTime = -9999999;
+                var minCount = 999999;
                 var activeCheckins = 0;
                 var totalCheckins = 0;
                 
 
                 $.each(value.checkins, function (index, val) {
                     if (timeframeMode){
-                        if(val != null && val.displayedTime < timeEpoch){
-                            if (timeEpoch - val.displayedTime < tiempoCheckin*1000){
+                        if(val != null && val.dateAppear < timeEpoch){
+                            val.count = (timeEpoch-val.dateAppear)*fr;
+                            if (val.count < tiempoCheckin * fr){
                                 if (!val.timelined){
                                     
-				                 showTweet(val,false);
+				    showTweet(val,false);
                                     val.timelined=true;
                                 }
                                 
                                 activeCheckins++;
-                                newestCheckinTime = Math.max(newestCheckinTime,val.displayedTime);
                             }
-                            
+                            minCount = Math.min(minCount, val.count);
                         }                        
 
-                    }else if (val != null && timeEpoch-val.displayedTime<tiempoCheckin*1000){
+                    }else if (val != null && val.count < tiempoCheckin * fr) {
+                        minCount = Math.min(minCount, val.count);
                         activeCheckins++;
-                        newestCheckinTime = Math.max(newestCheckinTime,val.displayedTime);
+                        val.count++;
                     }
                 });
                 if (activeCheckins>umbralTrending){
@@ -349,14 +441,14 @@ sketch.attachFunction = function (processing) {
                         var red;
                         var green;
                         var blue;
-                    if (processing.currentMillis()-newestCheckinTime < (tiempoFlashCheckin * 1000)) {
-                        green = processing.map(processing.currentMillis(), newestCheckinTime, newestCheckinTime+tiempoFlashCheckin*1000, 255,100);
-                        red = processing.map(processing.currentMillis(), newestCheckinTime, newestCheckinTime+tiempoFlashCheckin*1000, 0, 255);
-                        blue = processing.map(processing.currentMillis(), newestCheckinTime, newestCheckinTime+tiempoFlashCheckin*1000, 0, 50);
+                    if (minCount < (tiempoFlashCheckin * fr)) {
+                        green = processing.map(minCount, 0, tiempoFlashCheckin * fr, 255,100);
+                        red = processing.map(minCount, 0, tiempoFlashCheckin * fr, 0, 255);
+                        blue = processing.map(minCount, 0, tiempoFlashCheckin * fr, 0, 50);
                     } else {
-                        green = processing.map(processing.currentMillis(),newestCheckinTime+tiempoFlashCheckin*1000,newestCheckinTime+tiempoCheckin*1000, 100, 100);
-                        red = processing.map(processing.currentMillis(),newestCheckinTime+tiempoFlashCheckin*1000,newestCheckinTime+tiempoCheckin*1000, 255, 100);
-                        blue = processing.map(processing.currentMillis(),newestCheckinTime+tiempoFlashCheckin*1000,newestCheckinTime+tiempoCheckin*1000, 50, 255);
+                        green = processing.map(minCount, tiempoFlashCheckin, tiempoCheckin * fr, 100, 100);
+                        red = processing.map(minCount, tiempoFlashCheckin, tiempoCheckin * fr, 255, 100);
+                        blue = processing.map(minCount, tiempoFlashCheckin, tiempoCheckin * fr, 50, 255);
                     }
                     if(extended){
                         if(green>100 && !informacion.clicked){
@@ -393,9 +485,16 @@ sketch.attachFunction = function (processing) {
                         informacion.y = processing.screenY(0, 0, value.altura);
                         informacion.z = processing.screenZ(0, 0, value.altura);
                     }       
-                    var ladoCheckin = 7*Math.log(15/processing.map(zoom+300,minZoom,maxZoom,0.5,7));
+                    //  processing.box(ladoCheckin,ladoCheckin,altura);
+                    ladoCheckin = 7*Math.log(15/processing.map(zoom+300,minZoom,maxZoom,0.5,7));
                     processing.dibujaCheckin(ladoCheckin, value.altura, value);
                     value.active = true;
+                    /*if (activeCheckins > 1) {
+                        processing.translate(0, 0, 1 + Math.ceil(alturaCheckinFrio / 2));
+                        processing.fill(240, 175, 0, 40);
+
+                        processing.box(Math.min(processing.map(activeCheckins, 1, 2, ladoCheckin, ladoCheckin * 2), 350), Math.min(processing.map(activeCheckins, 1, 2, ladoCheckin, ladoCheckin * 2), 250), alturaCheckinFrio);
+                    }*/
                     processing.popMatrix();
                 } else {
                     value.active = false;
@@ -408,28 +507,28 @@ sketch.attachFunction = function (processing) {
         processing.pushMatrix();
         processing.hint(processing.DISABLE_DEPTH_TEST);        
 
-        if(processing.millis()-guiDisplayedTime<tiempoDisolucionGui*1000){
+        if(contadorGui<tiempoGui*fr){
 			playIcon = processing.loadImage("img/play2.png");
             pauseIcon = processing.loadImage("img/pause2.png");
             satIcon = processing.loadImage("img/mapSat.png");
             streetIcon = processing.loadImage("img/mapStreet.png");          
-            processing.fill(255,processing.map(processing.millis(),guiDisplayedTime,guiDisplayedTime+tiempoDisolucionGui*1000,255,0));
+            processing.fill(255,processing.map(contadorGui,(tiempoGui-tiempoDisolucionGui)*fr,tiempoGui*fr,100,0));
             if((processing.resizedMouseX()<70&&processing.resizedMouseY()<70)){	
-				guiDisplayedTime=processing.millis();
+				contadorGui=0;
 			}			
             if(satellite){
 				processing.image(streetIcon,0,5,70,70);
 			}else{
 				processing.image(satIcon,0,5,70,70);
 			}
-            processing.fill(255,processing.map(processing.millis(),guiDisplayedTime,guiDisplayedTime+tiempoDisolucionGui*1000,255,0));
+			processing.fill(255,processing.map(contadorGui,(tiempoGui-tiempoDisolucionGui)*fr,tiempoGui*fr,100,0));
 			if((processing.resizedMouseX()>processing.width-60&&processing.resizedMouseY()<60)){
-			    guiDisplayedTime=processing.millis();
+			    contadorGui=0;
 			}
             if(rotando){
 				processing.image(pauseIcon,processing.width-65,5,60,60);			
             }else{      
-                processing.image(playIcon,processing.width-65,5,60,60);
+              processing.image(playIcon,processing.width-65,5,60,60);
             }
             
          }        
@@ -444,12 +543,15 @@ sketch.attachFunction = function (processing) {
 
             processing.fill(0);
             processing.text(unescape(arrayVenues[informacion.venue].venue.name), 40, 15 );
+            //alert(arrayVenues[informacion.venue].venue.name);
         }
 
+        //processing.fill(255,processing.map(processing.millis()%1000,0,1000,255,0));
+        //processing.image(playIcon,150,150);
 
         trendingPlaces = listaTrending.sort(ordenarPorNumeroCheckins).slice(0,Math.min(listaTrending.length,10));
         if (trendingPlaces.length>0){
-            if (processing.millis()-lastNowTrendingMillis>timeBetweenTrendingChecks){
+            if (processing.millis()-lastNowTrendingMillis>500){
                 nowTrending();
                 lastNowTrendingMillis = processing.millis();
             }
@@ -457,7 +559,9 @@ sketch.attachFunction = function (processing) {
         }
 
 
+        i = (i + 1) % (fr * segundosPorVuelta);
 
+         if (contadorGui < tiempoGui*fr) contadorGui++;
     };
     processing.mousePressed = function () {
         pulsado = true;
@@ -466,7 +570,7 @@ sketch.attachFunction = function (processing) {
         oldRotX = rotX;
         oldRotZ = rotZ;
         if(processing.resizedMouseX()>processing.width-50&&processing.resizedMouseY()<50){
-            processing.switchRotate();
+           rotando= !rotando;
         }
         if(processing.resizedMouseX()<50&&processing.resizedMouseY()<50){
          processing.cambiaMapa();
@@ -495,7 +599,7 @@ sketch.attachFunction = function (processing) {
     };
 
     processing.mouseMoved = function () {
-        guiDisplayedTime=processing.millis();
+        contadorGui = 0;
         var p = {
             "x": processing.resizedMouseX(),
             "y": processing.resizedMouseY()
@@ -557,34 +661,6 @@ sketch.attachFunction = function (processing) {
           satellite=true;
        }
     };
-
-    processing.switchRotate = function() {
-       if (!rotando){
-           lastRotZIncreaseTime=processing.millis();
-           rotando=true;
-       }else{
-           rotando=false;
-       }
-    };
-
-    processing.currentMillis = function(){
-        if (!timeframeMode){
-            return processing.millis();
-        }else{
-            
-            var lapse = processing.millis()-oldMillis;
-            oldMillis += lapse;
-            oldTime += lapse*timeRate;
-
-            if (oldTime < startTime){
-                oldTime = startTime;
-            }else if (oldTime > endTime){
-                oldTime = endTime;
-            }
-
-            return oldTime;
-        }
-    }
 
     processing.dibujaCheckin = function (lado, altura, venue) {
         x1 = -lado / 2;
@@ -689,7 +765,6 @@ function wheel(event) {
 
 
 var canvas = document.getElementById("canvas");
-canvas.onselectstart = function () { return false; } // Prevents selecting text when dragging or double-clicking
 var p = new Processing(canvas, sketch); /* Initialization code. */
 if (canvas.addEventListener) canvas.addEventListener('DOMMouseScroll', wheel, false);
 canvas.onmousewheel = wheel;
