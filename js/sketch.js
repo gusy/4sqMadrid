@@ -1,4 +1,3 @@
-
 var sketch = new Processing.Sketch();
 sketch.use3DContext = true;
 sketch.globalKeyEvents = true;
@@ -102,7 +101,6 @@ sketch.attachFunction = function (processing) {
 
 
     processing.setup = function () {
-
         if (getParameterByName("timeframe")==("true")){
             if (getParameterByName("from")!=("")&&getParameterByName("to")!=("")){
                 
@@ -127,16 +125,13 @@ sketch.attachFunction = function (processing) {
         sketch.imageCache.add("img/mapSat.png");
         sketch.imageCache.add("img/mapStreet.png");
         processing.size(1280, 720, processing.OPENGL);
-
         transX = 0;
         transY = 0;
         processing.smooth();
         tex = processing.requestImage("img/"+currentConfig.satImage);
-
         processing.textureMode(processing.NORMALIZED);
         processing.fill(55);
         processing.stroke(processing.color(44, 48, 32));
-
 
         if (timeframeMode){
             $.ajax({
@@ -198,15 +193,11 @@ sketch.attachFunction = function (processing) {
                     lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
                 });
             }
-        });}
+        });
+    }
         processing.noStroke();
         processing.switchRotate();
-
-
-
     };
-
-
     processing.draw = function () {
 
 
@@ -259,7 +250,7 @@ sketch.attachFunction = function (processing) {
                 }
             });
 
-        }
+        }}
         processing.ambientLight(242, 242, 240);
 
         
@@ -307,7 +298,6 @@ sketch.attachFunction = function (processing) {
                 var activeCheckins = 0;
                 var totalCheckins = 0;
                 
-
                 $.each(value.checkins, function (index, val) {
                     if (timeframeMode){
                         if(val != null && val.displayedTime < timeEpoch){
@@ -333,8 +323,6 @@ sketch.attachFunction = function (processing) {
                     listaTrending[iter]=value;
                     listaTrending[iter++].activeCheckins = activeCheckins;
                 }
-
-
                 if (activeCheckins>0||value.altura!=null&&value.altura>0){
                     
                     if (value.altura == null){
@@ -398,10 +386,10 @@ sketch.attachFunction = function (processing) {
                     processing.dibujaCheckin(ladoCheckin, value.altura, value);
                     value.active = true;
                     processing.popMatrix();
-                } else {
-                    value.active = false;
                 }
-                
+                 else {
+                    value.active = false;
+                }                
         });
 
         /*Capa en "2D" para información y GUI */
@@ -481,7 +469,7 @@ sketch.attachFunction = function (processing) {
     };
     processing.mouseReleased = function () {
         pulsado = false;
-    }
+    };
     processing.mouseDragged = function () {
         if (processing.resizedMouseX() > oldX) {
             rotZ = processing.map(processing.mouseX, oldX, processing.width, oldRotZ, Math.PI *2);
@@ -542,12 +530,12 @@ sketch.attachFunction = function (processing) {
         return Math.floor(processing.mouseX*1280/canvas.clientWidth);
         
 
-    }
+    };
 
     processing.resizedMouseY = function() {
         return Math.floor(processing.mouseY*720/canvas.clientHeight);
         
-    }
+    };
 
     processing.cambiaMapa = function() {
        if (satellite){
@@ -585,7 +573,7 @@ sketch.attachFunction = function (processing) {
 
             return oldTime;
         }
-    }
+    };
 
     processing.dibujaCheckin = function (lado, altura, venue) {
         x1 = -lado / 2;
