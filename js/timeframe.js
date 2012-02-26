@@ -2,10 +2,12 @@ var menuShown = false;
 
 $(document).ready(function() {
 	$('#from').datetimepicker({
-		minDate: new Date(2011, 11, 1, 8, 30), maxDate: new Date(2011, 11, 31, 17, 30)
+		minDate: new Date(2011, 11, 1, 8, 30),
+		maxDate: new Date()
 		});
 	$('#to').datetimepicker({
-		minDate: new Date(2011, 11, 1, 8, 30), maxDate: new Date(2011, 11, 31, 17, 30)
+		minDate: new Date(2011, 11, 1, 8, 30),
+		maxDate: new Date()
 		});
 	$('#menu').hide();
 	$('#timeFrameButton').click(function() {
