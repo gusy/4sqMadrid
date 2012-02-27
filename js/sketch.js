@@ -8,6 +8,7 @@ var maxZoom = 800;
 var timeOffset = 0;
 var timeframeMode = false;
 var timeEpoch = 0;
+var timeRunning = 0;
 var trendingPlaces = new Array();
 
 
@@ -206,6 +207,7 @@ sketch.attachFunction = function (processing) {
         processing.fill(55);
         processing.background(0);
         timeEpoch = processing.currentMillis();
+        timeRunning = processing.millis();
 
 
         if (timeframeMode){
@@ -271,8 +273,8 @@ sketch.attachFunction = function (processing) {
 
         
         if(rotando){
-            rotZ += processing.map(timeEpoch-lastRotZIncreaseTime,0,1000*segundosPorVuelta,0,2*Math.PI)%(2*Math.PI);
-            lastRotZIncreaseTime = timeEpoch;
+            rotZ += processing.map(timeRunning-lastRotZIncreaseTime,0,1000*segundosPorVuelta,0,2*Math.PI)%(2*Math.PI);
+            lastRotZIncreaseTime = timeRunning;
         }
 
         processing.textureMode(processing.NORMALIZED);
