@@ -121,8 +121,8 @@ sketch.attachFunction = function (processing) {
 
         processing.textMode(processing.SCREEN);
         processing.frameRate(fr);
-        sketch.imageCache.add("img/play2.png");
-        sketch.imageCache.add("img/pause2.png");
+        sketch.imageCache.add("img/startRotation.png");
+        sketch.imageCache.add("img/stopRotation.png");
         sketch.imageCache.add("img/mapSat.png");
         sketch.imageCache.add("img/mapStreet.png");
         processing.size(1280, 720, processing.OPENGL);
@@ -400,8 +400,8 @@ sketch.attachFunction = function (processing) {
         processing.hint(processing.DISABLE_DEPTH_TEST);        
 
         if(processing.millis()-guiDisplayedTime<tiempoDisolucionGui*1000){
-			playIcon = processing.loadImage("img/play2.png");
-            pauseIcon = processing.loadImage("img/pause2.png");
+			playIcon = processing.loadImage("img/startRotation.png");
+            pauseIcon = processing.loadImage("img/stopRotation.png");
             satIcon = processing.loadImage("img/mapSat.png");
             streetIcon = processing.loadImage("img/mapStreet.png");          
             processing.fill(255,processing.map(processing.millis(),guiDisplayedTime,guiDisplayedTime+tiempoDisolucionGui*1000,255,0));
