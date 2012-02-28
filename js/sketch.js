@@ -84,6 +84,8 @@ sketch.attachFunction = function (processing) {
 
     var lastNowTrendingMillis = -500;
 
+    var ajaxLock = false;  // Avoids multiple AJAX calls to the same service to be performed
+
 
     var informacion = {
         "display": false,"clicked":false
@@ -123,8 +125,8 @@ sketch.attachFunction = function (processing) {
 
         processing.textMode(processing.SCREEN);
         processing.frameRate(fr);
-        sketch.imageCache.add("img/startRotation.png");
-        sketch.imageCache.add("img/stopRotation.png");
+        sketch.imageCache.add("img/play-rotate.png");
+        sketch.imageCache.add("img/pause-rotate.png");
         sketch.imageCache.add("img/mapSat.png");
         sketch.imageCache.add("img/mapStreet.png");
         processing.size(1280, 720, processing.OPENGL);
@@ -165,6 +167,8 @@ sketch.attachFunction = function (processing) {
         });
             
         }else{
+            if (!ajaxLock){
+                ajaxLock = true;
         $.ajax({
             url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId='+currentConfig.locationId+'&lastCheckin=' + lastCheckinReceived,
             dataType: 'json',
@@ -195,8 +199,12 @@ sketch.attachFunction = function (processing) {
                     }
                     lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
                 });
+            },
+            complete: function () {
+                ajaxLock = false;
             }
         });
+      }
     }
         processing.noStroke();
         processing.switchRotate();
@@ -224,6 +232,9 @@ sketch.attachFunction = function (processing) {
             if (timeEpoch-lastServerRequest>2000) {
                 lastServerRequest=timeEpoch;
             updateAllTimes();
+            if (!ajaxLock){
+
+                ajaxLock = true;
             $.ajax({
                 url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId='+currentConfig.locationId+'&lastCheckin=' + lastCheckinReceived,
                 dataType: 'json',
@@ -251,8 +262,11 @@ sketch.attachFunction = function (processing) {
                         lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
                     });
 
+                },
+                complete: function () {
+                    ajaxLock = false;
                 }
-            });
+            });}
 
         }}
         processing.ambientLight(242, 242, 240);
@@ -402,27 +416,27 @@ sketch.attachFunction = function (processing) {
         processing.hint(processing.DISABLE_DEPTH_TEST);        
 
         if(processing.millis()-guiDisplayedTime<tiempoDisolucionGui*1000){
-			playIcon = processing.loadImage("img/startRotation.png");
-            pauseIcon = processing.loadImage("img/stopRotation.png");
+			playIcon = processing.loadImage("img/play-rotate.png");
+            pauseIcon = processing.loadImage("img/pause-rotate.png");
             satIcon = processing.loadImage("img/mapSat.png");
             streetIcon = processing.loadImage("img/mapStreet.png");          
             processing.fill(255,processing.map(processing.millis(),guiDisplayedTime,guiDisplayedTime+tiempoDisolucionGui*1000,255,0));
-            if((processing.resizedMouseX()<70&&processing.resizedMouseY()<70)){	
+            if((processing.resizedMouseX()<75&&processing.resizedMouseY()<75)){	
 				guiDisplayedTime=processing.millis();
 			}			
             if(satellite){
-				processing.image(streetIcon,0,5,70,70);
+				processing.image(streetIcon,5,5,70,70);
 			}else{
-				processing.image(satIcon,0,5,70,70);
+				processing.image(satIcon,5,5,70,70);
 			}
             processing.fill(255,processing.map(processing.millis(),guiDisplayedTime,guiDisplayedTime+tiempoDisolucionGui*1000,255,0));
-			if((processing.resizedMouseX()>processing.width-60&&processing.resizedMouseY()<60)){
+			if((processing.resizedMouseX()>processing.width-95&&processing.resizedMouseY()<95)){
 			    guiDisplayedTime=processing.millis();
 			}
             if(rotando){
-				processing.image(pauseIcon,processing.width-65,5,60,60);			
+				processing.image(pauseIcon,processing.width-95,5,90,90);			
             }else{      
-                processing.image(playIcon,processing.width-65,5,60,60);
+                processing.image(playIcon,processing.width-95,5,90,90);
             }
             
          }        
@@ -458,10 +472,10 @@ sketch.attachFunction = function (processing) {
         oldY = processing.resizedMouseY();
         oldRotX = rotX;
         oldRotZ = rotZ;
-        if(processing.resizedMouseX()>processing.width-50&&processing.resizedMouseY()<50){
+        if(processing.resizedMouseX()>processing.width-95&&processing.resizedMouseY()<95){
             processing.switchRotate();
         }
-        if(processing.resizedMouseX()<50&&processing.resizedMouseY()<50){
+        if(processing.resizedMouseX()<75&&processing.resizedMouseY()<75){
          processing.cambiaMapa();
         }
         if(informacion.display)
