@@ -31,8 +31,9 @@ canvas:focus { outline: 0; }
 
 	background:url('../img/canvas-top-bar-left.png') top left no-repeat,url('../img/canvas-top-bar-right.png') top right no-repeat,url('../img/canvas-top-bar-center.png') top center no-repeat;
 	background-size: 6px 27px,6px 27px,100% 27px;
-	height:28px;
-	padding-top:0px;
+	background-color: #666;
+	height:26px;
+	padding-top:2px;
 }
 #twitterlogo{
 	background-image:url('../img/twitter_logo_top_bar.png');
