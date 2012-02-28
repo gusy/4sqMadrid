@@ -1,14 +1,5 @@
 var extended =0;
 var wrappermapwidth=0;
-
-
-
-
-
-
-
-
-
 $(document).ready(function() {
 	$("#wrapper").css("width",String(Math.max($(window).width(),1024)));
 	$("#wrapper-map").css("width",String(Math.max($(window).width()-350,1024-350)) +"px");
@@ -17,7 +8,7 @@ $(document).ready(function() {
 	//$("#wrapper").css("width",screen.width);
 	// Handler for .ready() called.
 	wrappermapwidth = $('#wrapper-map').width();
-	$('#twitterCanvas').height($('#wrapper-map').height());
+	$('#twitterCanvas').height($('#wrapper-map').height()-7);
 	$('#twitter').height($('#twitterCanvas').height()-$('#twitterHeader').height()-$('#twitterBottom').height());
 	nowTrending();
 	$('#twitterlogo').click(function(){
@@ -26,9 +17,9 @@ $(document).ready(function() {
 			$('#twitter').slideUp('slow',function(){
 				$('#twitterBottom').slideUp('slow');
 				$('#twitterlogo').css({'background-image':'url(img/logoHidden.png)'},'slow');
-				$('#twitterCanvas').animate({height:'26px'},'slow',function(){
-					$('#twitterCanvas').animate({marginLeft:'-26px'},'fast',function(){
-						$('#twitterCanvas').animate({width:'26px'},'slow',function(){
+				$('#twitterCanvas').animate({height:'28px'},'slow',function(){
+					$('#twitterCanvas').animate({marginLeft:'-28px'},'fast',function(){
+						$('#twitterCanvas').animate({width:'28px'},'slow',function(){
 							$('#wrapper-map').animate({width:($('#wrapper').width()-140)},'slow');		
 						});
 					});

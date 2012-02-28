@@ -31,7 +31,8 @@ canvas:focus { outline: 0; }
 
 	background:url('../img/canvas-top-bar-left.png') top left no-repeat,url('../img/canvas-top-bar-right.png') top right no-repeat,url('../img/canvas-top-bar-center.png') top center no-repeat;
 	background-size: 6px 27px,6px 27px,100% 27px;
-	height:26px;
+	height:28px;
+	padding-top:0px;
 }
 #twitterlogo{
 	background-image:url('../img/twitter_logo_top_bar.png');
@@ -162,8 +163,8 @@ input.text { margin-bottom:12px; width:95%; padding: .4em; }
 	border-right-color: #aaaaaa;
     border-right-width: 2px;
     border-right-style: solid;
-    padding-top:9px;
-    padding-bottom:11px;
+    padding-top:4px;
+    padding-bottom:4px;
 
 
 }
