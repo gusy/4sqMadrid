@@ -5,7 +5,7 @@ body,div{
 }
 #canvas{
     border-color: #aaaaaa;
-    border-width: 1px;
+    border-width: 1px 1px 1px 1px;
     border-style: solid;
     width:100%;
 
@@ -23,7 +23,7 @@ body,div{
     width:300px;
     /*border-radius: 10px 10px 10px 10px;*/
     float:left;
-    margin-left:30px;
+    margin-left:0px;
     background-color:#d5d1ea;
 }
 #twitterHeader{
@@ -100,11 +100,11 @@ input.text { margin-bottom:12px; width:95%; padding: .4em; }
 	width:100%;
 	text-shadow: 1px 1px #444,-1px -1px #000;
 	color: #ccc;
-	padding-top:0px;
-	border-color:black;
+	padding:0px 1px 0px 1px;
+	/*border-color:#444;
 	border-width: 1px 1px 0px 1px;
 	border-radius: 10px 10px 0 0;
-	border-style: solid;
+	border-style: solid;*/
 }
 
 #trendingList{

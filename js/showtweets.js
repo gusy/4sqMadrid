@@ -13,11 +13,12 @@ $(document).ready(function() {
 	$("#wrapper").css("width",String(Math.max($(window).width(),1024)));
 	$("#wrapper-map").css("width",String(Math.max($(window).width()-350,1024-350)) +"px");
 	$("#wrapper").css("display","block");
+	
 	//$("#wrapper").css("width",screen.width);
 	// Handler for .ready() called.
 	wrappermapwidth = $('#wrapper-map').width();
-	$('#twitterCanvas').height($('#canvas').height()+20);
-	$('#twitter').height($('#twitterCanvas').height()-50);
+	$('#twitterCanvas').height($('#wrapper-map').height());
+	$('#twitter').height($('#twitterCanvas').height()-$('#twitterHeader').height()-$('#twitterBottom').height());
 	nowTrending();
 	$('#twitterlogo').click(function(){
 		if(extended==0){
@@ -26,8 +27,10 @@ $(document).ready(function() {
 				$('#twitterBottom').slideUp('slow');
 				$('#twitterlogo').css({'background-image':'url(img/logoHidden.png)'},'slow');
 				$('#twitterCanvas').animate({height:'36px'},'slow',function(){
-					$('#twitterCanvas').animate({width:'36px'},'slow',function(){
-						$('#wrapper-map').animate({width:($('#wrapper').width()-140)},'slow');
+					$('#twitterCanvas').animate({marginLeft:'-36px'},'fast',function(){
+						$('#twitterCanvas').animate({width:'36px'},'slow',function(){
+							$('#wrapper-map').animate({width:($('#wrapper').width()-140)},'slow');		
+						});
 					});
 				});										
 			});
@@ -35,10 +38,12 @@ $(document).ready(function() {
 			extended=0;
 			$('#wrapper-map').animate({width:wrappermapwidth},'slow',function(){
 				$('#twitterCanvas').animate({width:'300px'},'slow',function(){
-					$('#twitterlogo').css({'background-image':'url(img/twitter_logo_top_bar.png)'},'slow');
-					$('#twitterCanvas').animate({height:($('#wrapper-map').height())},'slow',function(){
-						$('#twitter').slideDown('slow');
-						$('#twitterBottom').slideDown('slow');		
+					$('#twitterCanvas').animate({marginLeft:'0'},'fast',function(){
+						$('#twitterlogo').css({'background-image':'url(img/twitter_logo_top_bar.png)'},'slow');
+						$('#twitterCanvas').animate({height:($('#wrapper-map').height())},'slow',function(){
+							$('#twitter').slideDown('slow');
+							$('#twitterBottom').slideDown('slow');
+						});		
 					});
 				});
 			});
