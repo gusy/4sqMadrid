@@ -4,7 +4,7 @@ $(document).ready(function() {
 	$( "#dialog:ui-dialog" ).dialog( "destroy" );
 	$( "#menu" ).dialog({
 			autoOpen: false,
-			height: 300,
+			height: 350,
 			width: 280,
 			modal: true,
 			buttons: {
@@ -21,10 +21,16 @@ $(document).ready(function() {
 		$( "#menu" ).dialog( "open" );
 	});
 	$('#from').datetimepicker({
+		addSliderAccess: true,
+		sliderAccessArgs: { touchonly: false },
 		minDate: new Date(2011, 11, 1, 8, 30),
-		maxDate: new Date()
+		maxDate: new Date()	
 		});
 	$('#to').datetimepicker({
+		/*changeMonth: true,
+		changeYear: true,*/
+		addSliderAccess: true,
+		sliderAccessArgs: { touchonly: false },
 		minDate: new Date(2011, 11, 1, 8, 30),
 		maxDate: new Date()
 		});	

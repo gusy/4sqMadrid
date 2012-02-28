@@ -1,6 +1,19 @@
 var extended =0;
 var wrappermapwidth=0;
+
+
+
+
+
+
+
+
+
 $(document).ready(function() {
+	$("#wrapper").css("width",String(Math.max($(window).width(),1024)));
+	$("#wrapper-map").css("width",String(Math.max($(window).width()-350,1024-350)) +"px");
+	$("#wrapper").css("display","block");
+	//$("#wrapper").css("width",screen.width);
 	// Handler for .ready() called.
 	wrappermapwidth = $('#wrapper-map').width();
 	$('#twitterCanvas').height($('#canvas').height()+20);
@@ -12,8 +25,8 @@ $(document).ready(function() {
 			$('#twitter').slideUp('slow',function(){
 				$('#twitterBottom').slideUp('slow');
 				$('#twitterlogo').css({'background-image':'url(img/logoHidden.png)'},'slow');
-				$('#twitterCanvas').animate({height:'40px'},'slow',function(){
-					$('#twitterCanvas').animate({width:'40px'},'slow',function(){
+				$('#twitterCanvas').animate({height:'36px'},'slow',function(){
+					$('#twitterCanvas').animate({width:'36px'},'slow',function(){
 						$('#wrapper-map').animate({width:($('#wrapper').width()-140)},'slow');
 					});
 				});										
