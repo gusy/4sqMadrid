@@ -5,11 +5,12 @@ body,div{
 }
 #canvas{
     border-color: #aaaaaa;
-    border-width: 1px 1px 1px 1px;
+    border-width: 0px;
     border-style: solid;
     width:100%;
 
 }
+canvas:focus { outline: 0; }
 #wrapper{
     margin-left:0px;
     margin-right:0px;
@@ -27,8 +28,10 @@ body,div{
     background-color:#d5d1ea;
 }
 #twitterHeader{
-	background-image:url('../img/twitterPaleta.png');
-	height: 36px;
+
+	background:url('../img/canvas-top-bar-left.png') top left no-repeat,url('../img/canvas-top-bar-right.png') top right no-repeat,url('../img/canvas-top-bar-center.png') top center no-repeat;
+	background-size: 6px 27px,6px 27px,100% 27px;
+	height:26px;
 }
 #twitterlogo{
 	background-image:url('../img/twitter_logo_top_bar.png');
@@ -95,17 +98,53 @@ input.text { margin-bottom:12px; width:95%; padding: .4em; }
 .ui-dialog-title{}
 
 #trending{
+	/*
 	background-image:url('../img/twitterPaleta.png');
 	height:35px;
 	width:100%;
 	text-shadow: 1px 1px #444,-1px -1px #000;
 	color: #ccc;
 	padding:0px 1px 0px 1px;
+	*/
+	
 	/*border-color:#444;
 	border-width: 1px 1px 0px 1px;
 	border-radius: 10px 10px 0 0;
 	border-style: solid;*/
+	
+	
+	background:url('../img/canvas-top-bar-left.png') top left no-repeat,url('../img/canvas-top-bar-right.png') top right no-repeat,url('../img/canvas-top-bar-center.png') top center no-repeat;
+	background-size: 6px 27px,6px 27px,100% 27px;
+	height:26px;
+	width:100%;
+	text-shadow: 1px 1px #444,-1px -1px #000;
+	color: #ccc;
+	padding-top:2px;
+	border-color:black;
+	border-width: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0 0;
+	border-style: solid;
+	
+	 
+	 /*background-image:url('../img/canvas-top-bar.png');*/
 }
+#bottom-bar{
+    background:url('../img/canvas-bottom-bar-left.png') top left no-repeat,url('../img/canvas-bottom-bar-right.png') top right no-repeat,url('../img/canvas-bottom-bar-center.png') top center no-repeat;
+	background-size: 6px 27px,6px 27px,100% 27px;
+	height: 27px;
+	width: 100%;
+	padding-top: 7px;
+
+
+
+}
+
+#progress-bar{
+    width: 60%;
+    margin-left: 240px;
+
+}
+
 
 #trendingList{
 	margin:0;

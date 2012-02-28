@@ -86,7 +86,9 @@ sketch.attachFunction = function (processing) {
 
     var ajaxLock = false;  // Avoids multiple AJAX calls to the same service to be performed
 
-
+	/* Timeframe Vars */
+    var stepsNumber = 360; // Number of steps in the slider;
+    
     var informacion = {
         "display": false,"clicked":false
     };
@@ -139,6 +141,18 @@ sketch.attachFunction = function (processing) {
         processing.stroke(processing.color(44, 48, 32));
 
         if (timeframeMode){
+			$( "#progress-bar" ).slider({
+            range: "min",
+            value: 1,
+            min: 1,
+            max: stepsNumber,
+            slide: function( event, ui ) {
+                oldMillis = processing.millis();
+                oldTime = processing.map(ui.value,1,360,startTime,endTime);
+                //$( "#amount" ).val( "$" + ui.value );
+            }
+        });
+        
             $.ajax({
             url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId='+currentConfig.locationId+'&from='+timeframeFrom+'&to='+timeframeTo,
             dataType: 'json',
@@ -224,7 +238,9 @@ sketch.attachFunction = function (processing) {
 
             
             var date =new Date(timeEpoch+3600*1000);
-
+			
+			$("#progress-bar").slider("value", Math.floor(processing.map(timeEpoch,startTime,endTime,1,stepsNumber)));
+			
             $("#test").html(date.toString().substring(0,date.toString().indexOf('GMT')));
 
 

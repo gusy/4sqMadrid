@@ -26,9 +26,9 @@ $(document).ready(function() {
 			$('#twitter').slideUp('slow',function(){
 				$('#twitterBottom').slideUp('slow');
 				$('#twitterlogo').css({'background-image':'url(img/logoHidden.png)'},'slow');
-				$('#twitterCanvas').animate({height:'36px'},'slow',function(){
-					$('#twitterCanvas').animate({marginLeft:'-36px'},'fast',function(){
-						$('#twitterCanvas').animate({width:'36px'},'slow',function(){
+				$('#twitterCanvas').animate({height:'26px'},'slow',function(){
+					$('#twitterCanvas').animate({marginLeft:'-26px'},'fast',function(){
+						$('#twitterCanvas').animate({width:'26px'},'slow',function(){
 							$('#wrapper-map').animate({width:($('#wrapper').width()-140)},'slow');		
 						});
 					});
