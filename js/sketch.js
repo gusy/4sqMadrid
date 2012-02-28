@@ -67,7 +67,9 @@ sketch.attachFunction = function (processing) {
     var tRefresh = 2;             // Seconds to periodically call the server for updates
     var segundosTimeframe = 60;   // Duration in seconds of the 'timeframe' animation
     var timeBetweenTrendingChecks = 500; // Lapse (in ms) betweeen trending places check
-  
+    var radiansXRotated = Math.PI; // Rotation in X axis when mouse is dragged across the whole canvas
+    var radiansZRotated = Math.PI;
+
     var timeRate;                 // Relation between real time and timeframe time
     var oldTime;                  // Virtual (timeframe) time last time it was checked
     var oldMillis=0;              // Real time when virtual time was last checked
@@ -452,8 +454,8 @@ sketch.attachFunction = function (processing) {
     };
     processing.mousePressed = function () {
         pulsado = true;
-        oldX = processing.mouseX;
-        oldY = processing.mouseY;
+        oldX = processing.resizedMouseX();
+        oldY = processing.resizedMouseY();
         oldRotX = rotX;
         oldRotZ = rotZ;
         if(processing.resizedMouseX()>processing.width-50&&processing.resizedMouseY()<50){
@@ -473,15 +475,34 @@ sketch.attachFunction = function (processing) {
         pulsado = false;
     };
     processing.mouseDragged = function () {
+        var zVariation;
         if (processing.resizedMouseX() > oldX) {
-            rotZ = processing.map(processing.mouseX, oldX, processing.width, oldRotZ, Math.PI *2);
+            //rotZ = processing.map(processing.resizedMouseX(), oldX, processing.width, oldRotZ, Math.PI *2);
+            zVariation = processing.map(processing.resizedMouseX()-oldX,0,processing.width,0,radiansZRotated);
+            oldX = processing.resizedMouseX();
+
         } else {
-            rotZ = processing.map(processing.mouseX, 0, oldX, 0, oldRotZ);
+            //rotZ = processing.map(processing.resizedMouseX(), 0, oldX, 0, oldRotZ);
+            zVariation = -processing.map(oldX-processing.resizedMouseX(),0,processing.width,0,radiansZRotated);
+            oldX = processing.resizedMouseX();
+
+        }
+        if (processing.resizedMouseY()>=processing.height/2){
+            rotZ -= zVariation;
+        }else{
+            rotZ += zVariation;
         }
         if (processing.resizedMouseY() > oldY) {
-            rotX = processing.map(processing.mouseY, oldY, processing.height, oldRotX, 0);
+            //rotX = processing.map(processing.mouseY, oldY, processing.height, oldRotX, 0);
+            rotX = Math.max(0,rotX-processing.map(processing.resizedMouseY()-oldY,0, processing.height,
+                                                                                   0, radiansXRotated ));
+            oldY = processing.resizedMouseY();
         } else {
-            rotX = processing.map(processing.mouseY, 0, oldY, Math.PI / 3, oldRotX);
+            //rotX = processing.map(processing.mouseY, 0, oldY, Math.PI / 3, oldRotX);
+            rotX = Math.min(Math.PI/3,rotX+processing.map(oldY-processing.resizedMouseY(),0, processing.height,
+                                                                                0, radiansXRotated ));
+            oldY = processing.resizedMouseY();
+
         }
     };
 
