@@ -31,7 +31,7 @@ $(document).ready(function() {
 				$('#twitterCanvas').animate({width:'300px'},'slow',function(){
 					$('#twitterCanvas').animate({marginLeft:'0'},'fast',function(){
 						$('#twitterlogo').css({'background-image':'url(img/twitter_logo_top_bar.png)'},'slow');
-						$('#twitterCanvas').animate({height:($('#wrapper-map').height())},'slow',function(){
+						$('#twitterCanvas').animate({height:($('#wrapper-map').height()-7)},'slow',function(){
 							$('#twitter').slideDown('slow');
 							$('#twitterBottom').slideDown('slow');
 						});		
