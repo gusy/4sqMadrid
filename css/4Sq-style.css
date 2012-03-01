@@ -20,14 +20,15 @@ canvas:focus { outline: 0; }
 #wrapper-map{
 	float:left;
 }
-#twitterCanvas{
+
+#lateralCanvas{
     width:300px;
     /*border-radius: 10px 10px 10px 10px;*/
     float:left;
     margin-left:0px;
     background-color:#d5d1ea;
 }
-#twitterHeader{
+.twitter #lateralHeader{
 
 	background:url('../img/canvas-top-bar-left.png') top left no-repeat,url('../img/canvas-top-bar-right.png') top right no-repeat,url('../img/canvas-top-bar-center.png') top center no-repeat;
 	background-size: 6px 27px,6px 27px,100% 27px;
@@ -35,7 +36,7 @@ canvas:focus { outline: 0; }
 	height:26px;
 	padding-top:2px;
 }
-#twitterlogo{
+.twitter #laterallogo {
 	background-image:url('../img/twitter_logo_top_bar.png');
 	background-repeat: no-repeat;
 	background-position: center;
@@ -44,7 +45,7 @@ canvas:focus { outline: 0; }
 	
 }
 
-#twitter{
+.twitter #lateral {
 	overflow:auto;
 	height:100%;
 	margin:0 4px 0 4px;
@@ -53,12 +54,46 @@ canvas:focus { outline: 0; }
     background-color:#fff;
 
 }
-#twitterBottom{
+.twitter #lateralBottom {
 	height:10px;
 	width:100%;
 	background-color:red;
 	background:url('../img/tweet_corner_bl.png') top left no-repeat,url('../img/tweet_corner_br.png') top right no-repeat,url('../img/tweet_bottom.png') top center repeat-x;
 }
+		
+.createEvent #lateralHeader {
+
+	background:url('../img/canvas-top-bar-left.png') top left no-repeat,url('../img/canvas-top-bar-right.png') top right no-repeat,url('../img/canvas-top-bar-center.png') top center no-repeat;
+	background-size: 6px 27px,6px 27px,100% 27px;
+	background-color: #666;
+	height:26px;
+	padding-top:2px;
+}
+.createEvent #laterallogo {
+	background-image:url('../img/twitter_logo_top_bar.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	height:100%;
+	width:100%;
+	
+}
+
+.createEvent #lateral {
+	overflow:auto;
+	height:100%;
+	margin:0 4px 0 4px;
+	margin-top:0px;
+    border-top:0px;
+    background-color:#fff;
+
+}
+.createEvent #lateralBottom {
+	height:10px;
+	width:100%;
+	background-color:red;
+	background:url('../img/tweet_corner_bl.png') top left no-repeat,url('../img/tweet_corner_br.png') top right no-repeat,url('../img/tweet_bottom.png') top center repeat-x;
+}
+
 .twitterSearchTweet{
 	background-color:white;
 	background:url('../img/tweet_left.png') top left repeat-y,url('../img/tweet_right.png') top right repeat-y;

@@ -4,22 +4,36 @@ $(document).ready(function() {
 	$("#wrapper").css("width",String(Math.max($(window).width(),1024)));
 	$("#wrapper-map").css("width",String(Math.max($(window).width()-350,1024-350)) +"px");
 	$("#wrapper").css("display","block");
-	
+	if(!timeframeMode){
+		$("#lateralCanvas").addClass("twitter");
+		$("#lateralHeader").addClass("twitter");
+		$("#laterallogo").addClass("twitter");
+		$("#lateral").addClass("twitter");
+		$("#lateralBottom").addClass("twitter");
+		
+	}else if(timeframeMode){
+	//comprobar que no es un evento ya creado
+		$("#lateralCanvas").addClass("createEvent");
+		$("#lateralHeader").addClass("createEvent");
+		$("#laterallogo").addClass("createEvent");
+		$("#lateral").addClass("createEvent");
+		$("#lateralBottom").addClass("createEvent");
+	}
 	//$("#wrapper").css("width",screen.width);
 	// Handler for .ready() called.
 	wrappermapwidth = $('#wrapper-map').width();
-	$('#twitterCanvas').height($('#wrapper-map').height()-7);
-	$('#twitter').height($('#twitterCanvas').height()-$('#twitterHeader').height()-$('#twitterBottom').height());
+	$('#lateralCanvas').height($('#wrapper-map').height()-7);
+	$('#lateral').height($('#lateralCanvas').height()-$('#lateralHeader').height()-$('#lateralBottom').height());
 	nowTrending();
-	$('#twitterlogo').click(function(){
+	$('#laterallogo').click(function(){
 		if(extended==0){
 			extended=1;
-			$('#twitter').slideUp('slow',function(){
-				$('#twitterBottom').slideUp('slow');
-				$('#twitterlogo').css({'background-image':'url(img/logoHidden.png)'},'slow');
-				$('#twitterCanvas').animate({height:'28px'},'slow',function(){
-					$('#twitterCanvas').animate({marginLeft:'-28px'},'fast',function(){
-						$('#twitterCanvas').animate({width:'28px'},'slow',function(){
+			$('#lateral').slideUp('slow',function(){
+				$('#lateralBottom').slideUp('slow');
+				$('#laterallogo').css({'background-image':'url(img/logoHidden.png)'},'slow');
+				$('#lateralCanvas').animate({height:'28px'},'slow',function(){
+					$('#lateralCanvas').animate({marginLeft:'-28px'},'fast',function(){
+						$('#lateralCanvas').animate({width:'28px'},'slow',function(){
 							$('#wrapper-map').animate({width:($('#wrapper').width()-140)},'slow');		
 						});
 					});
@@ -28,12 +42,12 @@ $(document).ready(function() {
 		}else{
 			extended=0;
 			$('#wrapper-map').animate({width:wrappermapwidth},'slow',function(){
-				$('#twitterCanvas').animate({width:'300px'},'slow',function(){
-					$('#twitterCanvas').animate({marginLeft:'0'},'fast',function(){
-						$('#twitterlogo').css({'background-image':'url(img/twitter_logo_top_bar.png)'},'slow');
-						$('#twitterCanvas').animate({height:($('#wrapper-map').height()-7)},'slow',function(){
-							$('#twitter').slideDown('slow');
-							$('#twitterBottom').slideDown('slow');
+				$('#lateralCanvas').animate({width:'300px'},'slow',function(){
+					$('#lateralCanvas').animate({marginLeft:'0'},'fast',function(){
+						$('#laterallogo').css({'background-image':'url(img/twitter_logo_top_bar.png)'},'slow');
+						$('#lateralCanvas').animate({height:($('#wrapper-map').height()-7)},'slow',function(){
+							$('#lateral').slideDown('slow');
+							$('#lateralBottom').slideDown('slow');
 						});		
 					});
 				});
@@ -64,7 +78,7 @@ function showTweet(jsonstatus,animation){
 		return(0);
 	}
 	if(!lastWasPainted){
-		$("#twitter").prepend('<div class="emptyTweet"></div>');
+		$("#lateral").prepend('<div class="emptyTweet"></div>');
 	}
 	var status=jsonstatus.tweet;
 	var opts=getDefaults()
@@ -75,15 +89,15 @@ function showTweet(jsonstatus,animation){
 	$tweet.find('.twitterSearchTime').css(opts.css['time']);
 	$tweet.find('a').css(opts.css['a']);
 	if(animation==true){
-    $tweet.hide().prependTo('#twitter').slideDown("slow").animate({backgroundColor:'#fff'},8000);
+		$tweet.hide().prependTo('#lateral').slideDown("slow").animate({backgroundColor:'#fff'},8000);
     }else{
-    	$tweet.hide().prependTo('#twitter').show().css({backgroundColor:'fff'});
+    	$tweet.hide().prependTo('#lateral').show().css({backgroundColor:'fff'});
     }
-    var size=$("#twitter").children().length
+    var size=$("#lateral").children().length
     lastPaintedTime=new Date().getTime();
     lastWasPainted=true;
     if(size>40){	
-   	 $("#twitter div.twitterSearchTweet").last().remove();
+   	 $("#lateral div.twitterSearchTweet").last().remove();
      }
  }
 function getDefaults(){

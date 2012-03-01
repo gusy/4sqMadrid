@@ -338,7 +338,7 @@ sketch.attachFunction = function (processing) {
                             if (timeEpoch - val.displayedTime < tiempoCheckin*1000){
                                 if (!val.timelined){
                                     
-				                 showTweet(val,false);
+				                // showTweet(val,false);
                                     val.timelined=true;
                                 }
                                 
