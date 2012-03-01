@@ -450,9 +450,9 @@ sketch.attachFunction = function (processing) {
 			    guiDisplayedTime=processing.millis();
 			}
             if(rotando){
-				processing.image(pauseIcon,processing.width-95,5,90,90);			
+				processing.image(pauseIcon,processing.width-95,5,90,70);			
             }else{      
-                processing.image(playIcon,processing.width-95,5,90,90);
+                processing.image(playIcon,processing.width-95,5,90,70);
             }
             
          }        
