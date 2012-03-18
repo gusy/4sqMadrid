@@ -111,12 +111,17 @@ canvas:focus { outline: 0; }
 #timeFrameValue{
 	display:None;
 }
-#timeFrameButton{
-	background-image:url('../img/menu.png');
-	width:64px;
-	height:64px;
+#settingsButton{
+	background-image:url('../img/settings-button-bottom.png');
+	width:32px;
+	height:27px;
 	clear: left;
 }
+
+#settingsButton:hover{
+	background-image:url('../img/settings-button-bottom-hover.png');
+}
+
 #menu{
 	/*padding: 5px;
 	position: absolute;
@@ -170,7 +175,7 @@ input.text { margin-bottom:12px; width:95%; padding: .4em; }
 	background-size: 6px 27px,6px 27px,100% 27px;
 	height: 27px;
 	width: 100%;
-	padding-top: 7px;
+	padding-top: 0px;
 
 
 

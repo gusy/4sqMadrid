@@ -17,7 +17,7 @@ $(document).ready(function() {
 			}
 		});
 		
-	$('#timeFrameButton').click(function() {
+	$('#settingsButton').click(function() {
 		$( "#menu" ).dialog( "open" );
 	});
 	$('#from').datetimepicker({
