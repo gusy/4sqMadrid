@@ -78,6 +78,7 @@ sketch.attachFunction = function (processing) {
     
     var timeframeFrom = 0;
     var timeframeTo = 0;
+    var timeframePause = true;
 
     var arrayCheckins = new Array();
     var arrayVenues = new Object();
@@ -141,6 +142,10 @@ sketch.attachFunction = function (processing) {
         processing.stroke(processing.color(44, 48, 32));
 
         if (timeframeMode){
+            $("#timeframeWrapper").show();
+            $("#timeframePlayButton").click(function(){
+                processing.switchTimeframePause();
+            });
 			$( "#progress-bar" ).slider({
             range: "min",
             value: 1,
@@ -177,6 +182,8 @@ sketch.attachFunction = function (processing) {
                     }
                     lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
                 });
+            },complete: function () {
+                processing.switchTimeframePause();
             }
         });
             
@@ -609,13 +616,37 @@ sketch.attachFunction = function (processing) {
        }
     };
 
+    processing.switchTimeframePause = function() {
+        timeframePause = !timeframePause;
+        if (timeframePause){
+            $('#timeframePlayButton').css("background-image", "url(img/play-button-bottom.png)"); 
+            $('#timeframePlayButton').hover( function(){
+              $(this).css("background-image", "url(img/play-button-bottom-hover.png)");
+                },
+                function(){
+              $(this).css("background-image", "url(img/play-button-bottom.png)");
+            }); 
+        }else{
+            $('#timeframePlayButton').css("background-image", "url(img/pause-button-bottom.png)"); 
+            $('#timeframePlayButton').hover( function(){
+              $(this).css("background-image", "url(img/pause-button-bottom-hover.png)");
+                },
+                function(){
+              $(this).css("background-image", "url(img/pause-button-bottom.png)");
+            });         }
+    }
+
     processing.currentMillis = function(){
         if (!timeframeMode){
             return processing.millis();
         }else{
-            
-            var lapse = processing.millis()-oldMillis;
-            oldMillis += lapse;
+            var lapse;
+            if (timeframePause){
+                lapse = 0;
+            }else{
+                lapse = processing.millis()-oldMillis;
+            } 
+            oldMillis = processing.millis();
             oldTime += lapse*timeRate;
 
             if (oldTime < startTime){

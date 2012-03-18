@@ -111,11 +111,27 @@ canvas:focus { outline: 0; }
 #timeFrameValue{
 	display:None;
 }
+
+#timeFrameWrapper{
+	display:none;
+}
+
+#timeframePlayButton:hover{
+	background-image:url('../img/play-button-bottom-hover.png');
+}
+
+#timeFramePlayButton{
+	background-image:url('../img/play-button-bottom.png');
+	width:32px;
+	height:27px;
+	float: left;
+}
+
 #settingsButton{
 	background-image:url('../img/settings-button-bottom.png');
 	width:32px;
 	height:27px;
-	clear: left;
+	float: left;
 }
 
 #settingsButton:hover{
@@ -182,8 +198,10 @@ input.text { margin-bottom:12px; width:95%; padding: .4em; }
 }
 
 #progress-bar{
+	float: left;
     width: 60%;
-    margin-left: 240px;
+    margin-left: 10px;
+    margin-top: 7px;
 
 }
 
