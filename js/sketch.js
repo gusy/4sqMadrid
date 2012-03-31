@@ -663,11 +663,11 @@ sketch.attachFunction = function (processing) {
           for (iter_y = 0; iter_y<imgs_y;iter_y++){
             if (iter_y==imgs_y-1){
                 var centerLat = currentConfig.latN+getLatOffset(currentConfig.latN,-320-(iter_y-1)*640-320-lastHeight/2,mapZoom);
-                map_imgs[iter_x][iter_y]=processing.requestImage("http://localhost/~jorge/4sqMadrid/proxy.php?url=http%3A%2F%2Fmaps.google.com%2Fmaps%2Fapi%2Fstaticmap%3Fcenter%3D"+centerLat+"%2C"+centerLong+"%26zoom%3D"+mapZoom+"%26size%3D"+currentWidth+"x"+lastHeight+"%26scale%3D1%26sensor%3Dfalse%26maptype%3D"+tipo+"%26format%3Djpeg&mimeType=image%2Fjpeg");
+                map_imgs[iter_x][iter_y]=processing.requestImage("proxy.php?url=http%3A%2F%2Fmaps.google.com%2Fmaps%2Fapi%2Fstaticmap%3Fcenter%3D"+centerLat+"%2C"+centerLong+"%26zoom%3D"+mapZoom+"%26size%3D"+currentWidth+"x"+lastHeight+"%26scale%3D1%26sensor%3Dfalse%26maptype%3D"+tipo+"%26format%3Djpeg&mimeType=image%2Fjpeg");
 
             }else{ 
                 var centerLat = currentConfig.latN+getLatOffset(currentConfig.latN,-320-iter_y*640,mapZoom);
-                map_imgs[iter_x][iter_y]=processing.requestImage("http://localhost/~jorge/4sqMadrid/proxy.php?url=http%3A%2F%2Fmaps.google.com%2Fmaps%2Fapi%2Fstaticmap%3Fcenter%3D"+centerLat+"%2C"+centerLong+"%26zoom%3D"+mapZoom+"%26size%3D"+currentWidth+"x640%26scale%3D1%26sensor%3Dfalse%26maptype%3D"+tipo+"%26format%3Djpeg&mimeType=image%2Fjpeg");
+                map_imgs[iter_x][iter_y]=processing.requestImage("proxy.php?url=http%3A%2F%2Fmaps.google.com%2Fmaps%2Fapi%2Fstaticmap%3Fcenter%3D"+centerLat+"%2C"+centerLong+"%26zoom%3D"+mapZoom+"%26size%3D"+currentWidth+"x640%26scale%3D1%26sensor%3Dfalse%26maptype%3D"+tipo+"%26format%3Djpeg&mimeType=image%2Fjpeg");
 
             }
           }      
