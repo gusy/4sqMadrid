@@ -14,16 +14,21 @@ var trendingPlaces = new Array();
 
 sketch.attachFunction = function (processing) {
     
-    var madridConfig = {"latN":40.5735,"latS":40.363,"lngW":-3.84,"lngE":-3.495,
-                        "locationId":1};
-    var singaporeConfig = {"latN":1.48,"latS":1.23,"lngW":103.62,"lngE":104,
-                        "locationId":2};
-    var parisConfig = {"latN":48.909,"latS":48.812,"lngW":2.201,"lngE":2.424,
-                        "locationId":3};
-    var newYorkConfig = {"latN":40.806035,"latS":40.699695,"lngW":-74.02,"lngE":-73.93361,
-                        "locationId":4};
-    var sevilleConfig = {"latN":37.4394,"latS":37.3369,"lngW":-6.0486,"lngE":-5.8863,
-                        "locationId":5};
+    var madridConfig = {"satImage":'MadridSat.jpg',"mapImage":'MadridMap.jpg',
+                        "latN":40.5735,"latS":40.363,"lngW":-3.84,"lngE":-3.495,
+                        "mapWidth":2000,"mapHeight":1600,"locationId":1};
+    var singaporeConfig = {"satImage":'SingaporeSat.jpg',"mapImage":'SingaporeMap.jpg',
+                        "latN":1.48,"latS":1.23,"lngW":103.62,"lngE":104,
+                        "mapWidth":2000,"mapHeight":1316,"locationId":2};
+    var parisConfig = {"satImage":'ParisSat.jpg',"mapImage":'ParisMap.jpg',
+                        "latN":48.909,"latS":48.812,"lngW":2.201,"lngE":2.424,
+                        "mapWidth":2000,"mapHeight":1332,"locationId":3};
+    var newYorkConfig = {"satImage":'NewYorkSat.jpg',"mapImage":'NewYorkMap.jpg',
+                        "latN":40.806035,"latS":40.699695,"lngW":-74.02,"lngE":-73.93361,
+                        "mapWidth":1000,"mapHeight":1638,"locationId":4};
+    var sevilleConfig = {"satImage":'SevilleMap.jpg',"mapImage":'SevilleMap.jpg',
+                        "latN":37.4394,"latS":37.3369,"lngW":-6.0486,"lngE":-5.8863,
+                        "mapWidth":2225,"mapHeight":1768,"locationId":5};
 
     var currentConfig;
 
@@ -107,12 +112,6 @@ sketch.attachFunction = function (processing) {
 
     var wasExtended;
 
-    var map_imgs;
-    var imgs_x=4;
-    var imgs_y=3;
-
-    var rightBound;
-    var bottomBound;
 
     processing.setup = function () {
         if (getParameterByName("timeframe")==("true")){
@@ -141,11 +140,8 @@ sketch.attachFunction = function (processing) {
         processing.size(1280, 720, processing.OPENGL);
         transX = 0;
         transY = 0;
-
-        processing.loadMapImages();
-
-
         processing.smooth();
+        tex = processing.requestImage("img/"+currentConfig.satImage);
         processing.textureMode(processing.NORMALIZED);
         processing.fill(55);
         processing.stroke(processing.color(44, 48, 32));
@@ -238,11 +234,8 @@ sketch.attachFunction = function (processing) {
     }
         processing.noStroke();
         processing.switchRotate();
-   
     };
     processing.draw = function () {
-        processing.canvasAdjustment();
-
 
 
         processing.hint(processing.ENABLE_DEPTH_TEST);
@@ -327,34 +320,19 @@ sketch.attachFunction = function (processing) {
             rotZ += processing.map(timeRunning-lastRotZIncreaseTime,0,1000*segundosPorVuelta,0,2*Math.PI)%(2*Math.PI);
             lastRotZIncreaseTime = timeRunning;
         }
-        
-        for (iter_x=0;iter_x<imgs_x;iter_x++){
-            for (iter_y=0;iter_y<imgs_y;iter_y++){
-                tex = map_imgs[iter_x][iter_y];
 
-                processing.textureMode(processing.NORMALIZED);
-                processing.beginShape();
-                                        processing.fill(255);
-
-                    if(tex.width>0&&tex.height>0){
-                        processing.texture(tex);
-                    }
-                    processing.vertex(Math.min(-currentConfig.mapWidth/2+(iter_x*640),currentConfig.mapWidth/2),
-                                      Math.min(-currentConfig.mapHeight/2+(iter_y*640),currentConfig.mapHeight/2), 0, 0, 0);
-                    processing.vertex(Math.min(-currentConfig.mapWidth/2+640+(iter_x*640),currentConfig.mapWidth/2),
-                                      Math.min(-currentConfig.mapHeight/2+(iter_y*640),currentConfig.mapHeight/2), 0, 1, 0);
-                    processing.vertex(Math.min(-currentConfig.mapWidth/2+640+(iter_x*640),currentConfig.mapWidth/2),
-                                      Math.min(-currentConfig.mapHeight/2+640+(iter_y*640),currentConfig.mapHeight/2), 0, 1, 1);
-                    processing.vertex(Math.min(-currentConfig.mapWidth/2+(iter_x*640),currentConfig.mapWidth/2),
-                                      Math.min(-currentConfig.mapHeight/2+640+(iter_y*640),currentConfig.mapHeight/2), 0, 0, 1);
-                processing.endShape();
-
-
-
-            }
+        processing.textureMode(processing.NORMALIZED);
+        processing.beginShape();
+        if(tex.width>0&&tex.height>0){
+            processing.texture(tex);
+            processing.fill(255);
         }
 
-        
+        processing.vertex(-currentConfig.mapWidth/2, -currentConfig.mapHeight/2, 0, 0, 0);
+        processing.vertex(currentConfig.mapWidth/2, -currentConfig.mapHeight/2, 0, 1, 0);
+        processing.vertex(currentConfig.mapWidth/2, currentConfig.mapHeight/2, 0, 1, 1);
+        processing.vertex(-currentConfig.mapWidth/2, currentConfig.mapHeight/2, 0, 0, 1);
+        processing.endShape();
 
 
         var iter=0;
@@ -480,13 +458,13 @@ sketch.attachFunction = function (processing) {
 				processing.image(satIcon,5,5,70,70);
 			}
             processing.fill(255,processing.map(processing.millis(),guiDisplayedTime,guiDisplayedTime+tiempoDisolucionGui*1000,255,0));
-			if((processing.resizedMouseX()>rightBound-95&&processing.resizedMouseY()<95)){
+			if((processing.resizedMouseX()>processing.width-95&&processing.resizedMouseY()<95)){
 			    guiDisplayedTime=processing.millis();
 			}
             if(rotando){
-				processing.image(pauseIcon,rightBound-95,5,90,70);			
+				processing.image(pauseIcon,processing.width-95,5,90,70);			
             }else{      
-                processing.image(playIcon,rightBound-95,5,90,70);
+                processing.image(playIcon,processing.width-95,5,90,70);
             }
             
          }        
@@ -522,7 +500,7 @@ sketch.attachFunction = function (processing) {
         oldY = processing.resizedMouseY();
         oldRotX = rotX;
         oldRotZ = rotZ;
-        if(processing.resizedMouseX()>rightBound-95&&processing.resizedMouseY()<95){
+        if(processing.resizedMouseX()>processing.width-95&&processing.resizedMouseY()<95){
             processing.switchRotate();
         }
         if(processing.resizedMouseX()<75&&processing.resizedMouseY()<75){
@@ -614,66 +592,25 @@ sketch.attachFunction = function (processing) {
     };
 
     processing.resizedMouseX = function() {
-        return Math.floor(processing.mouseX*canvas.width/canvas.clientWidth);
+        return Math.floor(processing.mouseX*1280/canvas.clientWidth);
         
 
     };
 
     processing.resizedMouseY = function() {
-        return Math.floor(processing.mouseY*canvas.height/canvas.clientHeight);
+        return Math.floor(processing.mouseY*720/canvas.clientHeight);
         
     };
 
     processing.cambiaMapa = function() {
        if (satellite){
+          tex = processing.requestImage("img/"+currentConfig.mapImage);
           satellite=false;
-          processing.loadMapImages();
        }else{
+          tex = processing.requestImage("img/"+currentConfig.satImage);
           satellite=true;
-          processing.loadMapImages();
        }
-       
     };
-
-    processing.loadMapImages = function() {
-       var mapZoom = getZoom(currentConfig.latS,currentConfig.latN,currentConfig.lngW,currentConfig.lngE,9);
-       currentConfig.mapWidth = getMapWidth(currentConfig.lngW,currentConfig.lngE,mapZoom);
-       currentConfig.mapHeight = getMapHeight(currentConfig.latS,currentConfig.latN,mapZoom);
-       imgs_x = getXPicsNumber(currentConfig.lngW,currentConfig.lngE,mapZoom);
-       imgs_y = getYPicsNumber(currentConfig.latS,currentConfig.latN,mapZoom);
-
-       map_imgs=new Array(imgs_x);
-       var lastWidth = Math.ceil(currentConfig.mapWidth-640*(imgs_x-1));
-       var lastHeight = Math.ceil(currentConfig.mapHeight-640*(imgs_y-1));
-       var tipo = "roadmap"
-       if (satellite){
-        tipo="satellite";
-       }
-
-
-       for (iter_x = 0; iter_x<imgs_x; iter_x++){
-        var currentWidth = 640;
-            map_imgs[iter_x] = new Array(imgs_y);
-            if(iter_x == imgs_x-1){
-              currentWidth=lastWidth;
-              var centerLong = currentConfig.lngW+getLongOffset(320+(iter_x-1)*640+320+lastWidth/2,mapZoom);
-            }else{
-              var centerLong = currentConfig.lngW+getLongOffset(320+iter_x*640,mapZoom);
-            }
-          for (iter_y = 0; iter_y<imgs_y;iter_y++){
-            if (iter_y==imgs_y-1){
-                var centerLat = currentConfig.latN+getLatOffset(currentConfig.latN,-320-(iter_y-1)*640-320-lastHeight/2,mapZoom);
-                map_imgs[iter_x][iter_y]=processing.requestImage("http://localhost/~jorge/4sqMadrid/proxy.php?url=http%3A%2F%2Fmaps.google.com%2Fmaps%2Fapi%2Fstaticmap%3Fcenter%3D"+centerLat+"%2C"+centerLong+"%26zoom%3D"+mapZoom+"%26size%3D"+currentWidth+"x"+lastHeight+"%26scale%3D1%26sensor%3Dfalse%26maptype%3D"+tipo+"%26format%3Djpeg&mimeType=image%2Fjpeg");
-
-            }else{ 
-                var centerLat = currentConfig.latN+getLatOffset(currentConfig.latN,-320-iter_y*640,mapZoom);
-                map_imgs[iter_x][iter_y]=processing.requestImage("http://localhost/~jorge/4sqMadrid/proxy.php?url=http%3A%2F%2Fmaps.google.com%2Fmaps%2Fapi%2Fstaticmap%3Fcenter%3D"+centerLat+"%2C"+centerLong+"%26zoom%3D"+mapZoom+"%26size%3D"+currentWidth+"x640%26scale%3D1%26sensor%3Dfalse%26maptype%3D"+tipo+"%26format%3Djpeg&mimeType=image%2Fjpeg");
-
-            }
-          }      
-
-       }
-    }
 
     processing.switchRotate = function() {
        if (!rotando){
@@ -805,20 +742,6 @@ sketch.attachFunction = function (processing) {
 
 
 
-    };
-
-    processing.canvasAdjustment = function(){
-        if ($("#canvas-wrapper").height()*1280/720< $("#canvas-wrapper").width()){
-            $("#canvas").css("width","100%");
-            $("#canvas").css("height","");
-            rightBound = 1280;
-            bottomBound = $("#canvas-wrapper").height()*1280/$("#canvas-wrapper").width();
-        }else{
-            $("#canvas").css("height","100%");
-            $("#canvas").css("width","");
-            rightBound = $("#canvas-wrapper").width()*720/$("#canvas-wrapper").height();
-            bottomBound = 720;
-        }
     };
 
 };

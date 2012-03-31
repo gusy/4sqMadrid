@@ -1,8 +1,11 @@
 var extended =0;
 var wrappermapwidth=0;
 $(document).ready(function() {
-	$("#wrapper").css("width",String(Math.max($(window).width(),1024)));
-	$("#wrapper-map").css("width",String(Math.max($(window).width()-350,1024-350)) +"px");
+	//$("#wrapper").css("width",String(Math.max($(window).width(),1024)));
+	//$("#wrapper-map").css("width",String(Math.max($(window).width()-350,1024-350)) +"px");
+	$("#wrapper-map").css("width",String($("#wrapper").width()-350)+"px");
+	var wrapperHeight=$("#wrapper").height();
+	$("#canvas-wrapper").css("height",String(wrapperHeight-$("#trending").height()-$("#bottom-bar").height())+"px");
 	$("#wrapper").css("display","block");
 	if(!timeframeMode){
 		$("#lateralCanvas").addClass("twitter");
@@ -190,3 +193,5 @@ function updateAllTimes(){
    		
 	});
 }
+
+

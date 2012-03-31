@@ -7,18 +7,21 @@ body,div{
     border-color: #aaaaaa;
     border-width: 0px;
     border-style: solid;
-    width:100%;
 
 }
 canvas:focus { outline: 0; }
 #wrapper{
     margin-left:0px;
     margin-right:0px;
-    display:none;
+    height:100%;
+    /*display:none;*/
     
 }
 #wrapper-map{
 	float:left;
+}
+#canvas-wrapper{
+	overflow: hidden;
 }
 
 #lateralCanvas{
