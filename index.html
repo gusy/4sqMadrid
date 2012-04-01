@@ -1,10 +1,10 @@
 <html>
     <meta charset="utf-8" />
-    <head>    
+    <head>
         <link rel="StyleSheet" href="css/4Sq-style.css" type="text/css">
         <link rel="stylesheet" media="all" type="text/css" href="css/jquery-ui-1.8.18.custom.css" />
         <script src="js/processing-1.3.6.js"></script>
-        <script src="js/jquery-1.7.js"></script>    
+        <script src="js/jquery-1.7.js"></script>
         <script src="js/jquery.animate-colors-min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
         <script type="text/javascript" src="js/mapTools.js"></script>
@@ -16,9 +16,10 @@
 		<script type="text/javascript" src="js/jquery.ui.draggable.js"></script>
 		<script src="js/showtweets.js"></script>
 		<script type="text/javascript" src="js/timeframe.js"></script>
-		
-		
-		
+		<script type="text/javascript" src="js/script.js"></script>
+
+
+
         <title>CityPulse</title>
     </head>
     <body bgcolor='#666'>
@@ -32,54 +33,92 @@
         <div id="wrapper-map">
             <div id="trending"></div>
             <div id="canvas-wrapper">
-         	   <canvas id="canvas"></canvas>
-        	</div>
+          <canvas id="canvas"></canvas>
+         </div>
             <div id="bottom-bar">
-            	<div id ="settingsButton"></div>
-            	<div id="timeframeWrapper">
-            		<div id ="timeframePlayButton"></div>
-            		<div id="progress-bar"></div>
-           		</div>
+             <div id ="settingsButton"></div>
+             <div id="timeframeWrapper">
+             <div id ="timeframePlayButton"></div>
+             <div id="progress-bar"></div>
+            </div>
             </div>
         </div>
         <div id = "lateralCanvas">
-			<div id = "lateralHeader">
-			    <div id ="laterallogo"></div> 
+			<div id="container">  
+			
+				<div id = "" class = " lateralHeader button twitter">
+					<a><div id ="" class="twitter laterallogo"></div></a>
+				</div>
+				<div id = "acord1" class = "dropdown lateral twitter">
+							  
+				</div>
+				
+				<div id = "" class = " lateralHeader button">
+					<a><div id ="" class="laterallogo"></div></a>
+				</div>
+				<div id = "acord2" class = "dropdown lateral">
+							  
+				</div>
+				
+				<div id = "" class = " lateralHeader button">
+					<a><div id ="" class="laterallogo"></div></a>
+				</div>
+				<div id = "acord3" class = "dropdown lateral">
+							  
+				</div>
+				
+				<div id = "" class = " lateralHeader button">
+					<a><div id ="" class="laterallogo"></div></a>
+				</div>
+				<div id = "acord4" class = "dropdown lateral">
+							  
+				</div>
+				
+				<div id = "" class = " lateralHeader button">
+					<a><div id ="" class="laterallogo"></div></a>
+				</div>
+				<div id = "" class = "dropdown lateral">
+							  
+				</div>
+				
+			
+			
 			</div>
-			<div id = "lateral">
-              
-			</div>	
-			<div id = "lateralBottom"></div>				  
-		</div>
-            
+			
+			
+
+<div class="clear"></div>
+
+
+
         </div>
         
-        <div id ="menu"  title="You can change the city and configure a TimeFrame View">
-			<div id ="timeframeSelection"> 	
-				<form id = "timeFrameData" name ="timeFrameData" method="get" onsubmit="conversion();">
-				    <fieldset>
-						<!--<legend>Ciudad</legend> -->
-						<label for="city">City</label>
-						<select name = "city" class="select ui-widget-content ui-corner-all">
-							<option value="MAD"> Madrid</option>
-							<option value="PAR"> Paris</option>
-							<option value="SIN"> Singapur</option>
-							<option value="NYC"> New York</option>
-						</select>
-				    </fieldset>
-				    <fieldset>
-				    	<p>TimeFrame View:</p>
-						<input id ="timeFrameValue" class="text ui-widget-content ui-corner-all" type ="text"  name = "timeframe" value = "false" >
-						<label for="from">From:</label>
-						<input type="text" value="" id="from" class="text ui-widget-content ui-corner-all" name="from">
-						<label for="to">To:</label>
-						<input type="text" value="" id="to" class="text ui-widget-content ui-corner-all" name="to">
-					</fieldset>
-					
-					<!--<input type= "submit" value = "Submit"/>-->
-				</form>
-			</div>
-		</div>
+        <div id ="menu" title="You can change the city and configure a TimeFrame View">
+<div id ="timeframeSelection">
+<form id = "timeFrameData" name ="timeFrameData" method="get" onsubmit="conversion();">
+<fieldset>
+<!--<legend>Ciudad</legend> -->
+<label for="city">City</label>
+<select name = "city" class="select ui-widget-content ui-corner-all">
+<option value="MAD"> Madrid</option>
+<option value="PAR"> Paris</option>
+<option value="SIN"> Singapur</option>
+<option value="NYC"> New York</option>
+</select>
+</fieldset>
+<fieldset>
+<p>TimeFrame View:</p>
+<input id ="timeFrameValue" class="text ui-widget-content ui-corner-all" type ="text" name = "timeframe" value = "false" >
+<label for="from">From:</label>
+<input type="text" value="" id="from" class="text ui-widget-content ui-corner-all" name="from">
+<label for="to">To:</label>
+<input type="text" value="" id="to" class="text ui-widget-content ui-corner-all" name="to">
+</fieldset>
+
+<!--<input type= "submit" value = "Submit"/>-->
+</form>
+</div>
+</div>
         <script src="js/sketch.js"> </script>
         
     </body>

@@ -23,7 +23,9 @@ canvas:focus { outline: 0; }
 #canvas-wrapper{
 	overflow: hidden;
 }
-
+.dropdown{
+	display:none;
+}
 #lateralCanvas{
     width:300px;
     /*border-radius: 10px 10px 10px 10px;*/
@@ -31,7 +33,7 @@ canvas:focus { outline: 0; }
     margin-left:0px;
     background-color:#d5d1ea;
 }
-.twitter #lateralHeader{
+.lateralHeader.twitter {
 
 	background:url('../img/canvas-top-bar-left.png') top left no-repeat,url('../img/canvas-top-bar-right.png') top right no-repeat,url('../img/canvas-top-bar-center.png') top center no-repeat;
 	background-size: 6px 27px,6px 27px,100% 27px;
@@ -39,7 +41,7 @@ canvas:focus { outline: 0; }
 	height:26px;
 	padding-top:2px;
 }
-.twitter #laterallogo {
+.laterallogo.twitter{
 	background-image:url('../img/twitter_logo_top_bar.png');
 	background-repeat: no-repeat;
 	background-position: center;
@@ -48,7 +50,7 @@ canvas:focus { outline: 0; }
 	
 }
 
-.twitter #lateral {
+.twitter.lateral {
 	overflow:auto;
 	height:100%;
 	margin:0 4px 0 4px;
@@ -57,14 +59,14 @@ canvas:focus { outline: 0; }
     background-color:#fff;
 
 }
-.twitter #lateralBottom {
+#lateralBottom.twitter  {
 	height:10px;
 	width:100%;
 	background-color:red;
 	background:url('../img/tweet_corner_bl.png') top left no-repeat,url('../img/tweet_corner_br.png') top right no-repeat,url('../img/tweet_bottom.png') top center repeat-x;
 }
 		
-.createEvent #lateralHeader {
+.lateralHeader {
 
 	background:url('../img/canvas-top-bar-left.png') top left no-repeat,url('../img/canvas-top-bar-right.png') top right no-repeat,url('../img/canvas-top-bar-center.png') top center no-repeat;
 	background-size: 6px 27px,6px 27px,100% 27px;
@@ -72,7 +74,7 @@ canvas:focus { outline: 0; }
 	height:26px;
 	padding-top:2px;
 }
-.createEvent #laterallogo {
+.laterallogo.createEvent {
 	background-image:url('../img/twitter_logo_top_bar.png');
 	background-repeat: no-repeat;
 	background-position: center;
@@ -81,7 +83,7 @@ canvas:focus { outline: 0; }
 	
 }
 
-.createEvent #lateral {
+.lateral {
 	overflow:auto;
 	height:100%;
 	margin:0 4px 0 4px;
@@ -90,7 +92,16 @@ canvas:focus { outline: 0; }
     background-color:#fff;
 
 }
-.createEvent #lateralBottom {
+.laterallogo{
+	/*background-image:url('../img/twitter_logo_top_bar.png');*/
+	background-repeat: no-repeat;
+	background-position: center;
+	height:100%;
+	width:100%;
+	
+}
+
+.lateralBottom.createEvent {
 	height:10px;
 	width:100%;
 	background-color:red;

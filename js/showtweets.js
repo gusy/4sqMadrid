@@ -7,11 +7,11 @@ $(document).ready(function() {
 	var wrapperHeight=$("#wrapper").height();
 	$("#canvas-wrapper").css("height",String(wrapperHeight-$("#trending").height()-$("#bottom-bar").height())+"px");
 	$("#wrapper").css("display","block");
-	if(!timeframeMode){
+	/*if(!timeframeMode){
 		$("#lateralCanvas").addClass("twitter");
 		$("#lateralHeader").addClass("twitter");
 		$("#laterallogo").addClass("twitter");
-		$("#lateral").addClass("twitter");
+		$(".lateral").addClass("twitter");
 		$("#lateralBottom").addClass("twitter");
 		
 	}else if(timeframeMode){
@@ -21,14 +21,18 @@ $(document).ready(function() {
 		$("#laterallogo").addClass("createEvent");
 		$("#lateral").addClass("createEvent");
 		$("#lateralBottom").addClass("createEvent");
-	}
+	} */
 	//$("#wrapper").css("width",screen.width);
 	// Handler for .ready() called.
 	wrappermapwidth = $('#wrapper-map').width();
-	$('#lateralCanvas').height($('#wrapper-map').height()-7);
-	$('#lateral').height($('#lateralCanvas').height()-$('#lateralHeader').height()-$('#lateralBottom').height());
+	$('#lateralCanvas').height($('#wrapper-map').height()-0);//antes era -7px.
+	//$('#lateral').height($('#lateralCanvas').height()-$('#lateralHeader').height()-$('#lateralBottom').height());
+	$('.lateral').height(($('#lateralCanvas').height()-$('#container').height()+1)/2);
+	$("#acord1").css('display','block');
+	$("#acord2").css('display','block');
 	nowTrending();
-	$('#laterallogo').click(function(){
+	
+	/*$('#laterallogo').click(function(){
 		if(extended==0){
 			extended=1;
 			$('#lateral').slideUp('slow',function(){
@@ -56,7 +60,7 @@ $(document).ready(function() {
 				});
 			});
 		}	
-	});
+	});*/
 });
 var lastPaintedTime=0;
 var lastWasPainted=true;
@@ -81,7 +85,7 @@ function showTweet(jsonstatus,animation){
 		return(0);
 	}
 	if(!lastWasPainted){
-		$("#lateral").prepend('<div class="emptyTweet"></div>');
+		$(".lateral.twitter").prepend('<div class="emptyTweet"></div>');
 	}
 	var status=jsonstatus.tweet;
 	var opts=getDefaults()
@@ -92,15 +96,15 @@ function showTweet(jsonstatus,animation){
 	$tweet.find('.twitterSearchTime').css(opts.css['time']);
 	$tweet.find('a').css(opts.css['a']);
 	if(animation==true){
-		$tweet.hide().prependTo('#lateral').slideDown("slow").animate({backgroundColor:'#fff'},8000);
+		$tweet.hide().prependTo('.lateral.twitter').slideDown("slow").animate({backgroundColor:'#fff'},8000);
     }else{
-    	$tweet.hide().prependTo('#lateral').show().css({backgroundColor:'fff'});
+    	$tweet.hide().prependTo('.lateral.twitter').show().css({backgroundColor:'fff'});
     }
-    var size=$("#lateral").children().length
+    var size=$(".lateral.twitter").children().length
     lastPaintedTime=new Date().getTime();
     lastWasPainted=true;
     if(size>40){	
-   	 $("#lateral div.twitterSearchTweet").last().remove();
+   	 $(".lateral.twitter div.twitterSearchTweet").last().remove();
      }
  }
 function getDefaults(){
@@ -193,5 +197,6 @@ function updateAllTimes(){
    		
 	});
 }
+
 
 
