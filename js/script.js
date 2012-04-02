@@ -20,5 +20,4 @@ $(document).ready(function(){
 		/* Preventing the default event (which would be to navigate the browser to the link's address) */
 		e.preventDefault();
 	})
-	console.log($('#container .button a'))
 });

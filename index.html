@@ -33,14 +33,37 @@
         <div id="wrapper-map">
             <div id="trending"></div>
             <div id="canvas-wrapper">
-          <canvas id="canvas"></canvas>
-         </div>
-            <div id="bottom-bar">
-             <div id ="settingsButton"></div>
-             <div id="timeframeWrapper">
-             <div id ="timeframePlayButton"></div>
-             <div id="progress-bar"></div>
-            </div>
+				<div id = "mapControl">
+					<div id = "arrows" >
+						<div class ="arrows" id = "arrowUp">
+						</div>
+						<div class ="arrows" id = "arrowRight">
+						</div>
+						<div class ="arrows" id = "arrowDown">
+						</div>
+						<div class ="arrows" id = "arrowLeft">
+						</div>
+						
+								
+					</div>
+					<div id = "zoom">
+						<div id = "zoomIn">
+						</div>
+						<div id = "zoomBar">
+						</div>
+						<div id = "ZoomOut">
+						</div>
+					</div>
+				</div>
+				<canvas id="canvas"></canvas>
+			</div>
+			
+            <div id="bottom-bar"> 
+				<div id ="settingsButton"></div>
+				<div id="timeframeWrapper">
+					<div id ="timeframePlayButton"></div>
+					<div id="progress-bar"></div>
+				</div>
             </div>
         </div>
         <div id = "lateralCanvas">
@@ -79,47 +102,37 @@
 				</div>
 				<div id = "" class = "dropdown lateral">
 							  
-				</div>
-				
-			
-			
+				</div>	
 			</div>
-			
-			
-
-<div class="clear"></div>
-
-
-
+			<div class="clear"></div>
         </div>
         
         <div id ="menu" title="You can change the city and configure a TimeFrame View">
-<div id ="timeframeSelection">
-<form id = "timeFrameData" name ="timeFrameData" method="get" onsubmit="conversion();">
-<fieldset>
-<!--<legend>Ciudad</legend> -->
-<label for="city">City</label>
-<select name = "city" class="select ui-widget-content ui-corner-all">
-<option value="MAD"> Madrid</option>
-<option value="PAR"> Paris</option>
-<option value="SIN"> Singapur</option>
-<option value="NYC"> New York</option>
-</select>
-</fieldset>
-<fieldset>
-<p>TimeFrame View:</p>
-<input id ="timeFrameValue" class="text ui-widget-content ui-corner-all" type ="text" name = "timeframe" value = "false" >
-<label for="from">From:</label>
-<input type="text" value="" id="from" class="text ui-widget-content ui-corner-all" name="from">
-<label for="to">To:</label>
-<input type="text" value="" id="to" class="text ui-widget-content ui-corner-all" name="to">
-</fieldset>
+			<div id ="timeframeSelection">
+				<form id = "timeFrameData" name ="timeFrameData" method="get" onsubmit="conversion();">
+					<fieldset>
+						<!--<legend>Ciudad</legend> -->
+						<label for="city">City</label>
+						<select name = "city" class="select ui-widget-content ui-corner-all">
+							<option value="MAD"> Madrid</option>
+							<option value="PAR"> Paris</option>
+							<option value="SIN"> Singapur</option>
+							<option value="NYC"> New York</option>
+						</select>
+					</fieldset>
+					<fieldset>
+						<p>TimeFrame View:</p>
+						<input id ="timeFrameValue" class="text ui-widget-content ui-corner-all" type ="text" name = "timeframe" value = "false" >
+						<label for="from">From:</label>
+						<input type="text" value="" id="from" class="text ui-widget-content ui-corner-all" name="from">
+						<label for="to">To:</label>
+						<input type="text" value="" id="to" class="text ui-widget-content ui-corner-all" name="to">
+					</fieldset>
 
-<!--<input type= "submit" value = "Submit"/>-->
-</form>
-</div>
-</div>
+					<!--<input type= "submit" value = "Submit"/>-->
+				</form>
+			</div>
+		</div>
         <script src="js/sketch.js"> </script>
-        
     </body>
 </html>

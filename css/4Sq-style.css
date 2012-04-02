@@ -17,6 +17,68 @@ canvas:focus { outline: 0; }
     /*display:none;*/
     
 }
+#mapControl {
+	margin-top:30px;
+	margin-left:30px;
+	width:60px;
+	height:140px;
+	
+}
+#mapControl #arrows{
+	width:60px;
+	height:60px;
+	background:url('images/mapControl.png') top left no-repeat;
+}
+#mapControl #arrows{
+	width:60px;
+	height:60px;
+	background:url('images/mapControl.png') top left no-repeat;
+}
+.arrows{
+	width:15px;
+	height:15px;
+}
+#arrowUp {
+	margin-left:22px;
+	padding-top:5px;
+}
+#arrowRight {
+	margin-left:42px;
+}
+#arrowDown {
+	margin-left:22px;
+	padding-top:2px;
+}
+#arrowLeft {
+	margin-left:5px;
+	margin-top:-33px;
+}
+#zoom{
+	margin-top:10px;
+	margin-left:18px;
+}
+#zoom #zoomBar{
+	width:10px;
+	height:30px;
+	background:url('images/mapControl.png') top left no-repeat;
+	background-position:-24px -297px;
+	margin-top:-2px;
+	margin-left:5px;
+}
+#mapControl #zoomIn{
+	width:22px;
+	height:22px;
+	background:url('images/mapControl.png') top left no-repeat;
+	background-position:-19px -400px;
+	
+}
+#mapControl #zoomOut{
+	width:23px;
+	height:16px;
+	background:url('images/mapControl.png') top left no-repeat;
+	background-position:0px -382px;
+	margin-top:-3px;
+}
 #wrapper-map{
 	float:left;
 }
