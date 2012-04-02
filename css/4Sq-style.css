@@ -67,7 +67,7 @@ canvas:focus { outline: 0; }
 	margin-left:5px;
 }
 #mapControl #zoomIn{
-	width:22px;
+	width:21px;
 	height:22px;
 	background:url('images/mapControl.png') top left no-repeat;
 	background-position:-19px -400px;
