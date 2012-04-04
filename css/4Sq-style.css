@@ -17,24 +17,29 @@ canvas:focus { outline: 0; }
     /*display:none;*/
     
 }
-#mapControl {
-	margin-top:80px;
-	margin-left:3px;
-	width:60px;
-	height:140px;
-	position:absolute;
-	
+
+
+#mapChangeIcon{
+
 }
-#mapControl #arrows{
+#arrows{
+	width:60px;
+	height:60px;
+	position: absolute;
+	top: 100px;
+}
+
+#arrows-visible{
+
 	width:60px;
 	height:60px;
 	background:url('images/mapControl.png') top left no-repeat;
 }
-#mapControl #arrows{
-	width:60px;
-	height:60px;
-	background:url('images/mapControl.png') top left no-repeat;
+
+#arrows :hover{
+	display:block;
 }
+
 .arrows{
 	width:15px;
 	height:15px;
@@ -54,18 +59,21 @@ canvas:focus { outline: 0; }
 	margin-left:5px;
 	margin-top:-33px;
 }
-#zoom{
-	margin-top:10px;
-	margin-left:18px;
+#zoom-bar-container{
+	position: absolute;
+	top: 170px;
+	width: 60px;
+
 }
-#zoom #zoomBar{
-	width:10px;
-	height:30px;
-	background:url('images/mapControl.png') top left no-repeat;
-	background-position:-24px -297px;
-	margin-top:-2px;
-	margin-left:5px;
+#zoom-bar{
+
+	margin-left: auto;
+	margin-right: auto;
 }
+
+#zoom-bar a:focus { outline: 0; }
+
+
 #mapControl #zoomIn{
 	width:21px;
 	height:22px;
@@ -80,6 +88,11 @@ canvas:focus { outline: 0; }
 	background-position:0px -382px;
 	margin-top:-3px;
 }
+
+.gui-visible{
+	/*display: none;*/
+}
+
 #wrapper-map{
 	float:left;
 }

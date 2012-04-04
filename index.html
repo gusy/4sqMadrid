@@ -17,6 +17,7 @@
 		<script src="js/showtweets.js"></script>
 		<script type="text/javascript" src="js/timeframe.js"></script>
 		<script type="text/javascript" src="js/script.js"></script>
+		<script type="text/javascript" src="js/mousehold.js"></script>
 
 
 
@@ -33,8 +34,7 @@
         <div id="wrapper-map">
             <div id="trending"></div>
             <div id="canvas-wrapper">
-				<div id = "mapControl">
-					<div id = "arrows" >
+					<div id = "arrows" class="gui-mouse"><div id="arrows-visible" class="gui-visible">
 						<div class ="arrows" id = "arrowUp">
 						</div>
 						<div class ="arrows" id = "arrowRight">
@@ -42,19 +42,14 @@
 						<div class ="arrows" id = "arrowDown">
 						</div>
 						<div class ="arrows" id = "arrowLeft">
-						</div>
-						
+						</div>	
 								
+					</div></div>
+					<div id="zoom-bar-container" class="gui-mouse">
+						<div id="zoom-bar-visible" class="gui-visible">
+					   <div id = "zoom-bar"></div></div>
 					</div>
-					<div id = "zoom">
-						<div id = "zoomIn">
-						</div>
-						<div id = "zoomBar">
-						</div>
-						<div id = "ZoomOut">
-						</div>
-					</div>
-				</div>
+			
 				<canvas id="canvas"></canvas>
 			</div>
 			

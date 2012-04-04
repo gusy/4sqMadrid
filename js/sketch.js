@@ -95,7 +95,8 @@ sketch.attachFunction = function (processing) {
     };
 
 
-
+    var overGui = false;
+    
     var checkinPhp;
     var sobre = false;
     var pulsado = false;
@@ -149,6 +150,35 @@ sketch.attachFunction = function (processing) {
         processing.textureMode(processing.NORMALIZED);
         processing.fill(55);
         processing.stroke(processing.color(44, 48, 32));
+        $("#arrows").onselectstart = function () { return false; };
+        $( "#zoom-bar" ).slider({
+            value: zoom,
+            min: minZoom,
+            max: maxZoom,
+            orientation: "vertical",
+            slide: function( event, ui ) {
+                zoom = ui.value;
+            }
+        });
+
+        $("#arrowUp").mousehold(function(){
+          transX = Math.min(2000, transX + 20*Math.sin(rotZ));
+          transY = Math.min(2000, transY + 20*Math.cos(rotZ));
+        });
+        $("#arrowRight").mousehold(function(){
+          transX = Math.max(-2000, transX - 20*Math.cos(rotZ));
+         transY = Math.min(2000, transY + 20*Math.sin(rotZ));
+        });
+        $("#arrowDown").mousehold(function(){
+          transX = Math.max(-2000, transX - 20*Math.sin(rotZ));
+         transY = Math.max(-2000, transY - 20*Math.cos(rotZ));
+        });
+        $("#arrowLeft").mousehold(function(){
+         transX = Math.min(2000, transX + 20*Math.cos(rotZ));
+         transY = Math.max(-2000, transY - 20*Math.sin(rotZ));
+        });
+        //$(".gui-mouse").mouseover(function(){overGui=true;$(".gui-visible").fadeIn(500);}).mouseout(function(){$(".gui-visible").fadeOut(500);overGui=false;});
+
 
         if (timeframeMode){
             $("#timeframeWrapper").show();
@@ -571,7 +601,13 @@ sketch.attachFunction = function (processing) {
     };
 
     processing.mouseMoved = function () {
+        if(!overGui){
+        //$(".gui-visible").stop(true,true);
+        //$(".gui-visible").fadeIn(500).delay(300).fadeOut(500,function(){$(".gui-visible").clearQueue();});
+        }
+
         guiDisplayedTime=processing.millis();
+
         var p = {
             "x": processing.resizedMouseX(),
             "y": processing.resizedMouseY()
@@ -819,6 +855,7 @@ sketch.attachFunction = function (processing) {
             rightBound = $("#canvas-wrapper").width()*720/$("#canvas-wrapper").height();
             bottomBound = 720;
         }
+
     };
 
 };
