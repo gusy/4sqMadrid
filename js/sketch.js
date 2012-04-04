@@ -864,6 +864,7 @@ function handle(delta) {
     var s = delta + ": ";
     if (delta < 0) zoom = Math.max(minZoom, zoom-10);
     else zoom = Math.min(maxZoom, zoom+10);
+    $( "#zoom-bar" ).slider("value",zoom);
 }
 
 function wheel(event) {
