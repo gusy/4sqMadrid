@@ -26,10 +26,68 @@ $(document).ready(function() {
 	// Handler for .ready() called.
 	wrappermapwidth = $('#wrapper-map').width();
 	$('#lateralCanvas').height($('#wrapper-map').height()-0);//antes era -7px.
+	var len1 = ($('#lateralCanvas').height()-$('#container').height()+1)/2;
+	var len2 =($('#lateralCanvas').height()-$('#container').height()+1);
+	console.log(len1,len2);
 	//$('#lateral').height($('#lateralCanvas').height()-$('#lateralHeader').height()-$('#lateralBottom').height());
 	$('.lateral').height(($('#lateralCanvas').height()-$('#container').height()+1)/2);
 	$("#acord1").css('display','block');
 	$("#acord2").css('display','block');
+	
+	
+	
+	var queue=["#acord1","#acord2"];
+	var showing1 = 0;
+	/* Binding a click event handler to the links: */
+	$('#container .button a').click(function(e){
+	
+		/* Finding the drop down list that corresponds to the current section: */
+		var dropDown = $(this).parent().next();
+		//console.log($("#"+dropDown.attr("id")));
+		//console.log($(this).id);
+		//console.log(queue);
+		divPressed = "#"+dropDown.attr("id");
+		console.log(queue);	
+		if(dropDown.css('display')!="none"){
+			//console.log(divPressed);
+			
+			//console.log(queue.indexOf(divPressed));
+			if(!showing1){
+				$(divPressed).animate({height:len2},'slow');
+				$(queue[(queue.indexOf(divPressed)+1)%2]).animate({height:0},'slow');
+				showing1=1;
+			}else{
+				$(divPressed).animate({height:len1},'slow');
+				$(queue[(queue.indexOf(divPressed)+1)%2]).animate({height:len1},'slow');
+				showing1=0;
+			}
+			if(divPressed!=queue[1]){
+				aux = queue[1];
+				queue[0]=aux;
+				queue[1] = divPressed;
+			}
+			
+			return;
+		}
+		
+		showing1=0
+		var t=queue.shift();
+		$('.dropdown').not(dropDown).not(queue[0]).slideUp('slow');
+		$(divPressed).animate({height:len1},'slow');
+		$(queue[(queue.indexOf(divPressed)+1)%2]).animate({height:len1},'slow');
+		dropDown.slideToggle('slow');
+		//$(divPressed).heigth(len1);
+		//$(queue[(queue.indexOf(divPressed)+1)%2]).heigth(len1);
+		//$(divPressed).slideToggle('slow');//animate({height:len1},'slow');
+		//$(queue[(queue.indexOf(divPressed)+1)%2]).slideToggle('slow');//.animate({height:len1},'slow');
+		
+		//dropDown.slideToggle('slow');
+		queue.push("#"+dropDown.attr("id"));
+		/* Preventing the default event (which would be to navigate the browser to the link's address) */
+		e.preventDefault();
+	});
+	
+	
 	nowTrending();
 	
 	/*$('#laterallogo').click(function(){

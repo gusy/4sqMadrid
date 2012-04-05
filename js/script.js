@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	/* This code is executed after the DOM has been completely loaded */
-
+	
 	/* Changing thedefault easing effect - will affect the slideUp/slideDown methods: */
 	//$.easing.def = "easeOutBounce";
 	var queue=[$("#acord1"),$("#acord2")];
@@ -9,7 +9,8 @@ $(document).ready(function(){
 	
 		/* Finding the drop down list that corresponds to the current section: */
 		var dropDown = $(this).parent().next();
-		if(dropDown.css('display')!="none"){	
+		if(dropDown.css('display')!="none"){
+			//dropDown.height(len2);	
 			return;
 		}
 		var t=queue.shift();
@@ -19,5 +20,5 @@ $(document).ready(function(){
 		queue.push(dropDown);
 		/* Preventing the default event (which would be to navigate the browser to the link's address) */
 		e.preventDefault();
-	})
+	});
 });
