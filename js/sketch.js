@@ -369,10 +369,11 @@ sketch.attachFunction = function (processing) {
 
                 processing.textureMode(processing.NORMALIZED);
                 processing.beginShape();
-                                        processing.fill(255);
 
                     if(tex.width>0&&tex.height>0){
+                        processing.fill(255);
                         processing.texture(tex);
+
                     }
                     processing.vertex(Math.min(-currentConfig.mapWidth/2+(iter_x*640),currentConfig.mapWidth/2),
                                       Math.min(-currentConfig.mapHeight/2+(iter_y*640),currentConfig.mapHeight/2), 0, 0, 0);
@@ -383,6 +384,8 @@ sketch.attachFunction = function (processing) {
                     processing.vertex(Math.min(-currentConfig.mapWidth/2+(iter_x*640),currentConfig.mapWidth/2),
                                       Math.min(-currentConfig.mapHeight/2+640+(iter_y*640),currentConfig.mapHeight/2), 0, 0, 1);
                 processing.endShape();
+                processing.fill(55);
+
 
 
 
