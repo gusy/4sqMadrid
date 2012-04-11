@@ -24,6 +24,9 @@ sketch.attachFunction = function (processing) {
                         "locationId":4};
     var sevilleConfig = {"latN":37.4394,"latS":37.3369,"lngW":-6.0486,"lngE":-5.8863,
                         "locationId":5};
+    var bostonConfig = {"latN":42.38,"latS":42.325,"lngW":-71.14,"lngE":-71,
+                        "locationId":6};
+
 
     var currentConfig;
 
@@ -39,6 +42,8 @@ sketch.attachFunction = function (processing) {
         currentConfig = newYorkConfig;
     }else if (ciudad == "SVQ"){
         currentConfig = sevilleConfig;
+    }else if (ciudad == "BOS"){
+        currentConfig = bostonConfig;
     }else{
         currentConfig = madridConfig;
     }
