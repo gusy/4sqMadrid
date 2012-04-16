@@ -622,17 +622,31 @@ sketch.attachFunction = function (processing) {
         };
         
         $.each(arrayVenues, function (key, value) {
-            if (value.v1 != null && value.v2 != null && value.v3 != null) {
+            if (value.v1 != null && value.v2 != null && value.v3 != null){
                 var mouseSobre = false;
-                var trig = 0;
-                for (var va = 1; va <= 8; va++) {
-                    for (var vb = 2; vb <= 8 && vb != va; vb++) {
-                        for (var vc = 3; vc < 8 && vc != va && vc != vb; vc++) {
-                            mouseSobre |= dentroTriangulo(p, value["v" + va], value["v" + vb], value["v" + vc]);
+
+                var xMax = Math.max(value.v1.x,value.v2.x,value.v3.x,value.v4.x,
+                                    value.v5.x,value.v6.x,value.v7.x,value.v8.x);
+                var xMin = Math.min(value.v1.x,value.v2.x,value.v3.x,value.v4.x,
+                                    value.v5.x,value.v6.x,value.v7.x,value.v8.x);
+                var yMax = Math.max(value.v1.y,value.v2.y,value.v3.y,value.v4.y,
+                                    value.v5.y,value.v6.y,value.v7.y,value.v8.y);
+                var yMin = Math.min(value.v1.y,value.v2.y,value.v3.y,value.v4.y,
+                                    value.v5.y,value.v6.y,value.v7.y,value.v8.y);
+
+            
+                if (xMax>=p.x&&xMin<=p.x&&yMax>=p.y&&yMin<=p.y) {
+                    
+                    var trig = 0;
+                    for (var va = 1; va <= 8; va++) {
+                        for (var vb = 2; vb <= 8 && vb != va; vb++) {
+                            for (var vc = 3; vc < 8 && vc != va && vc != vb; vc++) {
+                                mouseSobre |= dentroTriangulo(p, value["v" + va], value["v" + vb], value["v" + vc]);
+                            }
                         }
-                    }
-                }
-                value.mouseSobre = mouseSobre;
+                    }}
+                    value.mouseSobre = mouseSobre;
+                
             }
         });
 
