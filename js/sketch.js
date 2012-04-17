@@ -12,6 +12,80 @@ var timeRunning = 0;
 var trendingPlaces = new Array();
 
 
+var umbralTrending = 1;       // Threesold of required checkins to place venue into trending list (would be considered if is greater than this value)
+var tiempoDisolucionGui = 2;  // Time in seconds to fade the GUI
+var guiDisplayedTime = 0;     // When (in ms since load) was the GUI first displayed
+var tex;
+var playIcon;                 
+var satellite=true;           // Flag to switch between map images (true=Satellite, false=Street Map)
+var rotando=false;             // Flag for switching auto-rotation
+var transX;                   // Current translation of the center of the map
+var transY;                   // Current translation of the center of the map
+var rotX = Math.PI / 4;       // Current X-axis rotation of the map (rad)
+var rotY = 0;                 // Current Y-axis rotation of the map (rad)
+var rotZ = 0;                 // Current Z-axis rotation of the map (rad)
+var lastServerRequest = 0;    // When (in ms since load) was the last ajax request
+var fr =10;                   // Rendering framerate
+var lastCheckinReceived = 0;  // Index of the newest checkin received
+var segundosPorVuelta = 60;   // Seconds to rotate the map 360º
+var tiempoCheckin = 3600;     // Seconds during which a checkin is displayed
+var tiempoFlashCheckin = 20;  // Seconds during which a new checkin is highlighted
+var ritmoCambioAltura=5;      // Variation of height per frame when growing or reducing checkins
+var alturaCheckin = 120;      // Initial height of the checkins (when only 1 checkin)
+var tRefresh = 2;             // Seconds to periodically call the server for updates
+var segundosTimeframe = 60;   // Duration in seconds of the 'timeframe' animation
+var timeBetweenTrendingChecks = 500; // Lapse (in ms) betweeen trending places check
+var radiansXRotated = Math.PI; // Rotation in X axis when mouse is dragged across the whole canvas
+var radiansZRotated = Math.PI;
+
+var timeRate;                 // Relation between real time and timeframe time
+var oldTime;                  // Virtual (timeframe) time last time it was checked
+var oldMillis=0;              // Real time when virtual time was last checked
+var startTime;
+var endTime;
+
+var timeframeFrom = 0;
+var timeframeTo = 0;
+var timeframePause = true;
+
+var arrayCheckins = new Array();
+var arrayVenues = new Object();
+
+var lastNowTrendingMillis = -500;
+
+var ajaxLock = false;  // Avoids multiple AJAX calls to the same service to be performed
+
+/* Timeframe Vars */
+var stepsNumber = 360; // Number of steps in the slider;
+
+var informacion = {
+    "display": false,"clicked":false
+};
+
+
+var overGui = false;
+
+var checkinPhp;
+var sobre = false;
+var pulsado = false;
+var oldX;
+var oldY;
+var oldRotX;
+var oldRotY;
+var oldRotZ;
+
+var wasExtended;
+
+var map_imgs;
+var imgs_x=4;
+var imgs_y=3;
+
+var rightBound;
+var bottomBound;
+
+var currentConfig;
+
+
 sketch.attachFunction = function (processing) {
     
     var madridConfig = {"latN":40.5735,"latS":40.363,"lngW":-3.84,"lngE":-3.495,
@@ -28,7 +102,7 @@ sketch.attachFunction = function (processing) {
                         "locationId":6};
 
 
-    var currentConfig;
+
 
     var ciudad = getParameterByName("city");
 
@@ -49,76 +123,9 @@ sketch.attachFunction = function (processing) {
     }
 
 
-    var umbralTrending = 1;       // Threesold of required checkins to place venue into trending list (would be considered if is greater than this value)
-    var tiempoDisolucionGui = 2;  // Time in seconds to fade the GUI
-    var guiDisplayedTime = 0;     // When (in ms since load) was the GUI first displayed
-    var tex;
-    var playIcon;                 
-    var satellite=true;           // Flag to switch between map images (true=Satellite, false=Street Map)
-    var rotando=false;             // Flag for switching auto-rotation
-    var transX;                   // Current translation of the center of the map
-    var transY;                   // Current translation of the center of the map
-    var rotX = Math.PI / 4;       // Current X-axis rotation of the map (rad)
-    var rotY = 0;                 // Current Y-axis rotation of the map (rad)
-    var rotZ = 0;                 // Current Z-axis rotation of the map (rad)
-    var lastServerRequest = 0;    // When (in ms since load) was the last ajax request
-    var fr =10;                   // Rendering framerate
-    var lastCheckinReceived = 0;  // Index of the newest checkin received
-    var segundosPorVuelta = 60;   // Seconds to rotate the map 360º
-    var tiempoCheckin = 3600;     // Seconds during which a checkin is displayed
-    var tiempoFlashCheckin = 20;  // Seconds during which a new checkin is highlighted
-    var ritmoCambioAltura=5;      // Variation of height per frame when growing or reducing checkins
-    var alturaCheckin = 120;      // Initial height of the checkins (when only 1 checkin)
-    var tRefresh = 2;             // Seconds to periodically call the server for updates
-    var segundosTimeframe = 60;   // Duration in seconds of the 'timeframe' animation
-    var timeBetweenTrendingChecks = 500; // Lapse (in ms) betweeen trending places check
-    var radiansXRotated = Math.PI; // Rotation in X axis when mouse is dragged across the whole canvas
-    var radiansZRotated = Math.PI;
 
-    var timeRate;                 // Relation between real time and timeframe time
-    var oldTime;                  // Virtual (timeframe) time last time it was checked
-    var oldMillis=0;              // Real time when virtual time was last checked
-    var startTime;
-    var endTime;
     
-    var timeframeFrom = 0;
-    var timeframeTo = 0;
-    var timeframePause = true;
 
-    var arrayCheckins = new Array();
-    var arrayVenues = new Object();
-
-    var lastNowTrendingMillis = -500;
-
-    var ajaxLock = false;  // Avoids multiple AJAX calls to the same service to be performed
-
-	/* Timeframe Vars */
-    var stepsNumber = 360; // Number of steps in the slider;
-    
-    var informacion = {
-        "display": false,"clicked":false
-    };
-
-
-    var overGui = false;
-    
-    var checkinPhp;
-    var sobre = false;
-    var pulsado = false;
-    var oldX;
-    var oldY;
-    var oldRotX;
-    var oldRotY;
-    var oldRotZ;
-
-    var wasExtended;
-
-    var map_imgs;
-    var imgs_x=4;
-    var imgs_y=3;
-
-    var rightBound;
-    var bottomBound;
 
     processing.setup = function () {
         if (getParameterByName("timeframe")==("true")){
@@ -205,7 +212,8 @@ sketch.attachFunction = function (processing) {
             $.ajax({
             url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId='+currentConfig.locationId+'&from='+timeframeFrom+'&to='+timeframeTo,
             dataType: 'json',
-            success: function (data) {
+            success: function (data){successCheckinsFlyStartTimeframe(data,processing)}
+            /*function (data) {
                 checkinPhp = data.checkins;
 
 
@@ -226,7 +234,7 @@ sketch.attachFunction = function (processing) {
                     }
                     lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
                 });
-            },complete: function () {
+            }*/,complete: function () {
                 processing.switchTimeframePause();
             }
         });
@@ -237,7 +245,8 @@ sketch.attachFunction = function (processing) {
         $.ajax({
             url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId='+currentConfig.locationId+'&lastCheckin=' + lastCheckinReceived,
             dataType: 'json',
-            success: function (data) {
+            success: function (data){successCheckinsFlyStartNormal(data,processing)}
+            /*function (data) {
                 checkinPhp = data.checkins;
                 var countTimeLine=0;
 
@@ -264,7 +273,7 @@ sketch.attachFunction = function (processing) {
                     }
                     lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
                 });
-            },
+            }*/,
             complete: function () {
                 ajaxLock = false;
             }
@@ -308,7 +317,8 @@ sketch.attachFunction = function (processing) {
             $.ajax({
                 url: 'http://orange1.dit.upm.es/checkins-fly.php?locationId='+currentConfig.locationId+'&lastCheckin=' + lastCheckinReceived,
                 dataType: 'json',
-                success: function (data) {
+                success: function(data){successCheckinsFlyUpdateNormal(data,processing)}
+                /*function (data) {
                     checkinPhp = data.checkins;
                     $.each(checkinPhp, function (index, value) {
 
@@ -332,7 +342,7 @@ sketch.attachFunction = function (processing) {
                         lastCheckinReceived = Math.max(lastCheckinReceived, parseInt(ci.checkid));
                     });
 
-                },
+                }*/,
                 complete: function () {
                     ajaxLock = false;
                 }
