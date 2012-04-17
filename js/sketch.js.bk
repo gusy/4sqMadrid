@@ -1,9 +1,9 @@
 var sketch = new Processing.Sketch();
 sketch.use3DContext = true;
 sketch.globalKeyEvents = true;
-var zoom = -300;
-var minZoom = -1000;
-var maxZoom = 1200;
+var zoom = -500;
+var minZoom = -1300;
+var maxZoom = 800;
 var timeOffset = 0;
 var timeframeMode = false;
 var timeEpoch = 0;
@@ -305,22 +305,22 @@ sketch.attachFunction = function (processing) {
         for (iter_x=0;iter_x<imgs_x;iter_x++){
             for (iter_y=0;iter_y<imgs_y;iter_y++){
                 tex = map_imgs[iter_x][iter_y];
+                processing.fill(255); // Fills in white to drow bright Textures if image is loaded
                 processing.textureMode(processing.NORMALIZED);
                 processing.beginShape();
 
                     if(tex.width>0&&tex.height>0){
-                        processing.fill(255); // Fills in white to drow bright Textures if image is loaded
                         processing.texture(tex);
 
                     }
-                    processing.vertex(Math.min(-currentConfig.mapWidth/2+(iter_x*320),currentConfig.mapWidth/2),
-                                      Math.min(-currentConfig.mapHeight/2+(iter_y*320),currentConfig.mapHeight/2), 0, 0, 0);
-                    processing.vertex(Math.min(-currentConfig.mapWidth/2+320+(iter_x*320),currentConfig.mapWidth/2),
-                                      Math.min(-currentConfig.mapHeight/2+(iter_y*320),currentConfig.mapHeight/2), 0, 1, 0);
-                    processing.vertex(Math.min(-currentConfig.mapWidth/2+320+(iter_x*320),currentConfig.mapWidth/2),
-                                      Math.min(-currentConfig.mapHeight/2+320+(iter_y*320),currentConfig.mapHeight/2), 0, 1, 1);
-                    processing.vertex(Math.min(-currentConfig.mapWidth/2+(iter_x*320),currentConfig.mapWidth/2),
-                                      Math.min(-currentConfig.mapHeight/2+320+(iter_y*320),currentConfig.mapHeight/2), 0, 0, 1);
+                    processing.vertex(Math.min(-currentConfig.mapWidth/2+(iter_x*640),currentConfig.mapWidth/2),
+                                      Math.min(-currentConfig.mapHeight/2+(iter_y*640),currentConfig.mapHeight/2), 0, 0, 0);
+                    processing.vertex(Math.min(-currentConfig.mapWidth/2+640+(iter_x*640),currentConfig.mapWidth/2),
+                                      Math.min(-currentConfig.mapHeight/2+(iter_y*640),currentConfig.mapHeight/2), 0, 1, 0);
+                    processing.vertex(Math.min(-currentConfig.mapWidth/2+640+(iter_x*640),currentConfig.mapWidth/2),
+                                      Math.min(-currentConfig.mapHeight/2+640+(iter_y*640),currentConfig.mapHeight/2), 0, 1, 1);
+                    processing.vertex(Math.min(-currentConfig.mapWidth/2+(iter_x*640),currentConfig.mapWidth/2),
+                                      Math.min(-currentConfig.mapHeight/2+640+(iter_y*640),currentConfig.mapHeight/2), 0, 0, 1);
                 processing.endShape();
                 processing.fill(55); // Reset Filling color for unloaded textures
             }
@@ -421,7 +421,7 @@ sketch.attachFunction = function (processing) {
                         informacion.y = processing.screenY(0, 0, value.altura);
                         informacion.z = processing.screenZ(0, 0, value.altura);
                     }       
-                    var ladoCheckin = 5*Math.log(15/processing.map(zoom+300,minZoom,maxZoom,0.5,7));
+                    var ladoCheckin = 7*Math.log(15/processing.map(zoom+300,minZoom,maxZoom,0.5,7));
                     processing.dibujaCheckin(ladoCheckin, value.altura, value);
                     value.active = true;
                     processing.popMatrix();
@@ -665,9 +665,6 @@ sketch.attachFunction = function (processing) {
           }      
 
        }
-       currentConfig.mapWidth = currentConfig.mapWidth/2;
-       currentConfig.mapHeight = currentConfig.mapHeight/2;
-
     }
 
     processing.switchRotate = function() {
