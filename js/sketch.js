@@ -85,6 +85,9 @@ var bottomBound;
 var currentConfig;
 
 
+var infoBoxEnabled = false;
+
+
 sketch.attachFunction = function (processing) {
     
     var madridConfig = {"latN":40.5735,"latS":40.363,"lngW":-3.84,"lngE":-3.495,
@@ -106,17 +109,23 @@ sketch.attachFunction = function (processing) {
     var ciudad = getParameterByName("city");
 
     if (ciudad == "SIN"){
-        currentConfig = singaporeConfig;        
+        currentConfig = singaporeConfig;
+        currentConfig.cityGrid = false;        
     }else if (ciudad == "MAD"){
         currentConfig = madridConfig;
+        currentConfig.cityGrid = false;        
     }else if (ciudad == "PAR"){
         currentConfig = parisConfig;
+        currentConfig.cityGrid = false;        
     }else if (ciudad == "NYC"){
         currentConfig = newYorkConfig;
+        currentConfig.cityGrid = false;        
     }else if (ciudad == "SVQ"){
         currentConfig = sevilleConfig;
+        currentConfig.cityGrid = true;        
     }else if (ciudad == "BOS"){
         currentConfig = bostonConfig;
+        currentConfig.cityGrid = true;        
     }else{
         currentConfig = madridConfig;
     }
@@ -405,22 +414,29 @@ sketch.attachFunction = function (processing) {
                     }
                     processing.shininess(15.0);
                     processing.fill(red, green, blue, 180);
-                    if (value.mouseSobre) {
-                        processing.fill(240, 130);
-                        if (pulsado) {
-                            informacion.display = true;
-                            informacion.clicked =true;
-                            informacion.venue = key;
-                            processing.fill(100);
-                        }
-                    }
+
                     processing.translate(processing.map(value.venue.location.lng, currentConfig.lngW, currentConfig.lngE, -currentConfig.mapWidth/2, currentConfig.mapWidth/2), 
                                          processing.map(value.venue.location.lat, currentConfig.latS, currentConfig.latN, currentConfig.mapHeight/2, -currentConfig.mapHeight/2), 0);
                     if (informacion.display && informacion.venue == key) {
                         informacion.x = processing.screenX(0, 0, value.altura);
                         informacion.y = processing.screenY(0, 0, value.altura);
                         informacion.z = processing.screenZ(0, 0, value.altura);
-                    }       
+                    }
+
+                    if (value.mouseSobre) {
+                        processing.fill(240, 130);
+                        // If you pressed the mouse over a Prisma.
+                        if (pulsado) {
+                            showInfo(value.venue,processing.screenX(0, 0, value.altura),processing.screenY(0, 0, value.altura),processing);
+                            pulsado = false;
+                            /*
+                            informacion.display = true;
+                            informacion.clicked =true;
+                            informacion.venue = key;
+                            processing.fill(100);
+                            */
+                        }
+                    }      
                     var ladoCheckin = 5*Math.log(15/processing.map(zoom+300,minZoom,maxZoom,0.5,7));
                     processing.dibujaCheckin(ladoCheckin, value.altura, value);
                     value.active = true;
@@ -500,11 +516,21 @@ sketch.attachFunction = function (processing) {
         if(processing.resizedMouseX()<75&&processing.resizedMouseY()<75){
          processing.cambiaMapa();
         }
+        if (infoBoxEnabled){
+            hideInfo(processing);
+        }
+
+
+        //TODO remove from here
         if(informacion.display)
            informacion.display=false;
            if(extended){
                 informacion.clicked=false;
             }
+
+        //TODO remove to here
+
+
         
     };
     processing.mouseReleased = function () {
