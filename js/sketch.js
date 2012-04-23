@@ -119,10 +119,10 @@ sketch.attachFunction = function (processing) {
         currentConfig.cityGrid = false;        
     }else if (ciudad == "NYC"){
         currentConfig = newYorkConfig;
-        currentConfig.cityGrid = false;        
+        currentConfig.cityGrid = true;        
     }else if (ciudad == "SVQ"){
         currentConfig = sevilleConfig;
-        currentConfig.cityGrid = true;        
+        currentConfig.cityGrid = false;        
     }else if (ciudad == "BOS"){
         currentConfig = bostonConfig;
         currentConfig.cityGrid = true;        
