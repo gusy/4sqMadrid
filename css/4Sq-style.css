@@ -98,6 +98,7 @@ canvas:focus { outline: 0; }
 }
 #canvas-wrapper{
 	overflow: hidden;
+	position: relative;
 }
 .dropdown{
 	display:none;

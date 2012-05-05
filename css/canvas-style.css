@@ -1,12 +1,15 @@
 #info-box{
-	background-color: #fff;
 	display:none;
 	position: absolute;
-	margin-left: auto;
-	top:40%;
-	left:40%;
-	padding: 10px;
+	padding: 0px 20px 0px 0px;
+    background:url('../img/info-pointer-right.png') top right no-repeat;
+
 	opacity: 0.75;
+}
+#info-box .content{
+    background-color: #fff;
+	margin-left: auto;
+	padding: 10px;
 }
 
 #info-box a{

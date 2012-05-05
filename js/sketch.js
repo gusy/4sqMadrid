@@ -88,6 +88,14 @@ var currentConfig;
 var infoBoxEnabled = false;
 
 
+
+
+
+/* CITYGRID API VARIABLES */
+var thumbMaxHeight = 150;
+var thumbMaxWidth = 150;
+
+
 sketch.attachFunction = function (processing) {
     
     var madridConfig = {"latN":40.5735,"latS":40.363,"lngW":-3.84,"lngE":-3.495,
