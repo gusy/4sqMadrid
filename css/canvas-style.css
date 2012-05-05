@@ -1,8 +1,7 @@
 #info-box{
 	display:none;
 	position: absolute;
-	padding: 0px 20px 0px 0px;
-    background:url('../img/info-pointer-right.png') top right no-repeat;
+
 
 	opacity: 0.75;
 }

@@ -127,6 +127,7 @@ sketch.attachFunction = function (processing) {
         currentConfig.cityGrid = false;        
     }else if (ciudad == "NYC"){
         currentConfig = newYorkConfig;
+        tiempoCheckin = 1800;
         currentConfig.cityGrid = true;        
     }else if (ciudad == "SVQ"){
         currentConfig = sevilleConfig;
