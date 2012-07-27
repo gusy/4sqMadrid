@@ -110,9 +110,8 @@ sketch.attachFunction = function (processing) {
                         "locationId":5};
     var bostonConfig = {"latN":42.38,"latS":42.325,"lngW":-71.14,"lngE":-71,
                         "locationId":6};
-
-
-
+	var londonConfig = {"latN":51.577711,"latS":51.472616],"lngW":-0.225277,"lngE":0.067233,
+                        "locationId":7};
 
     var ciudad = getParameterByName("city");
 
@@ -134,10 +133,14 @@ sketch.attachFunction = function (processing) {
         currentConfig.cityGrid = false;        
     }else if (ciudad == "BOS"){
         currentConfig = bostonConfig;
-        currentConfig.cityGrid = true;        
+        currentConfig.cityGrid = true;
+    }else if (ciudad == "LHR"){
+        currentConfig = londonConfig;
+        currentConfig.cityGrid = true;  
     }else{
         currentConfig = madridConfig;
     }
+    
 
 
 
